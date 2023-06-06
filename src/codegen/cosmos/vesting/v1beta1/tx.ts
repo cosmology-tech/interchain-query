@@ -1,7 +1,7 @@
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
 import { Period, PeriodAmino, PeriodSDKType } from "./vesting";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial } from "../../../helpers";
 /**
  * MsgCreateVestingAccount defines a message that enables creating a vesting
  * account.
@@ -10,7 +10,7 @@ export interface MsgCreateVestingAccount {
   fromAddress: string;
   toAddress: string;
   amount: Coin[];
-  endTime: Long;
+  endTime: bigint;
   delayed: boolean;
 }
 export interface MsgCreateVestingAccountProtoMsg {
@@ -40,7 +40,7 @@ export interface MsgCreateVestingAccountSDKType {
   from_address: string;
   to_address: string;
   amount: CoinSDKType[];
-  end_time: Long;
+  end_time: bigint;
   delayed: boolean;
 }
 /** MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount response type. */
@@ -57,170 +57,129 @@ export interface MsgCreateVestingAccountResponseAminoMsg {
 }
 /** MsgCreateVestingAccountResponse defines the Msg/CreateVestingAccount response type. */
 export interface MsgCreateVestingAccountResponseSDKType {}
-/** MsgCreateClawbackVestingAccount defines a message that enables creating a ClawbackVestingAccount. */
-export interface MsgCreateClawbackVestingAccount {
-  /**
-   * from_address specifies the account to provide the funds and sign the
-   * clawback request
-   */
+/**
+ * MsgCreatePermanentLockedAccount defines a message that enables creating a permanent
+ * locked account.
+ */
+export interface MsgCreatePermanentLockedAccount {
   fromAddress: string;
-  /** to_address specifies the account to receive the funds */
   toAddress: string;
-  /** start_time defines the time at which the vesting period begins */
-  startTime: Long;
-  /** lockup_periods defines the unlocking schedule relative to the start_time */
-  lockupPeriods: Period[];
-  /** vesting_periods defines the vesting schedule relative to the start_time */
+  amount: Coin[];
+}
+export interface MsgCreatePermanentLockedAccountProtoMsg {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount";
+  value: Uint8Array;
+}
+/**
+ * MsgCreatePermanentLockedAccount defines a message that enables creating a permanent
+ * locked account.
+ */
+export interface MsgCreatePermanentLockedAccountAmino {
+  from_address: string;
+  to_address: string;
+  amount: CoinAmino[];
+}
+export interface MsgCreatePermanentLockedAccountAminoMsg {
+  type: "cosmos-sdk/MsgCreatePermanentLockedAccount";
+  value: MsgCreatePermanentLockedAccountAmino;
+}
+/**
+ * MsgCreatePermanentLockedAccount defines a message that enables creating a permanent
+ * locked account.
+ */
+export interface MsgCreatePermanentLockedAccountSDKType {
+  from_address: string;
+  to_address: string;
+  amount: CoinSDKType[];
+}
+/** MsgCreatePermanentLockedAccountResponse defines the Msg/CreatePermanentLockedAccount response type. */
+export interface MsgCreatePermanentLockedAccountResponse {}
+export interface MsgCreatePermanentLockedAccountResponseProtoMsg {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccountResponse";
+  value: Uint8Array;
+}
+/** MsgCreatePermanentLockedAccountResponse defines the Msg/CreatePermanentLockedAccount response type. */
+export interface MsgCreatePermanentLockedAccountResponseAmino {}
+export interface MsgCreatePermanentLockedAccountResponseAminoMsg {
+  type: "cosmos-sdk/MsgCreatePermanentLockedAccountResponse";
+  value: MsgCreatePermanentLockedAccountResponseAmino;
+}
+/** MsgCreatePermanentLockedAccountResponse defines the Msg/CreatePermanentLockedAccount response type. */
+export interface MsgCreatePermanentLockedAccountResponseSDKType {}
+/**
+ * MsgCreateVestingAccount defines a message that enables creating a vesting
+ * account.
+ */
+export interface MsgCreatePeriodicVestingAccount {
+  fromAddress: string;
+  toAddress: string;
+  startTime: bigint;
   vestingPeriods: Period[];
-  /**
-   * merge specifies a creation mechanism for existing
-   * ClawbackVestingAccounts. If true, merge this new grant into an existing
-   * ClawbackVestingAccount, or create it if it does not exist. If false,
-   * creates a new account. New grants to an existing account must be from the
-   * same from_address.
-   */
-  merge: boolean;
 }
-export interface MsgCreateClawbackVestingAccountProtoMsg {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgCreateClawbackVestingAccount";
+export interface MsgCreatePeriodicVestingAccountProtoMsg {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount";
   value: Uint8Array;
 }
-/** MsgCreateClawbackVestingAccount defines a message that enables creating a ClawbackVestingAccount. */
-export interface MsgCreateClawbackVestingAccountAmino {
-  /**
-   * from_address specifies the account to provide the funds and sign the
-   * clawback request
-   */
+/**
+ * MsgCreateVestingAccount defines a message that enables creating a vesting
+ * account.
+ */
+export interface MsgCreatePeriodicVestingAccountAmino {
   from_address: string;
-  /** to_address specifies the account to receive the funds */
   to_address: string;
-  /** start_time defines the time at which the vesting period begins */
   start_time: string;
-  /** lockup_periods defines the unlocking schedule relative to the start_time */
-  lockup_periods: PeriodAmino[];
-  /** vesting_periods defines the vesting schedule relative to the start_time */
   vesting_periods: PeriodAmino[];
-  /**
-   * merge specifies a creation mechanism for existing
-   * ClawbackVestingAccounts. If true, merge this new grant into an existing
-   * ClawbackVestingAccount, or create it if it does not exist. If false,
-   * creates a new account. New grants to an existing account must be from the
-   * same from_address.
-   */
-  merge: boolean;
 }
-export interface MsgCreateClawbackVestingAccountAminoMsg {
-  type: "cosmos-sdk/MsgCreateClawbackVestingAccount";
-  value: MsgCreateClawbackVestingAccountAmino;
+export interface MsgCreatePeriodicVestingAccountAminoMsg {
+  type: "cosmos-sdk/MsgCreatePeriodicVestingAccount";
+  value: MsgCreatePeriodicVestingAccountAmino;
 }
-/** MsgCreateClawbackVestingAccount defines a message that enables creating a ClawbackVestingAccount. */
-export interface MsgCreateClawbackVestingAccountSDKType {
+/**
+ * MsgCreateVestingAccount defines a message that enables creating a vesting
+ * account.
+ */
+export interface MsgCreatePeriodicVestingAccountSDKType {
   from_address: string;
   to_address: string;
-  start_time: Long;
-  lockup_periods: PeriodSDKType[];
+  start_time: bigint;
   vesting_periods: PeriodSDKType[];
-  merge: boolean;
 }
 /**
- * MsgCreateClawbackVestingAccountResponse defines the
- * MsgCreateClawbackVestingAccount response type.
+ * MsgCreateVestingAccountResponse defines the Msg/CreatePeriodicVestingAccount
+ * response type.
  */
-export interface MsgCreateClawbackVestingAccountResponse {}
-export interface MsgCreateClawbackVestingAccountResponseProtoMsg {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgCreateClawbackVestingAccountResponse";
+export interface MsgCreatePeriodicVestingAccountResponse {}
+export interface MsgCreatePeriodicVestingAccountResponseProtoMsg {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccountResponse";
   value: Uint8Array;
 }
 /**
- * MsgCreateClawbackVestingAccountResponse defines the
- * MsgCreateClawbackVestingAccount response type.
+ * MsgCreateVestingAccountResponse defines the Msg/CreatePeriodicVestingAccount
+ * response type.
  */
-export interface MsgCreateClawbackVestingAccountResponseAmino {}
-export interface MsgCreateClawbackVestingAccountResponseAminoMsg {
-  type: "cosmos-sdk/MsgCreateClawbackVestingAccountResponse";
-  value: MsgCreateClawbackVestingAccountResponseAmino;
+export interface MsgCreatePeriodicVestingAccountResponseAmino {}
+export interface MsgCreatePeriodicVestingAccountResponseAminoMsg {
+  type: "cosmos-sdk/MsgCreatePeriodicVestingAccountResponse";
+  value: MsgCreatePeriodicVestingAccountResponseAmino;
 }
 /**
- * MsgCreateClawbackVestingAccountResponse defines the
- * MsgCreateClawbackVestingAccount response type.
+ * MsgCreateVestingAccountResponse defines the Msg/CreatePeriodicVestingAccount
+ * response type.
  */
-export interface MsgCreateClawbackVestingAccountResponseSDKType {}
-/**
- * MsgClawback defines a message that removes unvested tokens from a
- * ClawbackVestingAccount.
- */
-export interface MsgClawback {
-  /** funder_address is the address which funded the account */
-  funderAddress: string;
-  /** address is the address of the ClawbackVestingAccount to claw back from. */
-  address: string;
-  /**
-   * dest_address specifies where the clawed-back tokens should be transferred
-   * to. If empty, the tokens will be transferred back to the original funder of
-   * the account.
-   */
-  destAddress: string;
-}
-export interface MsgClawbackProtoMsg {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgClawback";
-  value: Uint8Array;
-}
-/**
- * MsgClawback defines a message that removes unvested tokens from a
- * ClawbackVestingAccount.
- */
-export interface MsgClawbackAmino {
-  /** funder_address is the address which funded the account */
-  funder_address: string;
-  /** address is the address of the ClawbackVestingAccount to claw back from. */
-  address: string;
-  /**
-   * dest_address specifies where the clawed-back tokens should be transferred
-   * to. If empty, the tokens will be transferred back to the original funder of
-   * the account.
-   */
-  dest_address: string;
-}
-export interface MsgClawbackAminoMsg {
-  type: "cosmos-sdk/MsgClawback";
-  value: MsgClawbackAmino;
-}
-/**
- * MsgClawback defines a message that removes unvested tokens from a
- * ClawbackVestingAccount.
- */
-export interface MsgClawbackSDKType {
-  funder_address: string;
-  address: string;
-  dest_address: string;
-}
-/** MsgClawbackResponse defines the MsgClawback response type. */
-export interface MsgClawbackResponse {}
-export interface MsgClawbackResponseProtoMsg {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgClawbackResponse";
-  value: Uint8Array;
-}
-/** MsgClawbackResponse defines the MsgClawback response type. */
-export interface MsgClawbackResponseAmino {}
-export interface MsgClawbackResponseAminoMsg {
-  type: "cosmos-sdk/MsgClawbackResponse";
-  value: MsgClawbackResponseAmino;
-}
-/** MsgClawbackResponse defines the MsgClawback response type. */
-export interface MsgClawbackResponseSDKType {}
+export interface MsgCreatePeriodicVestingAccountResponseSDKType {}
 function createBaseMsgCreateVestingAccount(): MsgCreateVestingAccount {
   return {
     fromAddress: "",
     toAddress: "",
     amount: [],
-    endTime: Long.ZERO,
+    endTime: BigInt("0"),
     delayed: false
   };
 }
 export const MsgCreateVestingAccount = {
   typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccount",
   aminoType: "cosmos-sdk/MsgCreateVestingAccount",
-  encode(message: MsgCreateVestingAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgCreateVestingAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.fromAddress !== "") {
       writer.uint32(10).string(message.fromAddress);
     }
@@ -230,7 +189,7 @@ export const MsgCreateVestingAccount = {
     for (const v of message.amount) {
       Coin.encode(v!, writer.uint32(26).fork()).ldelim();
     }
-    if (!message.endTime.isZero()) {
+    if (message.endTime !== BigInt(0)) {
       writer.uint32(32).int64(message.endTime);
     }
     if (message.delayed === true) {
@@ -238,8 +197,8 @@ export const MsgCreateVestingAccount = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateVestingAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateVestingAccount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateVestingAccount();
     while (reader.pos < end) {
@@ -255,7 +214,7 @@ export const MsgCreateVestingAccount = {
           message.amount.push(Coin.decode(reader, reader.uint32()));
           break;
         case 4:
-          message.endTime = (reader.int64() as Long);
+          message.endTime = BigInt(reader.int64().toString());
           break;
         case 5:
           message.delayed = reader.bool();
@@ -272,7 +231,7 @@ export const MsgCreateVestingAccount = {
       fromAddress: isSet(object.fromAddress) ? String(object.fromAddress) : "",
       toAddress: isSet(object.toAddress) ? String(object.toAddress) : "",
       amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : [],
-      endTime: isSet(object.endTime) ? Long.fromValue(object.endTime) : Long.ZERO,
+      endTime: isSet(object.endTime) ? BigInt(object.endTime.toString()) : BigInt("0"),
       delayed: isSet(object.delayed) ? Boolean(object.delayed) : false
     };
   },
@@ -285,16 +244,16 @@ export const MsgCreateVestingAccount = {
     } else {
       obj.amount = [];
     }
-    message.endTime !== undefined && (obj.endTime = (message.endTime || Long.ZERO).toString());
+    message.endTime !== undefined && (obj.endTime = (message.endTime || BigInt("0")).toString());
     message.delayed !== undefined && (obj.delayed = message.delayed);
     return obj;
   },
-  fromPartial(object: Partial<MsgCreateVestingAccount>): MsgCreateVestingAccount {
+  fromPartial(object: DeepPartial<MsgCreateVestingAccount>): MsgCreateVestingAccount {
     const message = createBaseMsgCreateVestingAccount();
     message.fromAddress = object.fromAddress ?? "";
     message.toAddress = object.toAddress ?? "";
     message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
-    message.endTime = object.endTime !== undefined && object.endTime !== null ? Long.fromValue(object.endTime) : Long.ZERO;
+    message.endTime = object.endTime !== undefined && object.endTime !== null ? BigInt(object.endTime.toString()) : BigInt("0");
     message.delayed = object.delayed ?? false;
     return message;
   },
@@ -325,7 +284,7 @@ export const MsgCreateVestingAccount = {
       fromAddress: object.from_address,
       toAddress: object.to_address,
       amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromAmino(e)) : [],
-      endTime: Long.fromString(object.end_time),
+      endTime: BigInt(object.end_time),
       delayed: object.delayed
     };
   },
@@ -370,11 +329,11 @@ function createBaseMsgCreateVestingAccountResponse(): MsgCreateVestingAccountRes
 export const MsgCreateVestingAccountResponse = {
   typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccountResponse",
   aminoType: "cosmos-sdk/MsgCreateVestingAccountResponse",
-  encode(_: MsgCreateVestingAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(_: MsgCreateVestingAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateVestingAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreateVestingAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMsgCreateVestingAccountResponse();
     while (reader.pos < end) {
@@ -394,7 +353,7 @@ export const MsgCreateVestingAccountResponse = {
     const obj: any = {};
     return obj;
   },
-  fromPartial(_: Partial<MsgCreateVestingAccountResponse>): MsgCreateVestingAccountResponse {
+  fromPartial(_: DeepPartial<MsgCreateVestingAccountResponse>): MsgCreateVestingAccountResponse {
     const message = createBaseMsgCreateVestingAccountResponse();
     return message;
   },
@@ -434,44 +393,32 @@ export const MsgCreateVestingAccountResponse = {
     };
   }
 };
-function createBaseMsgCreateClawbackVestingAccount(): MsgCreateClawbackVestingAccount {
+function createBaseMsgCreatePermanentLockedAccount(): MsgCreatePermanentLockedAccount {
   return {
     fromAddress: "",
     toAddress: "",
-    startTime: Long.ZERO,
-    lockupPeriods: [],
-    vestingPeriods: [],
-    merge: false
+    amount: []
   };
 }
-export const MsgCreateClawbackVestingAccount = {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgCreateClawbackVestingAccount",
-  aminoType: "cosmos-sdk/MsgCreateClawbackVestingAccount",
-  encode(message: MsgCreateClawbackVestingAccount, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const MsgCreatePermanentLockedAccount = {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount",
+  aminoType: "cosmos-sdk/MsgCreatePermanentLockedAccount",
+  encode(message: MsgCreatePermanentLockedAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.fromAddress !== "") {
       writer.uint32(10).string(message.fromAddress);
     }
     if (message.toAddress !== "") {
       writer.uint32(18).string(message.toAddress);
     }
-    if (!message.startTime.isZero()) {
-      writer.uint32(24).int64(message.startTime);
-    }
-    for (const v of message.lockupPeriods) {
-      Period.encode(v!, writer.uint32(34).fork()).ldelim();
-    }
-    for (const v of message.vestingPeriods) {
-      Period.encode(v!, writer.uint32(42).fork()).ldelim();
-    }
-    if (message.merge === true) {
-      writer.uint32(48).bool(message.merge);
+    for (const v of message.amount) {
+      Coin.encode(v!, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateClawbackVestingAccount {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreatePermanentLockedAccount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCreateClawbackVestingAccount();
+    const message = createBaseMsgCreatePermanentLockedAccount();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -482,16 +429,7 @@ export const MsgCreateClawbackVestingAccount = {
           message.toAddress = reader.string();
           break;
         case 3:
-          message.startTime = (reader.int64() as Long);
-          break;
-        case 4:
-          message.lockupPeriods.push(Period.decode(reader, reader.uint32()));
-          break;
-        case 5:
-          message.vestingPeriods.push(Period.decode(reader, reader.uint32()));
-          break;
-        case 6:
-          message.merge = reader.bool();
+          message.amount.push(Coin.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -500,135 +438,314 @@ export const MsgCreateClawbackVestingAccount = {
     }
     return message;
   },
-  fromJSON(object: any): MsgCreateClawbackVestingAccount {
+  fromJSON(object: any): MsgCreatePermanentLockedAccount {
     return {
       fromAddress: isSet(object.fromAddress) ? String(object.fromAddress) : "",
       toAddress: isSet(object.toAddress) ? String(object.toAddress) : "",
-      startTime: isSet(object.startTime) ? Long.fromValue(object.startTime) : Long.ZERO,
-      lockupPeriods: Array.isArray(object?.lockupPeriods) ? object.lockupPeriods.map((e: any) => Period.fromJSON(e)) : [],
-      vestingPeriods: Array.isArray(object?.vestingPeriods) ? object.vestingPeriods.map((e: any) => Period.fromJSON(e)) : [],
-      merge: isSet(object.merge) ? Boolean(object.merge) : false
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromJSON(e)) : []
     };
   },
-  toJSON(message: MsgCreateClawbackVestingAccount): unknown {
+  toJSON(message: MsgCreatePermanentLockedAccount): unknown {
     const obj: any = {};
     message.fromAddress !== undefined && (obj.fromAddress = message.fromAddress);
     message.toAddress !== undefined && (obj.toAddress = message.toAddress);
-    message.startTime !== undefined && (obj.startTime = (message.startTime || Long.ZERO).toString());
-    if (message.lockupPeriods) {
-      obj.lockupPeriods = message.lockupPeriods.map(e => e ? Period.toJSON(e) : undefined);
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toJSON(e) : undefined);
     } else {
-      obj.lockupPeriods = [];
+      obj.amount = [];
     }
+    return obj;
+  },
+  fromPartial(object: DeepPartial<MsgCreatePermanentLockedAccount>): MsgCreatePermanentLockedAccount {
+    const message = createBaseMsgCreatePermanentLockedAccount();
+    message.fromAddress = object.fromAddress ?? "";
+    message.toAddress = object.toAddress ?? "";
+    message.amount = object.amount?.map(e => Coin.fromPartial(e)) || [];
+    return message;
+  },
+  fromSDK(object: MsgCreatePermanentLockedAccountSDKType): MsgCreatePermanentLockedAccount {
+    return {
+      fromAddress: object?.from_address,
+      toAddress: object?.to_address,
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromSDK(e)) : []
+    };
+  },
+  toSDK(message: MsgCreatePermanentLockedAccount): MsgCreatePermanentLockedAccountSDKType {
+    const obj: any = {};
+    obj.from_address = message.fromAddress;
+    obj.to_address = message.toAddress;
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toSDK(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+    return obj;
+  },
+  fromAmino(object: MsgCreatePermanentLockedAccountAmino): MsgCreatePermanentLockedAccount {
+    return {
+      fromAddress: object.from_address,
+      toAddress: object.to_address,
+      amount: Array.isArray(object?.amount) ? object.amount.map((e: any) => Coin.fromAmino(e)) : []
+    };
+  },
+  toAmino(message: MsgCreatePermanentLockedAccount): MsgCreatePermanentLockedAccountAmino {
+    const obj: any = {};
+    obj.from_address = message.fromAddress;
+    obj.to_address = message.toAddress;
+    if (message.amount) {
+      obj.amount = message.amount.map(e => e ? Coin.toAmino(e) : undefined);
+    } else {
+      obj.amount = [];
+    }
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreatePermanentLockedAccountAminoMsg): MsgCreatePermanentLockedAccount {
+    return MsgCreatePermanentLockedAccount.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgCreatePermanentLockedAccount): MsgCreatePermanentLockedAccountAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgCreatePermanentLockedAccount",
+      value: MsgCreatePermanentLockedAccount.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgCreatePermanentLockedAccountProtoMsg): MsgCreatePermanentLockedAccount {
+    return MsgCreatePermanentLockedAccount.decode(message.value);
+  },
+  toProto(message: MsgCreatePermanentLockedAccount): Uint8Array {
+    return MsgCreatePermanentLockedAccount.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreatePermanentLockedAccount): MsgCreatePermanentLockedAccountProtoMsg {
+    return {
+      typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccount",
+      value: MsgCreatePermanentLockedAccount.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCreatePermanentLockedAccountResponse(): MsgCreatePermanentLockedAccountResponse {
+  return {};
+}
+export const MsgCreatePermanentLockedAccountResponse = {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccountResponse",
+  aminoType: "cosmos-sdk/MsgCreatePermanentLockedAccountResponse",
+  encode(_: MsgCreatePermanentLockedAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreatePermanentLockedAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreatePermanentLockedAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(_: any): MsgCreatePermanentLockedAccountResponse {
+    return {};
+  },
+  toJSON(_: MsgCreatePermanentLockedAccountResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+  fromPartial(_: DeepPartial<MsgCreatePermanentLockedAccountResponse>): MsgCreatePermanentLockedAccountResponse {
+    const message = createBaseMsgCreatePermanentLockedAccountResponse();
+    return message;
+  },
+  fromSDK(_: MsgCreatePermanentLockedAccountResponseSDKType): MsgCreatePermanentLockedAccountResponse {
+    return {};
+  },
+  toSDK(_: MsgCreatePermanentLockedAccountResponse): MsgCreatePermanentLockedAccountResponseSDKType {
+    const obj: any = {};
+    return obj;
+  },
+  fromAmino(_: MsgCreatePermanentLockedAccountResponseAmino): MsgCreatePermanentLockedAccountResponse {
+    return {};
+  },
+  toAmino(_: MsgCreatePermanentLockedAccountResponse): MsgCreatePermanentLockedAccountResponseAmino {
+    const obj: any = {};
+    return obj;
+  },
+  fromAminoMsg(object: MsgCreatePermanentLockedAccountResponseAminoMsg): MsgCreatePermanentLockedAccountResponse {
+    return MsgCreatePermanentLockedAccountResponse.fromAmino(object.value);
+  },
+  toAminoMsg(message: MsgCreatePermanentLockedAccountResponse): MsgCreatePermanentLockedAccountResponseAminoMsg {
+    return {
+      type: "cosmos-sdk/MsgCreatePermanentLockedAccountResponse",
+      value: MsgCreatePermanentLockedAccountResponse.toAmino(message)
+    };
+  },
+  fromProtoMsg(message: MsgCreatePermanentLockedAccountResponseProtoMsg): MsgCreatePermanentLockedAccountResponse {
+    return MsgCreatePermanentLockedAccountResponse.decode(message.value);
+  },
+  toProto(message: MsgCreatePermanentLockedAccountResponse): Uint8Array {
+    return MsgCreatePermanentLockedAccountResponse.encode(message).finish();
+  },
+  toProtoMsg(message: MsgCreatePermanentLockedAccountResponse): MsgCreatePermanentLockedAccountResponseProtoMsg {
+    return {
+      typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePermanentLockedAccountResponse",
+      value: MsgCreatePermanentLockedAccountResponse.encode(message).finish()
+    };
+  }
+};
+function createBaseMsgCreatePeriodicVestingAccount(): MsgCreatePeriodicVestingAccount {
+  return {
+    fromAddress: "",
+    toAddress: "",
+    startTime: BigInt("0"),
+    vestingPeriods: []
+  };
+}
+export const MsgCreatePeriodicVestingAccount = {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount",
+  aminoType: "cosmos-sdk/MsgCreatePeriodicVestingAccount",
+  encode(message: MsgCreatePeriodicVestingAccount, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.fromAddress !== "") {
+      writer.uint32(10).string(message.fromAddress);
+    }
+    if (message.toAddress !== "") {
+      writer.uint32(18).string(message.toAddress);
+    }
+    if (message.startTime !== BigInt(0)) {
+      writer.uint32(24).int64(message.startTime);
+    }
+    for (const v of message.vestingPeriods) {
+      Period.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreatePeriodicVestingAccount {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCreatePeriodicVestingAccount();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fromAddress = reader.string();
+          break;
+        case 2:
+          message.toAddress = reader.string();
+          break;
+        case 3:
+          message.startTime = BigInt(reader.int64().toString());
+          break;
+        case 4:
+          message.vestingPeriods.push(Period.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+  fromJSON(object: any): MsgCreatePeriodicVestingAccount {
+    return {
+      fromAddress: isSet(object.fromAddress) ? String(object.fromAddress) : "",
+      toAddress: isSet(object.toAddress) ? String(object.toAddress) : "",
+      startTime: isSet(object.startTime) ? BigInt(object.startTime.toString()) : BigInt("0"),
+      vestingPeriods: Array.isArray(object?.vestingPeriods) ? object.vestingPeriods.map((e: any) => Period.fromJSON(e)) : []
+    };
+  },
+  toJSON(message: MsgCreatePeriodicVestingAccount): unknown {
+    const obj: any = {};
+    message.fromAddress !== undefined && (obj.fromAddress = message.fromAddress);
+    message.toAddress !== undefined && (obj.toAddress = message.toAddress);
+    message.startTime !== undefined && (obj.startTime = (message.startTime || BigInt("0")).toString());
     if (message.vestingPeriods) {
       obj.vestingPeriods = message.vestingPeriods.map(e => e ? Period.toJSON(e) : undefined);
     } else {
       obj.vestingPeriods = [];
     }
-    message.merge !== undefined && (obj.merge = message.merge);
     return obj;
   },
-  fromPartial(object: Partial<MsgCreateClawbackVestingAccount>): MsgCreateClawbackVestingAccount {
-    const message = createBaseMsgCreateClawbackVestingAccount();
+  fromPartial(object: DeepPartial<MsgCreatePeriodicVestingAccount>): MsgCreatePeriodicVestingAccount {
+    const message = createBaseMsgCreatePeriodicVestingAccount();
     message.fromAddress = object.fromAddress ?? "";
     message.toAddress = object.toAddress ?? "";
-    message.startTime = object.startTime !== undefined && object.startTime !== null ? Long.fromValue(object.startTime) : Long.ZERO;
-    message.lockupPeriods = object.lockupPeriods?.map(e => Period.fromPartial(e)) || [];
+    message.startTime = object.startTime !== undefined && object.startTime !== null ? BigInt(object.startTime.toString()) : BigInt("0");
     message.vestingPeriods = object.vestingPeriods?.map(e => Period.fromPartial(e)) || [];
-    message.merge = object.merge ?? false;
     return message;
   },
-  fromSDK(object: MsgCreateClawbackVestingAccountSDKType): MsgCreateClawbackVestingAccount {
+  fromSDK(object: MsgCreatePeriodicVestingAccountSDKType): MsgCreatePeriodicVestingAccount {
     return {
       fromAddress: object?.from_address,
       toAddress: object?.to_address,
       startTime: object?.start_time,
-      lockupPeriods: Array.isArray(object?.lockup_periods) ? object.lockup_periods.map((e: any) => Period.fromSDK(e)) : [],
-      vestingPeriods: Array.isArray(object?.vesting_periods) ? object.vesting_periods.map((e: any) => Period.fromSDK(e)) : [],
-      merge: object?.merge
+      vestingPeriods: Array.isArray(object?.vesting_periods) ? object.vesting_periods.map((e: any) => Period.fromSDK(e)) : []
     };
   },
-  toSDK(message: MsgCreateClawbackVestingAccount): MsgCreateClawbackVestingAccountSDKType {
+  toSDK(message: MsgCreatePeriodicVestingAccount): MsgCreatePeriodicVestingAccountSDKType {
     const obj: any = {};
     obj.from_address = message.fromAddress;
     obj.to_address = message.toAddress;
     obj.start_time = message.startTime;
-    if (message.lockupPeriods) {
-      obj.lockup_periods = message.lockupPeriods.map(e => e ? Period.toSDK(e) : undefined);
-    } else {
-      obj.lockup_periods = [];
-    }
     if (message.vestingPeriods) {
       obj.vesting_periods = message.vestingPeriods.map(e => e ? Period.toSDK(e) : undefined);
     } else {
       obj.vesting_periods = [];
     }
-    obj.merge = message.merge;
     return obj;
   },
-  fromAmino(object: MsgCreateClawbackVestingAccountAmino): MsgCreateClawbackVestingAccount {
+  fromAmino(object: MsgCreatePeriodicVestingAccountAmino): MsgCreatePeriodicVestingAccount {
     return {
       fromAddress: object.from_address,
       toAddress: object.to_address,
-      startTime: Long.fromString(object.start_time),
-      lockupPeriods: Array.isArray(object?.lockup_periods) ? object.lockup_periods.map((e: any) => Period.fromAmino(e)) : [],
-      vestingPeriods: Array.isArray(object?.vesting_periods) ? object.vesting_periods.map((e: any) => Period.fromAmino(e)) : [],
-      merge: object.merge
+      startTime: BigInt(object.start_time),
+      vestingPeriods: Array.isArray(object?.vesting_periods) ? object.vesting_periods.map((e: any) => Period.fromAmino(e)) : []
     };
   },
-  toAmino(message: MsgCreateClawbackVestingAccount): MsgCreateClawbackVestingAccountAmino {
+  toAmino(message: MsgCreatePeriodicVestingAccount): MsgCreatePeriodicVestingAccountAmino {
     const obj: any = {};
     obj.from_address = message.fromAddress;
     obj.to_address = message.toAddress;
     obj.start_time = message.startTime ? message.startTime.toString() : undefined;
-    if (message.lockupPeriods) {
-      obj.lockup_periods = message.lockupPeriods.map(e => e ? Period.toAmino(e) : undefined);
-    } else {
-      obj.lockup_periods = [];
-    }
     if (message.vestingPeriods) {
       obj.vesting_periods = message.vestingPeriods.map(e => e ? Period.toAmino(e) : undefined);
     } else {
       obj.vesting_periods = [];
     }
-    obj.merge = message.merge;
     return obj;
   },
-  fromAminoMsg(object: MsgCreateClawbackVestingAccountAminoMsg): MsgCreateClawbackVestingAccount {
-    return MsgCreateClawbackVestingAccount.fromAmino(object.value);
+  fromAminoMsg(object: MsgCreatePeriodicVestingAccountAminoMsg): MsgCreatePeriodicVestingAccount {
+    return MsgCreatePeriodicVestingAccount.fromAmino(object.value);
   },
-  toAminoMsg(message: MsgCreateClawbackVestingAccount): MsgCreateClawbackVestingAccountAminoMsg {
+  toAminoMsg(message: MsgCreatePeriodicVestingAccount): MsgCreatePeriodicVestingAccountAminoMsg {
     return {
-      type: "cosmos-sdk/MsgCreateClawbackVestingAccount",
-      value: MsgCreateClawbackVestingAccount.toAmino(message)
+      type: "cosmos-sdk/MsgCreatePeriodicVestingAccount",
+      value: MsgCreatePeriodicVestingAccount.toAmino(message)
     };
   },
-  fromProtoMsg(message: MsgCreateClawbackVestingAccountProtoMsg): MsgCreateClawbackVestingAccount {
-    return MsgCreateClawbackVestingAccount.decode(message.value);
+  fromProtoMsg(message: MsgCreatePeriodicVestingAccountProtoMsg): MsgCreatePeriodicVestingAccount {
+    return MsgCreatePeriodicVestingAccount.decode(message.value);
   },
-  toProto(message: MsgCreateClawbackVestingAccount): Uint8Array {
-    return MsgCreateClawbackVestingAccount.encode(message).finish();
+  toProto(message: MsgCreatePeriodicVestingAccount): Uint8Array {
+    return MsgCreatePeriodicVestingAccount.encode(message).finish();
   },
-  toProtoMsg(message: MsgCreateClawbackVestingAccount): MsgCreateClawbackVestingAccountProtoMsg {
+  toProtoMsg(message: MsgCreatePeriodicVestingAccount): MsgCreatePeriodicVestingAccountProtoMsg {
     return {
-      typeUrl: "/cosmos.vesting.v1beta1.MsgCreateClawbackVestingAccount",
-      value: MsgCreateClawbackVestingAccount.encode(message).finish()
+      typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccount",
+      value: MsgCreatePeriodicVestingAccount.encode(message).finish()
     };
   }
 };
-function createBaseMsgCreateClawbackVestingAccountResponse(): MsgCreateClawbackVestingAccountResponse {
+function createBaseMsgCreatePeriodicVestingAccountResponse(): MsgCreatePeriodicVestingAccountResponse {
   return {};
 }
-export const MsgCreateClawbackVestingAccountResponse = {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgCreateClawbackVestingAccountResponse",
-  aminoType: "cosmos-sdk/MsgCreateClawbackVestingAccountResponse",
-  encode(_: MsgCreateClawbackVestingAccountResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const MsgCreatePeriodicVestingAccountResponse = {
+  typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccountResponse",
+  aminoType: "cosmos-sdk/MsgCreatePeriodicVestingAccountResponse",
+  encode(_: MsgCreatePeriodicVestingAccountResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreateClawbackVestingAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MsgCreatePeriodicVestingAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCreateClawbackVestingAccountResponse();
+    const message = createBaseMsgCreatePeriodicVestingAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -639,236 +756,50 @@ export const MsgCreateClawbackVestingAccountResponse = {
     }
     return message;
   },
-  fromJSON(_: any): MsgCreateClawbackVestingAccountResponse {
+  fromJSON(_: any): MsgCreatePeriodicVestingAccountResponse {
     return {};
   },
-  toJSON(_: MsgCreateClawbackVestingAccountResponse): unknown {
+  toJSON(_: MsgCreatePeriodicVestingAccountResponse): unknown {
     const obj: any = {};
     return obj;
   },
-  fromPartial(_: Partial<MsgCreateClawbackVestingAccountResponse>): MsgCreateClawbackVestingAccountResponse {
-    const message = createBaseMsgCreateClawbackVestingAccountResponse();
+  fromPartial(_: DeepPartial<MsgCreatePeriodicVestingAccountResponse>): MsgCreatePeriodicVestingAccountResponse {
+    const message = createBaseMsgCreatePeriodicVestingAccountResponse();
     return message;
   },
-  fromSDK(_: MsgCreateClawbackVestingAccountResponseSDKType): MsgCreateClawbackVestingAccountResponse {
+  fromSDK(_: MsgCreatePeriodicVestingAccountResponseSDKType): MsgCreatePeriodicVestingAccountResponse {
     return {};
   },
-  toSDK(_: MsgCreateClawbackVestingAccountResponse): MsgCreateClawbackVestingAccountResponseSDKType {
+  toSDK(_: MsgCreatePeriodicVestingAccountResponse): MsgCreatePeriodicVestingAccountResponseSDKType {
     const obj: any = {};
     return obj;
   },
-  fromAmino(_: MsgCreateClawbackVestingAccountResponseAmino): MsgCreateClawbackVestingAccountResponse {
+  fromAmino(_: MsgCreatePeriodicVestingAccountResponseAmino): MsgCreatePeriodicVestingAccountResponse {
     return {};
   },
-  toAmino(_: MsgCreateClawbackVestingAccountResponse): MsgCreateClawbackVestingAccountResponseAmino {
+  toAmino(_: MsgCreatePeriodicVestingAccountResponse): MsgCreatePeriodicVestingAccountResponseAmino {
     const obj: any = {};
     return obj;
   },
-  fromAminoMsg(object: MsgCreateClawbackVestingAccountResponseAminoMsg): MsgCreateClawbackVestingAccountResponse {
-    return MsgCreateClawbackVestingAccountResponse.fromAmino(object.value);
+  fromAminoMsg(object: MsgCreatePeriodicVestingAccountResponseAminoMsg): MsgCreatePeriodicVestingAccountResponse {
+    return MsgCreatePeriodicVestingAccountResponse.fromAmino(object.value);
   },
-  toAminoMsg(message: MsgCreateClawbackVestingAccountResponse): MsgCreateClawbackVestingAccountResponseAminoMsg {
+  toAminoMsg(message: MsgCreatePeriodicVestingAccountResponse): MsgCreatePeriodicVestingAccountResponseAminoMsg {
     return {
-      type: "cosmos-sdk/MsgCreateClawbackVestingAccountResponse",
-      value: MsgCreateClawbackVestingAccountResponse.toAmino(message)
+      type: "cosmos-sdk/MsgCreatePeriodicVestingAccountResponse",
+      value: MsgCreatePeriodicVestingAccountResponse.toAmino(message)
     };
   },
-  fromProtoMsg(message: MsgCreateClawbackVestingAccountResponseProtoMsg): MsgCreateClawbackVestingAccountResponse {
-    return MsgCreateClawbackVestingAccountResponse.decode(message.value);
+  fromProtoMsg(message: MsgCreatePeriodicVestingAccountResponseProtoMsg): MsgCreatePeriodicVestingAccountResponse {
+    return MsgCreatePeriodicVestingAccountResponse.decode(message.value);
   },
-  toProto(message: MsgCreateClawbackVestingAccountResponse): Uint8Array {
-    return MsgCreateClawbackVestingAccountResponse.encode(message).finish();
+  toProto(message: MsgCreatePeriodicVestingAccountResponse): Uint8Array {
+    return MsgCreatePeriodicVestingAccountResponse.encode(message).finish();
   },
-  toProtoMsg(message: MsgCreateClawbackVestingAccountResponse): MsgCreateClawbackVestingAccountResponseProtoMsg {
+  toProtoMsg(message: MsgCreatePeriodicVestingAccountResponse): MsgCreatePeriodicVestingAccountResponseProtoMsg {
     return {
-      typeUrl: "/cosmos.vesting.v1beta1.MsgCreateClawbackVestingAccountResponse",
-      value: MsgCreateClawbackVestingAccountResponse.encode(message).finish()
-    };
-  }
-};
-function createBaseMsgClawback(): MsgClawback {
-  return {
-    funderAddress: "",
-    address: "",
-    destAddress: ""
-  };
-}
-export const MsgClawback = {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgClawback",
-  aminoType: "cosmos-sdk/MsgClawback",
-  encode(message: MsgClawback, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.funderAddress !== "") {
-      writer.uint32(10).string(message.funderAddress);
-    }
-    if (message.address !== "") {
-      writer.uint32(18).string(message.address);
-    }
-    if (message.destAddress !== "") {
-      writer.uint32(26).string(message.destAddress);
-    }
-    return writer;
-  },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClawback {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgClawback();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.funderAddress = reader.string();
-          break;
-        case 2:
-          message.address = reader.string();
-          break;
-        case 3:
-          message.destAddress = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): MsgClawback {
-    return {
-      funderAddress: isSet(object.funderAddress) ? String(object.funderAddress) : "",
-      address: isSet(object.address) ? String(object.address) : "",
-      destAddress: isSet(object.destAddress) ? String(object.destAddress) : ""
-    };
-  },
-  toJSON(message: MsgClawback): unknown {
-    const obj: any = {};
-    message.funderAddress !== undefined && (obj.funderAddress = message.funderAddress);
-    message.address !== undefined && (obj.address = message.address);
-    message.destAddress !== undefined && (obj.destAddress = message.destAddress);
-    return obj;
-  },
-  fromPartial(object: Partial<MsgClawback>): MsgClawback {
-    const message = createBaseMsgClawback();
-    message.funderAddress = object.funderAddress ?? "";
-    message.address = object.address ?? "";
-    message.destAddress = object.destAddress ?? "";
-    return message;
-  },
-  fromSDK(object: MsgClawbackSDKType): MsgClawback {
-    return {
-      funderAddress: object?.funder_address,
-      address: object?.address,
-      destAddress: object?.dest_address
-    };
-  },
-  toSDK(message: MsgClawback): MsgClawbackSDKType {
-    const obj: any = {};
-    obj.funder_address = message.funderAddress;
-    obj.address = message.address;
-    obj.dest_address = message.destAddress;
-    return obj;
-  },
-  fromAmino(object: MsgClawbackAmino): MsgClawback {
-    return {
-      funderAddress: object.funder_address,
-      address: object.address,
-      destAddress: object.dest_address
-    };
-  },
-  toAmino(message: MsgClawback): MsgClawbackAmino {
-    const obj: any = {};
-    obj.funder_address = message.funderAddress;
-    obj.address = message.address;
-    obj.dest_address = message.destAddress;
-    return obj;
-  },
-  fromAminoMsg(object: MsgClawbackAminoMsg): MsgClawback {
-    return MsgClawback.fromAmino(object.value);
-  },
-  toAminoMsg(message: MsgClawback): MsgClawbackAminoMsg {
-    return {
-      type: "cosmos-sdk/MsgClawback",
-      value: MsgClawback.toAmino(message)
-    };
-  },
-  fromProtoMsg(message: MsgClawbackProtoMsg): MsgClawback {
-    return MsgClawback.decode(message.value);
-  },
-  toProto(message: MsgClawback): Uint8Array {
-    return MsgClawback.encode(message).finish();
-  },
-  toProtoMsg(message: MsgClawback): MsgClawbackProtoMsg {
-    return {
-      typeUrl: "/cosmos.vesting.v1beta1.MsgClawback",
-      value: MsgClawback.encode(message).finish()
-    };
-  }
-};
-function createBaseMsgClawbackResponse(): MsgClawbackResponse {
-  return {};
-}
-export const MsgClawbackResponse = {
-  typeUrl: "/cosmos.vesting.v1beta1.MsgClawbackResponse",
-  aminoType: "cosmos-sdk/MsgClawbackResponse",
-  encode(_: MsgClawbackResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgClawbackResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgClawbackResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(_: any): MsgClawbackResponse {
-    return {};
-  },
-  toJSON(_: MsgClawbackResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-  fromPartial(_: Partial<MsgClawbackResponse>): MsgClawbackResponse {
-    const message = createBaseMsgClawbackResponse();
-    return message;
-  },
-  fromSDK(_: MsgClawbackResponseSDKType): MsgClawbackResponse {
-    return {};
-  },
-  toSDK(_: MsgClawbackResponse): MsgClawbackResponseSDKType {
-    const obj: any = {};
-    return obj;
-  },
-  fromAmino(_: MsgClawbackResponseAmino): MsgClawbackResponse {
-    return {};
-  },
-  toAmino(_: MsgClawbackResponse): MsgClawbackResponseAmino {
-    const obj: any = {};
-    return obj;
-  },
-  fromAminoMsg(object: MsgClawbackResponseAminoMsg): MsgClawbackResponse {
-    return MsgClawbackResponse.fromAmino(object.value);
-  },
-  toAminoMsg(message: MsgClawbackResponse): MsgClawbackResponseAminoMsg {
-    return {
-      type: "cosmos-sdk/MsgClawbackResponse",
-      value: MsgClawbackResponse.toAmino(message)
-    };
-  },
-  fromProtoMsg(message: MsgClawbackResponseProtoMsg): MsgClawbackResponse {
-    return MsgClawbackResponse.decode(message.value);
-  },
-  toProto(message: MsgClawbackResponse): Uint8Array {
-    return MsgClawbackResponse.encode(message).finish();
-  },
-  toProtoMsg(message: MsgClawbackResponse): MsgClawbackResponseProtoMsg {
-    return {
-      typeUrl: "/cosmos.vesting.v1beta1.MsgClawbackResponse",
-      value: MsgClawbackResponse.encode(message).finish()
+      typeUrl: "/cosmos.vesting.v1beta1.MsgCreatePeriodicVestingAccountResponse",
+      value: MsgCreatePeriodicVestingAccountResponse.encode(message).finish()
     };
   }
 };

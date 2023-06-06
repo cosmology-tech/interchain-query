@@ -1,5 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, bytesFromBase64, base64FromBytes, DeepPartial } from "../../../helpers";
 /**
  * PubKey is an ed25519 public key for handling Tendermint keys in SDK.
  * It's needed for Any serialization and SDK compatibility.
@@ -25,7 +25,7 @@ export interface PubKeyAmino {
   key: Uint8Array;
 }
 export interface PubKeyAminoMsg {
-  type: "tendermint/PubKeyEd25519";
+  type: "cosmos-sdk/PubKey";
   value: PubKeyAmino;
 }
 /**
@@ -57,7 +57,7 @@ export interface PrivKeyAmino {
   key: Uint8Array;
 }
 export interface PrivKeyAminoMsg {
-  type: "tendermint/PrivKeyEd25519";
+  type: "cosmos-sdk/PrivKey";
   value: PrivKeyAmino;
 }
 /**
@@ -74,15 +74,15 @@ function createBasePubKey(): PubKey {
 }
 export const PubKey = {
   typeUrl: "/cosmos.crypto.ed25519.PubKey",
-  aminoType: "tendermint/PubKeyEd25519",
-  encode(message: PubKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/PubKey",
+  encode(message: PubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PubKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePubKey();
     while (reader.pos < end) {
@@ -108,7 +108,7 @@ export const PubKey = {
     message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     return obj;
   },
-  fromPartial(object: Partial<PubKey>): PubKey {
+  fromPartial(object: DeepPartial<PubKey>): PubKey {
     const message = createBasePubKey();
     message.key = object.key ?? new Uint8Array();
     return message;
@@ -138,7 +138,7 @@ export const PubKey = {
   },
   toAminoMsg(message: PubKey): PubKeyAminoMsg {
     return {
-      type: "tendermint/PubKeyEd25519",
+      type: "cosmos-sdk/PubKey",
       value: PubKey.toAmino(message)
     };
   },
@@ -162,15 +162,15 @@ function createBasePrivKey(): PrivKey {
 }
 export const PrivKey = {
   typeUrl: "/cosmos.crypto.ed25519.PrivKey",
-  aminoType: "tendermint/PrivKeyEd25519",
-  encode(message: PrivKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/PrivKey",
+  encode(message: PrivKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PrivKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PrivKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePrivKey();
     while (reader.pos < end) {
@@ -196,7 +196,7 @@ export const PrivKey = {
     message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     return obj;
   },
-  fromPartial(object: Partial<PrivKey>): PrivKey {
+  fromPartial(object: DeepPartial<PrivKey>): PrivKey {
     const message = createBasePrivKey();
     message.key = object.key ?? new Uint8Array();
     return message;
@@ -226,7 +226,7 @@ export const PrivKey = {
   },
   toAminoMsg(message: PrivKey): PrivKeyAminoMsg {
     return {
-      type: "tendermint/PrivKeyEd25519",
+      type: "cosmos-sdk/PrivKey",
       value: PrivKey.toAmino(message)
     };
   },

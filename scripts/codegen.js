@@ -39,9 +39,13 @@ telescope({
       addAminoTypeToObjects: true,
       addTypeUrlToObjects: true,
       typingsFormat: {
-        useDeepPartial: false,
+        customTypes: {
+          useCosmosSDKDec: true
+        },
+        num64: 'bigint',
+        useDeepPartial: true,
         useExact: false,
-        timestamp: 'timestamp',
+        timestamp: 'date',
         duration: 'duration'
       },
 

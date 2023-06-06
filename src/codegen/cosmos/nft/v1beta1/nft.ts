@@ -1,6 +1,6 @@
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial } from "../../../helpers";
 /** Class defines the class of the nft type. */
 export interface Class {
   /** id defines the unique identifier of the NFT classification, similar to the contract address of ERC721 */
@@ -109,7 +109,7 @@ function createBaseClass(): Class {
 export const Class = {
   typeUrl: "/cosmos.nft.v1beta1.Class",
   aminoType: "cosmos-sdk/Class",
-  encode(message: Class, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Class, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -133,8 +133,8 @@ export const Class = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Class {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Class {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseClass();
     while (reader.pos < end) {
@@ -190,7 +190,7 @@ export const Class = {
     message.data !== undefined && (obj.data = message.data ? Any.toJSON(message.data) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<Class>): Class {
+  fromPartial(object: DeepPartial<Class>): Class {
     const message = createBaseClass();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
@@ -279,7 +279,7 @@ function createBaseNFT(): NFT {
 export const NFT = {
   typeUrl: "/cosmos.nft.v1beta1.NFT",
   aminoType: "cosmos-sdk/NFT",
-  encode(message: NFT, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: NFT, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.classId !== "") {
       writer.uint32(10).string(message.classId);
     }
@@ -297,8 +297,8 @@ export const NFT = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): NFT {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): NFT {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseNFT();
     while (reader.pos < end) {
@@ -344,7 +344,7 @@ export const NFT = {
     message.data !== undefined && (obj.data = message.data ? Any.toJSON(message.data) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<NFT>): NFT {
+  fromPartial(object: DeepPartial<NFT>): NFT {
     const message = createBaseNFT();
     message.classId = object.classId ?? "";
     message.id = object.id ?? "";

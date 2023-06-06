@@ -1,11 +1,11 @@
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial } from "../../../helpers";
 /**
  * Capability defines an implementation of an object capability. The index
  * provided to a Capability must be globally unique.
  */
 export interface Capability {
-  index: Long;
+  index: bigint;
 }
 export interface CapabilityProtoMsg {
   typeUrl: "/cosmos.capability.v1beta1.Capability";
@@ -27,7 +27,7 @@ export interface CapabilityAminoMsg {
  * provided to a Capability must be globally unique.
  */
 export interface CapabilitySDKType {
-  index: Long;
+  index: bigint;
 }
 /**
  * Owner defines a single capability owner. An owner is defined by the name of
@@ -92,27 +92,27 @@ export interface CapabilityOwnersSDKType {
 }
 function createBaseCapability(): Capability {
   return {
-    index: Long.UZERO
+    index: BigInt("0")
   };
 }
 export const Capability = {
   typeUrl: "/cosmos.capability.v1beta1.Capability",
   aminoType: "cosmos-sdk/Capability",
-  encode(message: Capability, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.index.isZero()) {
+  encode(message: Capability, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.index !== BigInt(0)) {
       writer.uint32(8).uint64(message.index);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Capability {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Capability {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCapability();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.index = (reader.uint64() as Long);
+          message.index = BigInt(reader.uint64().toString());
           break;
         default:
           reader.skipType(tag & 7);
@@ -123,17 +123,17 @@ export const Capability = {
   },
   fromJSON(object: any): Capability {
     return {
-      index: isSet(object.index) ? Long.fromValue(object.index) : Long.UZERO
+      index: isSet(object.index) ? BigInt(object.index.toString()) : BigInt("0")
     };
   },
   toJSON(message: Capability): unknown {
     const obj: any = {};
-    message.index !== undefined && (obj.index = (message.index || Long.UZERO).toString());
+    message.index !== undefined && (obj.index = (message.index || BigInt("0")).toString());
     return obj;
   },
-  fromPartial(object: Partial<Capability>): Capability {
+  fromPartial(object: DeepPartial<Capability>): Capability {
     const message = createBaseCapability();
-    message.index = object.index !== undefined && object.index !== null ? Long.fromValue(object.index) : Long.UZERO;
+    message.index = object.index !== undefined && object.index !== null ? BigInt(object.index.toString()) : BigInt("0");
     return message;
   },
   fromSDK(object: CapabilitySDKType): Capability {
@@ -148,7 +148,7 @@ export const Capability = {
   },
   fromAmino(object: CapabilityAmino): Capability {
     return {
-      index: Long.fromString(object.index)
+      index: BigInt(object.index)
     };
   },
   toAmino(message: Capability): CapabilityAmino {
@@ -187,7 +187,7 @@ function createBaseOwner(): Owner {
 export const Owner = {
   typeUrl: "/cosmos.capability.v1beta1.Owner",
   aminoType: "cosmos-sdk/Owner",
-  encode(message: Owner, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Owner, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.module !== "") {
       writer.uint32(10).string(message.module);
     }
@@ -196,8 +196,8 @@ export const Owner = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Owner {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Owner {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOwner();
     while (reader.pos < end) {
@@ -228,7 +228,7 @@ export const Owner = {
     message.name !== undefined && (obj.name = message.name);
     return obj;
   },
-  fromPartial(object: Partial<Owner>): Owner {
+  fromPartial(object: DeepPartial<Owner>): Owner {
     const message = createBaseOwner();
     message.module = object.module ?? "";
     message.name = object.name ?? "";
@@ -288,14 +288,14 @@ function createBaseCapabilityOwners(): CapabilityOwners {
 export const CapabilityOwners = {
   typeUrl: "/cosmos.capability.v1beta1.CapabilityOwners",
   aminoType: "cosmos-sdk/CapabilityOwners",
-  encode(message: CapabilityOwners, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CapabilityOwners, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.owners) {
       Owner.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CapabilityOwners {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CapabilityOwners {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCapabilityOwners();
     while (reader.pos < end) {
@@ -325,7 +325,7 @@ export const CapabilityOwners = {
     }
     return obj;
   },
-  fromPartial(object: Partial<CapabilityOwners>): CapabilityOwners {
+  fromPartial(object: DeepPartial<CapabilityOwners>): CapabilityOwners {
     const message = createBaseCapabilityOwners();
     message.owners = object.owners?.map(e => Owner.fromPartial(e)) || [];
     return message;

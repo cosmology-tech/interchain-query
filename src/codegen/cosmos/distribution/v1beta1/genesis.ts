@@ -1,7 +1,7 @@
 import { DecCoin, DecCoinAmino, DecCoinSDKType } from "../../base/v1beta1/coin";
 import { ValidatorAccumulatedCommission, ValidatorAccumulatedCommissionAmino, ValidatorAccumulatedCommissionSDKType, ValidatorHistoricalRewards, ValidatorHistoricalRewardsAmino, ValidatorHistoricalRewardsSDKType, ValidatorCurrentRewards, ValidatorCurrentRewardsAmino, ValidatorCurrentRewardsSDKType, DelegatorStartingInfo, DelegatorStartingInfoAmino, DelegatorStartingInfoSDKType, ValidatorSlashEvent, ValidatorSlashEventAmino, ValidatorSlashEventSDKType, Params, ParamsAmino, ParamsSDKType, FeePool, FeePoolAmino, FeePoolSDKType } from "./distribution";
-import { Long, isSet } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial } from "../../../helpers";
 /**
  * DelegatorWithdrawInfo is the address for where distributions rewards are
  * withdrawn to by default this struct is only used at genesis to feed in
@@ -112,7 +112,7 @@ export interface ValidatorHistoricalRewardsRecord {
   /** validator_address is the address of the validator. */
   validatorAddress: string;
   /** period defines the period the historical rewards apply to. */
-  period: Long;
+  period: bigint;
   /** rewards defines the historical rewards of a validator. */
   rewards?: ValidatorHistoricalRewards;
 }
@@ -142,7 +142,7 @@ export interface ValidatorHistoricalRewardsRecordAminoMsg {
  */
 export interface ValidatorHistoricalRewardsRecordSDKType {
   validator_address: string;
-  period: Long;
+  period: bigint;
   rewards?: ValidatorHistoricalRewardsSDKType;
 }
 /** ValidatorCurrentRewardsRecord is used for import / export via genesis json. */
@@ -209,9 +209,9 @@ export interface ValidatorSlashEventRecord {
   /** validator_address is the address of the validator. */
   validatorAddress: string;
   /** height defines the block height at which the slash event occured. */
-  height: Long;
+  height: bigint;
   /** period is the period of the slash event. */
-  period: Long;
+  period: bigint;
   /** validator_slash_event describes the slash event. */
   validatorSlashEvent?: ValidatorSlashEvent;
 }
@@ -237,8 +237,8 @@ export interface ValidatorSlashEventRecordAminoMsg {
 /** ValidatorSlashEventRecord is used for import / export via genesis json. */
 export interface ValidatorSlashEventRecordSDKType {
   validator_address: string;
-  height: Long;
-  period: Long;
+  height: bigint;
+  period: bigint;
   validator_slash_event?: ValidatorSlashEventSDKType;
 }
 /** GenesisState defines the distribution module's genesis state. */
@@ -317,7 +317,7 @@ function createBaseDelegatorWithdrawInfo(): DelegatorWithdrawInfo {
 export const DelegatorWithdrawInfo = {
   typeUrl: "/cosmos.distribution.v1beta1.DelegatorWithdrawInfo",
   aminoType: "cosmos-sdk/DelegatorWithdrawInfo",
-  encode(message: DelegatorWithdrawInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DelegatorWithdrawInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -326,8 +326,8 @@ export const DelegatorWithdrawInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DelegatorWithdrawInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DelegatorWithdrawInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDelegatorWithdrawInfo();
     while (reader.pos < end) {
@@ -358,7 +358,7 @@ export const DelegatorWithdrawInfo = {
     message.withdrawAddress !== undefined && (obj.withdrawAddress = message.withdrawAddress);
     return obj;
   },
-  fromPartial(object: Partial<DelegatorWithdrawInfo>): DelegatorWithdrawInfo {
+  fromPartial(object: DeepPartial<DelegatorWithdrawInfo>): DelegatorWithdrawInfo {
     const message = createBaseDelegatorWithdrawInfo();
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.withdrawAddress = object.withdrawAddress ?? "";
@@ -419,7 +419,7 @@ function createBaseValidatorOutstandingRewardsRecord(): ValidatorOutstandingRewa
 export const ValidatorOutstandingRewardsRecord = {
   typeUrl: "/cosmos.distribution.v1beta1.ValidatorOutstandingRewardsRecord",
   aminoType: "cosmos-sdk/ValidatorOutstandingRewardsRecord",
-  encode(message: ValidatorOutstandingRewardsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ValidatorOutstandingRewardsRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
       writer.uint32(10).string(message.validatorAddress);
     }
@@ -428,8 +428,8 @@ export const ValidatorOutstandingRewardsRecord = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorOutstandingRewardsRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidatorOutstandingRewardsRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorOutstandingRewardsRecord();
     while (reader.pos < end) {
@@ -464,7 +464,7 @@ export const ValidatorOutstandingRewardsRecord = {
     }
     return obj;
   },
-  fromPartial(object: Partial<ValidatorOutstandingRewardsRecord>): ValidatorOutstandingRewardsRecord {
+  fromPartial(object: DeepPartial<ValidatorOutstandingRewardsRecord>): ValidatorOutstandingRewardsRecord {
     const message = createBaseValidatorOutstandingRewardsRecord();
     message.validatorAddress = object.validatorAddress ?? "";
     message.outstandingRewards = object.outstandingRewards?.map(e => DecCoin.fromPartial(e)) || [];
@@ -533,7 +533,7 @@ function createBaseValidatorAccumulatedCommissionRecord(): ValidatorAccumulatedC
 export const ValidatorAccumulatedCommissionRecord = {
   typeUrl: "/cosmos.distribution.v1beta1.ValidatorAccumulatedCommissionRecord",
   aminoType: "cosmos-sdk/ValidatorAccumulatedCommissionRecord",
-  encode(message: ValidatorAccumulatedCommissionRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ValidatorAccumulatedCommissionRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
       writer.uint32(10).string(message.validatorAddress);
     }
@@ -542,8 +542,8 @@ export const ValidatorAccumulatedCommissionRecord = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorAccumulatedCommissionRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidatorAccumulatedCommissionRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorAccumulatedCommissionRecord();
     while (reader.pos < end) {
@@ -574,7 +574,7 @@ export const ValidatorAccumulatedCommissionRecord = {
     message.accumulated !== undefined && (obj.accumulated = message.accumulated ? ValidatorAccumulatedCommission.toJSON(message.accumulated) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<ValidatorAccumulatedCommissionRecord>): ValidatorAccumulatedCommissionRecord {
+  fromPartial(object: DeepPartial<ValidatorAccumulatedCommissionRecord>): ValidatorAccumulatedCommissionRecord {
     const message = createBaseValidatorAccumulatedCommissionRecord();
     message.validatorAddress = object.validatorAddress ?? "";
     message.accumulated = object.accumulated !== undefined && object.accumulated !== null ? ValidatorAccumulatedCommission.fromPartial(object.accumulated) : undefined;
@@ -629,18 +629,18 @@ export const ValidatorAccumulatedCommissionRecord = {
 function createBaseValidatorHistoricalRewardsRecord(): ValidatorHistoricalRewardsRecord {
   return {
     validatorAddress: "",
-    period: Long.UZERO,
+    period: BigInt("0"),
     rewards: undefined
   };
 }
 export const ValidatorHistoricalRewardsRecord = {
   typeUrl: "/cosmos.distribution.v1beta1.ValidatorHistoricalRewardsRecord",
   aminoType: "cosmos-sdk/ValidatorHistoricalRewardsRecord",
-  encode(message: ValidatorHistoricalRewardsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ValidatorHistoricalRewardsRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
       writer.uint32(10).string(message.validatorAddress);
     }
-    if (!message.period.isZero()) {
+    if (message.period !== BigInt(0)) {
       writer.uint32(16).uint64(message.period);
     }
     if (message.rewards !== undefined) {
@@ -648,8 +648,8 @@ export const ValidatorHistoricalRewardsRecord = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorHistoricalRewardsRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidatorHistoricalRewardsRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorHistoricalRewardsRecord();
     while (reader.pos < end) {
@@ -659,7 +659,7 @@ export const ValidatorHistoricalRewardsRecord = {
           message.validatorAddress = reader.string();
           break;
         case 2:
-          message.period = (reader.uint64() as Long);
+          message.period = BigInt(reader.uint64().toString());
           break;
         case 3:
           message.rewards = ValidatorHistoricalRewards.decode(reader, reader.uint32());
@@ -674,21 +674,21 @@ export const ValidatorHistoricalRewardsRecord = {
   fromJSON(object: any): ValidatorHistoricalRewardsRecord {
     return {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
-      period: isSet(object.period) ? Long.fromValue(object.period) : Long.UZERO,
+      period: isSet(object.period) ? BigInt(object.period.toString()) : BigInt("0"),
       rewards: isSet(object.rewards) ? ValidatorHistoricalRewards.fromJSON(object.rewards) : undefined
     };
   },
   toJSON(message: ValidatorHistoricalRewardsRecord): unknown {
     const obj: any = {};
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
-    message.period !== undefined && (obj.period = (message.period || Long.UZERO).toString());
+    message.period !== undefined && (obj.period = (message.period || BigInt("0")).toString());
     message.rewards !== undefined && (obj.rewards = message.rewards ? ValidatorHistoricalRewards.toJSON(message.rewards) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<ValidatorHistoricalRewardsRecord>): ValidatorHistoricalRewardsRecord {
+  fromPartial(object: DeepPartial<ValidatorHistoricalRewardsRecord>): ValidatorHistoricalRewardsRecord {
     const message = createBaseValidatorHistoricalRewardsRecord();
     message.validatorAddress = object.validatorAddress ?? "";
-    message.period = object.period !== undefined && object.period !== null ? Long.fromValue(object.period) : Long.UZERO;
+    message.period = object.period !== undefined && object.period !== null ? BigInt(object.period.toString()) : BigInt("0");
     message.rewards = object.rewards !== undefined && object.rewards !== null ? ValidatorHistoricalRewards.fromPartial(object.rewards) : undefined;
     return message;
   },
@@ -709,7 +709,7 @@ export const ValidatorHistoricalRewardsRecord = {
   fromAmino(object: ValidatorHistoricalRewardsRecordAmino): ValidatorHistoricalRewardsRecord {
     return {
       validatorAddress: object.validator_address,
-      period: Long.fromString(object.period),
+      period: BigInt(object.period),
       rewards: object?.rewards ? ValidatorHistoricalRewards.fromAmino(object.rewards) : undefined
     };
   },
@@ -751,7 +751,7 @@ function createBaseValidatorCurrentRewardsRecord(): ValidatorCurrentRewardsRecor
 export const ValidatorCurrentRewardsRecord = {
   typeUrl: "/cosmos.distribution.v1beta1.ValidatorCurrentRewardsRecord",
   aminoType: "cosmos-sdk/ValidatorCurrentRewardsRecord",
-  encode(message: ValidatorCurrentRewardsRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ValidatorCurrentRewardsRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
       writer.uint32(10).string(message.validatorAddress);
     }
@@ -760,8 +760,8 @@ export const ValidatorCurrentRewardsRecord = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorCurrentRewardsRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidatorCurrentRewardsRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorCurrentRewardsRecord();
     while (reader.pos < end) {
@@ -792,7 +792,7 @@ export const ValidatorCurrentRewardsRecord = {
     message.rewards !== undefined && (obj.rewards = message.rewards ? ValidatorCurrentRewards.toJSON(message.rewards) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<ValidatorCurrentRewardsRecord>): ValidatorCurrentRewardsRecord {
+  fromPartial(object: DeepPartial<ValidatorCurrentRewardsRecord>): ValidatorCurrentRewardsRecord {
     const message = createBaseValidatorCurrentRewardsRecord();
     message.validatorAddress = object.validatorAddress ?? "";
     message.rewards = object.rewards !== undefined && object.rewards !== null ? ValidatorCurrentRewards.fromPartial(object.rewards) : undefined;
@@ -854,7 +854,7 @@ function createBaseDelegatorStartingInfoRecord(): DelegatorStartingInfoRecord {
 export const DelegatorStartingInfoRecord = {
   typeUrl: "/cosmos.distribution.v1beta1.DelegatorStartingInfoRecord",
   aminoType: "cosmos-sdk/DelegatorStartingInfoRecord",
-  encode(message: DelegatorStartingInfoRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DelegatorStartingInfoRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -866,8 +866,8 @@ export const DelegatorStartingInfoRecord = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DelegatorStartingInfoRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DelegatorStartingInfoRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDelegatorStartingInfoRecord();
     while (reader.pos < end) {
@@ -903,7 +903,7 @@ export const DelegatorStartingInfoRecord = {
     message.startingInfo !== undefined && (obj.startingInfo = message.startingInfo ? DelegatorStartingInfo.toJSON(message.startingInfo) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<DelegatorStartingInfoRecord>): DelegatorStartingInfoRecord {
+  fromPartial(object: DeepPartial<DelegatorStartingInfoRecord>): DelegatorStartingInfoRecord {
     const message = createBaseDelegatorStartingInfoRecord();
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorAddress = object.validatorAddress ?? "";
@@ -963,22 +963,22 @@ export const DelegatorStartingInfoRecord = {
 function createBaseValidatorSlashEventRecord(): ValidatorSlashEventRecord {
   return {
     validatorAddress: "",
-    height: Long.UZERO,
-    period: Long.UZERO,
+    height: BigInt("0"),
+    period: BigInt("0"),
     validatorSlashEvent: undefined
   };
 }
 export const ValidatorSlashEventRecord = {
   typeUrl: "/cosmos.distribution.v1beta1.ValidatorSlashEventRecord",
   aminoType: "cosmos-sdk/ValidatorSlashEventRecord",
-  encode(message: ValidatorSlashEventRecord, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ValidatorSlashEventRecord, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
       writer.uint32(10).string(message.validatorAddress);
     }
-    if (!message.height.isZero()) {
+    if (message.height !== BigInt(0)) {
       writer.uint32(16).uint64(message.height);
     }
-    if (!message.period.isZero()) {
+    if (message.period !== BigInt(0)) {
       writer.uint32(24).uint64(message.period);
     }
     if (message.validatorSlashEvent !== undefined) {
@@ -986,8 +986,8 @@ export const ValidatorSlashEventRecord = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorSlashEventRecord {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ValidatorSlashEventRecord {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidatorSlashEventRecord();
     while (reader.pos < end) {
@@ -997,10 +997,10 @@ export const ValidatorSlashEventRecord = {
           message.validatorAddress = reader.string();
           break;
         case 2:
-          message.height = (reader.uint64() as Long);
+          message.height = BigInt(reader.uint64().toString());
           break;
         case 3:
-          message.period = (reader.uint64() as Long);
+          message.period = BigInt(reader.uint64().toString());
           break;
         case 4:
           message.validatorSlashEvent = ValidatorSlashEvent.decode(reader, reader.uint32());
@@ -1015,24 +1015,24 @@ export const ValidatorSlashEventRecord = {
   fromJSON(object: any): ValidatorSlashEventRecord {
     return {
       validatorAddress: isSet(object.validatorAddress) ? String(object.validatorAddress) : "",
-      height: isSet(object.height) ? Long.fromValue(object.height) : Long.UZERO,
-      period: isSet(object.period) ? Long.fromValue(object.period) : Long.UZERO,
+      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt("0"),
+      period: isSet(object.period) ? BigInt(object.period.toString()) : BigInt("0"),
       validatorSlashEvent: isSet(object.validatorSlashEvent) ? ValidatorSlashEvent.fromJSON(object.validatorSlashEvent) : undefined
     };
   },
   toJSON(message: ValidatorSlashEventRecord): unknown {
     const obj: any = {};
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
-    message.height !== undefined && (obj.height = (message.height || Long.UZERO).toString());
-    message.period !== undefined && (obj.period = (message.period || Long.UZERO).toString());
+    message.height !== undefined && (obj.height = (message.height || BigInt("0")).toString());
+    message.period !== undefined && (obj.period = (message.period || BigInt("0")).toString());
     message.validatorSlashEvent !== undefined && (obj.validatorSlashEvent = message.validatorSlashEvent ? ValidatorSlashEvent.toJSON(message.validatorSlashEvent) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<ValidatorSlashEventRecord>): ValidatorSlashEventRecord {
+  fromPartial(object: DeepPartial<ValidatorSlashEventRecord>): ValidatorSlashEventRecord {
     const message = createBaseValidatorSlashEventRecord();
     message.validatorAddress = object.validatorAddress ?? "";
-    message.height = object.height !== undefined && object.height !== null ? Long.fromValue(object.height) : Long.UZERO;
-    message.period = object.period !== undefined && object.period !== null ? Long.fromValue(object.period) : Long.UZERO;
+    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt("0");
+    message.period = object.period !== undefined && object.period !== null ? BigInt(object.period.toString()) : BigInt("0");
     message.validatorSlashEvent = object.validatorSlashEvent !== undefined && object.validatorSlashEvent !== null ? ValidatorSlashEvent.fromPartial(object.validatorSlashEvent) : undefined;
     return message;
   },
@@ -1055,8 +1055,8 @@ export const ValidatorSlashEventRecord = {
   fromAmino(object: ValidatorSlashEventRecordAmino): ValidatorSlashEventRecord {
     return {
       validatorAddress: object.validator_address,
-      height: Long.fromString(object.height),
-      period: Long.fromString(object.period),
+      height: BigInt(object.height),
+      period: BigInt(object.period),
       validatorSlashEvent: object?.validator_slash_event ? ValidatorSlashEvent.fromAmino(object.validator_slash_event) : undefined
     };
   },
@@ -1107,7 +1107,7 @@ function createBaseGenesisState(): GenesisState {
 export const GenesisState = {
   typeUrl: "/cosmos.distribution.v1beta1.GenesisState",
   aminoType: "cosmos-sdk/GenesisState",
-  encode(message: GenesisState, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: GenesisState, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
@@ -1140,8 +1140,8 @@ export const GenesisState = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): GenesisState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): GenesisState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGenesisState();
     while (reader.pos < end) {
@@ -1240,7 +1240,7 @@ export const GenesisState = {
     }
     return obj;
   },
-  fromPartial(object: Partial<GenesisState>): GenesisState {
+  fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = createBaseGenesisState();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     message.feePool = object.feePool !== undefined && object.feePool !== null ? FeePool.fromPartial(object.feePool) : undefined;

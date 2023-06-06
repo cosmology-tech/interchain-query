@@ -1,7 +1,7 @@
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, bytesFromBase64, base64FromBytes, DeepPartial } from "../../../helpers";
 /** QueryEvidenceRequest is the request type for the Query/Evidence RPC method. */
 export interface QueryEvidenceRequest {
   /** evidence_hash defines the hash of the requested evidence. */
@@ -121,14 +121,14 @@ function createBaseQueryEvidenceRequest(): QueryEvidenceRequest {
 export const QueryEvidenceRequest = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryEvidenceRequest",
   aminoType: "cosmos-sdk/QueryEvidenceRequest",
-  encode(message: QueryEvidenceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryEvidenceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.evidenceHash.length !== 0) {
       writer.uint32(10).bytes(message.evidenceHash);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryEvidenceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryEvidenceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryEvidenceRequest();
     while (reader.pos < end) {
@@ -154,7 +154,7 @@ export const QueryEvidenceRequest = {
     message.evidenceHash !== undefined && (obj.evidenceHash = base64FromBytes(message.evidenceHash !== undefined ? message.evidenceHash : new Uint8Array()));
     return obj;
   },
-  fromPartial(object: Partial<QueryEvidenceRequest>): QueryEvidenceRequest {
+  fromPartial(object: DeepPartial<QueryEvidenceRequest>): QueryEvidenceRequest {
     const message = createBaseQueryEvidenceRequest();
     message.evidenceHash = object.evidenceHash ?? new Uint8Array();
     return message;
@@ -209,14 +209,14 @@ function createBaseQueryEvidenceResponse(): QueryEvidenceResponse {
 export const QueryEvidenceResponse = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryEvidenceResponse",
   aminoType: "cosmos-sdk/QueryEvidenceResponse",
-  encode(message: QueryEvidenceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryEvidenceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.evidence !== undefined) {
       Any.encode(message.evidence, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryEvidenceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryEvidenceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryEvidenceResponse();
     while (reader.pos < end) {
@@ -242,7 +242,7 @@ export const QueryEvidenceResponse = {
     message.evidence !== undefined && (obj.evidence = message.evidence ? Any.toJSON(message.evidence) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryEvidenceResponse>): QueryEvidenceResponse {
+  fromPartial(object: DeepPartial<QueryEvidenceResponse>): QueryEvidenceResponse {
     const message = createBaseQueryEvidenceResponse();
     message.evidence = object.evidence !== undefined && object.evidence !== null ? Any.fromPartial(object.evidence) : undefined;
     return message;
@@ -297,14 +297,14 @@ function createBaseQueryAllEvidenceRequest(): QueryAllEvidenceRequest {
 export const QueryAllEvidenceRequest = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryAllEvidenceRequest",
   aminoType: "cosmos-sdk/QueryAllEvidenceRequest",
-  encode(message: QueryAllEvidenceRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryAllEvidenceRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllEvidenceRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAllEvidenceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAllEvidenceRequest();
     while (reader.pos < end) {
@@ -330,7 +330,7 @@ export const QueryAllEvidenceRequest = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryAllEvidenceRequest>): QueryAllEvidenceRequest {
+  fromPartial(object: DeepPartial<QueryAllEvidenceRequest>): QueryAllEvidenceRequest {
     const message = createBaseQueryAllEvidenceRequest();
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
     return message;
@@ -386,7 +386,7 @@ function createBaseQueryAllEvidenceResponse(): QueryAllEvidenceResponse {
 export const QueryAllEvidenceResponse = {
   typeUrl: "/cosmos.evidence.v1beta1.QueryAllEvidenceResponse",
   aminoType: "cosmos-sdk/QueryAllEvidenceResponse",
-  encode(message: QueryAllEvidenceResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryAllEvidenceResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.evidence) {
       Any.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -395,8 +395,8 @@ export const QueryAllEvidenceResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllEvidenceResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): QueryAllEvidenceResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseQueryAllEvidenceResponse();
     while (reader.pos < end) {
@@ -431,7 +431,7 @@ export const QueryAllEvidenceResponse = {
     message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<QueryAllEvidenceResponse>): QueryAllEvidenceResponse {
+  fromPartial(object: DeepPartial<QueryAllEvidenceResponse>): QueryAllEvidenceResponse {
     const message = createBaseQueryAllEvidenceResponse();
     message.evidence = object.evidence?.map(e => Any.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;

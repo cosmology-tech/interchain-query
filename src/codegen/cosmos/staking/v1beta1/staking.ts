@@ -1,10 +1,11 @@
 import { Header, HeaderAmino, HeaderSDKType } from "../../../tendermint/types/types";
-import { Timestamp, TimestampAmino, TimestampSDKType } from "../../../google/protobuf/timestamp";
+import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
 import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration";
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
-import { Long, isSet, fromJsonTimestamp, fromTimestamp } from "../../../helpers";
-import * as _m0 from "protobufjs/minimal";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial, toTimestamp, fromTimestamp, fromJsonTimestamp } from "../../../helpers";
+import { Decimal } from "@cosmjs/math";
 import { toBase64, fromBase64 } from "@cosmjs/encoding";
 import { encodeBech32Pubkey, decodeBech32Pubkey } from "@cosmjs/amino";
 /** BondStatus is the status of a validator. */
@@ -140,7 +141,7 @@ export interface Commission {
   /** commission_rates defines the initial commission rates to be used for creating a validator. */
   commissionRates?: CommissionRates;
   /** update_time is the last time the commission rate was changed. */
-  updateTime?: Timestamp;
+  updateTime?: Date;
 }
 export interface CommissionProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Commission";
@@ -151,7 +152,7 @@ export interface CommissionAmino {
   /** commission_rates defines the initial commission rates to be used for creating a validator. */
   commission_rates?: CommissionRatesAmino;
   /** update_time is the last time the commission rate was changed. */
-  update_time?: TimestampAmino;
+  update_time?: Date;
 }
 export interface CommissionAminoMsg {
   type: "cosmos-sdk/Commission";
@@ -160,7 +161,7 @@ export interface CommissionAminoMsg {
 /** Commission defines commission parameters for a given validator. */
 export interface CommissionSDKType {
   commission_rates?: CommissionRatesSDKType;
-  update_time?: TimestampSDKType;
+  update_time?: Date;
 }
 /** Description defines a validator description. */
 export interface Description {
@@ -230,9 +231,9 @@ export interface Validator {
   /** description defines the description terms for the validator. */
   description?: Description;
   /** unbonding_height defines, if unbonding, the height at which this validator has begun unbonding. */
-  unbondingHeight: Long;
+  unbondingHeight: bigint;
   /** unbonding_time defines, if unbonding, the min time for the validator to complete unbonding. */
-  unbondingTime?: Timestamp;
+  unbondingTime?: Date;
   /** commission defines the commission parameters. */
   commission?: Commission;
   /** min_self_delegation is the validator's self declared minimum self delegation. */
@@ -273,7 +274,7 @@ export interface ValidatorAmino {
   /** unbonding_height defines, if unbonding, the height at which this validator has begun unbonding. */
   unbonding_height: string;
   /** unbonding_time defines, if unbonding, the min time for the validator to complete unbonding. */
-  unbonding_time?: TimestampAmino;
+  unbonding_time?: Date;
   /** commission defines the commission parameters. */
   commission?: CommissionAmino;
   /** min_self_delegation is the validator's self declared minimum self delegation. */
@@ -301,8 +302,8 @@ export interface ValidatorSDKType {
   tokens: string;
   delegator_shares: string;
   description?: DescriptionSDKType;
-  unbonding_height: Long;
-  unbonding_time?: TimestampSDKType;
+  unbonding_height: bigint;
+  unbonding_time?: Date;
   commission?: CommissionSDKType;
   min_self_delegation: string;
 }
@@ -530,9 +531,9 @@ export interface UnbondingDelegationSDKType {
 /** UnbondingDelegationEntry defines an unbonding object with relevant metadata. */
 export interface UnbondingDelegationEntry {
   /** creation_height is the height which the unbonding took place. */
-  creationHeight: Long;
+  creationHeight: bigint;
   /** completion_time is the unix time for unbonding completion. */
-  completionTime?: Timestamp;
+  completionTime?: Date;
   /** initial_balance defines the tokens initially scheduled to receive at completion. */
   initialBalance: string;
   /** balance defines the tokens to receive at completion. */
@@ -547,7 +548,7 @@ export interface UnbondingDelegationEntryAmino {
   /** creation_height is the height which the unbonding took place. */
   creation_height: string;
   /** completion_time is the unix time for unbonding completion. */
-  completion_time?: TimestampAmino;
+  completion_time?: Date;
   /** initial_balance defines the tokens initially scheduled to receive at completion. */
   initial_balance: string;
   /** balance defines the tokens to receive at completion. */
@@ -559,17 +560,17 @@ export interface UnbondingDelegationEntryAminoMsg {
 }
 /** UnbondingDelegationEntry defines an unbonding object with relevant metadata. */
 export interface UnbondingDelegationEntrySDKType {
-  creation_height: Long;
-  completion_time?: TimestampSDKType;
+  creation_height: bigint;
+  completion_time?: Date;
   initial_balance: string;
   balance: string;
 }
 /** RedelegationEntry defines a redelegation object with relevant metadata. */
 export interface RedelegationEntry {
   /** creation_height  defines the height which the redelegation took place. */
-  creationHeight: Long;
+  creationHeight: bigint;
   /** completion_time defines the unix time for redelegation completion. */
-  completionTime?: Timestamp;
+  completionTime?: Date;
   /** initial_balance defines the initial balance when redelegation started. */
   initialBalance: string;
   /** shares_dst is the amount of destination-validator shares created by redelegation. */
@@ -584,7 +585,7 @@ export interface RedelegationEntryAmino {
   /** creation_height  defines the height which the redelegation took place. */
   creation_height: string;
   /** completion_time defines the unix time for redelegation completion. */
-  completion_time?: TimestampAmino;
+  completion_time?: Date;
   /** initial_balance defines the initial balance when redelegation started. */
   initial_balance: string;
   /** shares_dst is the amount of destination-validator shares created by redelegation. */
@@ -596,8 +597,8 @@ export interface RedelegationEntryAminoMsg {
 }
 /** RedelegationEntry defines a redelegation object with relevant metadata. */
 export interface RedelegationEntrySDKType {
-  creation_height: Long;
-  completion_time?: TimestampSDKType;
+  creation_height: bigint;
+  completion_time?: Date;
   initial_balance: string;
   shares_dst: string;
 }
@@ -661,8 +662,6 @@ export interface Params {
   bondDenom: string;
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
   minCommissionRate: string;
-  /** min_self_delegation is the chain-wide minimum amount that a validator has to self delegate */
-  minSelfDelegation: string;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Params";
@@ -682,11 +681,9 @@ export interface ParamsAmino {
   bond_denom: string;
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
   min_commission_rate: string;
-  /** min_self_delegation is the chain-wide minimum amount that a validator has to self delegate */
-  min_self_delegation: string;
 }
 export interface ParamsAminoMsg {
-  type: "cosmos-sdk/x/staking/Params";
+  type: "cosmos-sdk/Params";
   value: ParamsAmino;
 }
 /** Params defines the parameters for the staking module. */
@@ -697,7 +694,6 @@ export interface ParamsSDKType {
   historical_entries: number;
   bond_denom: string;
   min_commission_rate: string;
-  min_self_delegation: string;
 }
 /**
  * DelegationResponse is equivalent to Delegation except that it contains a
@@ -842,7 +838,7 @@ function createBaseHistoricalInfo(): HistoricalInfo {
 export const HistoricalInfo = {
   typeUrl: "/cosmos.staking.v1beta1.HistoricalInfo",
   aminoType: "cosmos-sdk/HistoricalInfo",
-  encode(message: HistoricalInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: HistoricalInfo, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.header !== undefined) {
       Header.encode(message.header, writer.uint32(10).fork()).ldelim();
     }
@@ -851,8 +847,8 @@ export const HistoricalInfo = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): HistoricalInfo {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): HistoricalInfo {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHistoricalInfo();
     while (reader.pos < end) {
@@ -887,7 +883,7 @@ export const HistoricalInfo = {
     }
     return obj;
   },
-  fromPartial(object: Partial<HistoricalInfo>): HistoricalInfo {
+  fromPartial(object: DeepPartial<HistoricalInfo>): HistoricalInfo {
     const message = createBaseHistoricalInfo();
     message.header = object.header !== undefined && object.header !== null ? Header.fromPartial(object.header) : undefined;
     message.valset = object.valset?.map(e => Validator.fromPartial(e)) || [];
@@ -957,33 +953,33 @@ function createBaseCommissionRates(): CommissionRates {
 export const CommissionRates = {
   typeUrl: "/cosmos.staking.v1beta1.CommissionRates",
   aminoType: "cosmos-sdk/CommissionRates",
-  encode(message: CommissionRates, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CommissionRates, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.rate !== "") {
-      writer.uint32(10).string(message.rate);
+      writer.uint32(10).string(Decimal.fromUserInput(message.rate, 18).atomics);
     }
     if (message.maxRate !== "") {
-      writer.uint32(18).string(message.maxRate);
+      writer.uint32(18).string(Decimal.fromUserInput(message.maxRate, 18).atomics);
     }
     if (message.maxChangeRate !== "") {
-      writer.uint32(26).string(message.maxChangeRate);
+      writer.uint32(26).string(Decimal.fromUserInput(message.maxChangeRate, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CommissionRates {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CommissionRates {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCommissionRates();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.rate = reader.string();
+          message.rate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 2:
-          message.maxRate = reader.string();
+          message.maxRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 3:
-          message.maxChangeRate = reader.string();
+          message.maxChangeRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1006,7 +1002,7 @@ export const CommissionRates = {
     message.maxChangeRate !== undefined && (obj.maxChangeRate = message.maxChangeRate);
     return obj;
   },
-  fromPartial(object: Partial<CommissionRates>): CommissionRates {
+  fromPartial(object: DeepPartial<CommissionRates>): CommissionRates {
     const message = createBaseCommissionRates();
     message.rate = object.rate ?? "";
     message.maxRate = object.maxRate ?? "";
@@ -1072,17 +1068,17 @@ function createBaseCommission(): Commission {
 export const Commission = {
   typeUrl: "/cosmos.staking.v1beta1.Commission",
   aminoType: "cosmos-sdk/Commission",
-  encode(message: Commission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Commission, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.commissionRates !== undefined) {
       CommissionRates.encode(message.commissionRates, writer.uint32(10).fork()).ldelim();
     }
     if (message.updateTime !== undefined) {
-      Timestamp.encode(message.updateTime, writer.uint32(18).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.updateTime), writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Commission {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Commission {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCommission();
     while (reader.pos < end) {
@@ -1092,7 +1088,7 @@ export const Commission = {
           message.commissionRates = CommissionRates.decode(reader, reader.uint32());
           break;
         case 2:
-          message.updateTime = Timestamp.decode(reader, reader.uint32());
+          message.updateTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -1110,13 +1106,13 @@ export const Commission = {
   toJSON(message: Commission): unknown {
     const obj: any = {};
     message.commissionRates !== undefined && (obj.commissionRates = message.commissionRates ? CommissionRates.toJSON(message.commissionRates) : undefined);
-    message.updateTime !== undefined && (obj.updateTime = fromTimestamp(message.updateTime).toISOString());
+    message.updateTime !== undefined && (obj.updateTime = message.updateTime.toISOString());
     return obj;
   },
-  fromPartial(object: Partial<Commission>): Commission {
+  fromPartial(object: DeepPartial<Commission>): Commission {
     const message = createBaseCommission();
     message.commissionRates = object.commissionRates !== undefined && object.commissionRates !== null ? CommissionRates.fromPartial(object.commissionRates) : undefined;
-    message.updateTime = object.updateTime !== undefined && object.updateTime !== null ? Timestamp.fromPartial(object.updateTime) : undefined;
+    message.updateTime = object.updateTime ?? undefined;
     return message;
   },
   fromSDK(object: CommissionSDKType): Commission {
@@ -1177,7 +1173,7 @@ function createBaseDescription(): Description {
 export const Description = {
   typeUrl: "/cosmos.staking.v1beta1.Description",
   aminoType: "cosmos-sdk/Description",
-  encode(message: Description, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Description, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.moniker !== "") {
       writer.uint32(10).string(message.moniker);
     }
@@ -1195,8 +1191,8 @@ export const Description = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Description {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Description {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDescription();
     while (reader.pos < end) {
@@ -1242,7 +1238,7 @@ export const Description = {
     message.details !== undefined && (obj.details = message.details);
     return obj;
   },
-  fromPartial(object: Partial<Description>): Description {
+  fromPartial(object: DeepPartial<Description>): Description {
     const message = createBaseDescription();
     message.moniker = object.moniker ?? "";
     message.identity = object.identity ?? "";
@@ -1318,7 +1314,7 @@ function createBaseValidator(): Validator {
     tokens: "",
     delegatorShares: "",
     description: undefined,
-    unbondingHeight: Long.ZERO,
+    unbondingHeight: BigInt("0"),
     unbondingTime: undefined,
     commission: undefined,
     minSelfDelegation: ""
@@ -1327,7 +1323,7 @@ function createBaseValidator(): Validator {
 export const Validator = {
   typeUrl: "/cosmos.staking.v1beta1.Validator",
   aminoType: "cosmos-sdk/Validator",
-  encode(message: Validator, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Validator, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.operatorAddress !== "") {
       writer.uint32(10).string(message.operatorAddress);
     }
@@ -1344,16 +1340,16 @@ export const Validator = {
       writer.uint32(42).string(message.tokens);
     }
     if (message.delegatorShares !== "") {
-      writer.uint32(50).string(message.delegatorShares);
+      writer.uint32(50).string(Decimal.fromUserInput(message.delegatorShares, 18).atomics);
     }
     if (message.description !== undefined) {
       Description.encode(message.description, writer.uint32(58).fork()).ldelim();
     }
-    if (!message.unbondingHeight.isZero()) {
+    if (message.unbondingHeight !== BigInt(0)) {
       writer.uint32(64).int64(message.unbondingHeight);
     }
     if (message.unbondingTime !== undefined) {
-      Timestamp.encode(message.unbondingTime, writer.uint32(74).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.unbondingTime), writer.uint32(74).fork()).ldelim();
     }
     if (message.commission !== undefined) {
       Commission.encode(message.commission, writer.uint32(82).fork()).ldelim();
@@ -1363,8 +1359,8 @@ export const Validator = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Validator {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Validator {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValidator();
     while (reader.pos < end) {
@@ -1386,16 +1382,16 @@ export const Validator = {
           message.tokens = reader.string();
           break;
         case 6:
-          message.delegatorShares = reader.string();
+          message.delegatorShares = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         case 7:
           message.description = Description.decode(reader, reader.uint32());
           break;
         case 8:
-          message.unbondingHeight = (reader.int64() as Long);
+          message.unbondingHeight = BigInt(reader.int64().toString());
           break;
         case 9:
-          message.unbondingTime = Timestamp.decode(reader, reader.uint32());
+          message.unbondingTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 10:
           message.commission = Commission.decode(reader, reader.uint32());
@@ -1419,7 +1415,7 @@ export const Validator = {
       tokens: isSet(object.tokens) ? String(object.tokens) : "",
       delegatorShares: isSet(object.delegatorShares) ? String(object.delegatorShares) : "",
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
-      unbondingHeight: isSet(object.unbondingHeight) ? Long.fromValue(object.unbondingHeight) : Long.ZERO,
+      unbondingHeight: isSet(object.unbondingHeight) ? BigInt(object.unbondingHeight.toString()) : BigInt("0"),
       unbondingTime: isSet(object.unbondingTime) ? fromJsonTimestamp(object.unbondingTime) : undefined,
       commission: isSet(object.commission) ? Commission.fromJSON(object.commission) : undefined,
       minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : ""
@@ -1434,13 +1430,13 @@ export const Validator = {
     message.tokens !== undefined && (obj.tokens = message.tokens);
     message.delegatorShares !== undefined && (obj.delegatorShares = message.delegatorShares);
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
-    message.unbondingHeight !== undefined && (obj.unbondingHeight = (message.unbondingHeight || Long.ZERO).toString());
-    message.unbondingTime !== undefined && (obj.unbondingTime = fromTimestamp(message.unbondingTime).toISOString());
+    message.unbondingHeight !== undefined && (obj.unbondingHeight = (message.unbondingHeight || BigInt("0")).toString());
+    message.unbondingTime !== undefined && (obj.unbondingTime = message.unbondingTime.toISOString());
     message.commission !== undefined && (obj.commission = message.commission ? Commission.toJSON(message.commission) : undefined);
     message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
     return obj;
   },
-  fromPartial(object: Partial<Validator>): Validator {
+  fromPartial(object: DeepPartial<Validator>): Validator {
     const message = createBaseValidator();
     message.operatorAddress = object.operatorAddress ?? "";
     message.consensusPubkey = object.consensusPubkey !== undefined && object.consensusPubkey !== null ? Any.fromPartial(object.consensusPubkey) : undefined;
@@ -1449,8 +1445,8 @@ export const Validator = {
     message.tokens = object.tokens ?? "";
     message.delegatorShares = object.delegatorShares ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
-    message.unbondingHeight = object.unbondingHeight !== undefined && object.unbondingHeight !== null ? Long.fromValue(object.unbondingHeight) : Long.ZERO;
-    message.unbondingTime = object.unbondingTime !== undefined && object.unbondingTime !== null ? Timestamp.fromPartial(object.unbondingTime) : undefined;
+    message.unbondingHeight = object.unbondingHeight !== undefined && object.unbondingHeight !== null ? BigInt(object.unbondingHeight.toString()) : BigInt("0");
+    message.unbondingTime = object.unbondingTime ?? undefined;
     message.commission = object.commission !== undefined && object.commission !== null ? Commission.fromPartial(object.commission) : undefined;
     message.minSelfDelegation = object.minSelfDelegation ?? "";
     return message;
@@ -1497,7 +1493,7 @@ export const Validator = {
       tokens: object.tokens,
       delegatorShares: object.delegator_shares,
       description: object?.description ? Description.fromAmino(object.description) : undefined,
-      unbondingHeight: Long.fromString(object.unbonding_height),
+      unbondingHeight: BigInt(object.unbonding_height),
       unbondingTime: object?.unbonding_time ? Timestamp.fromAmino(object.unbonding_time) : undefined,
       commission: object?.commission ? Commission.fromAmino(object.commission) : undefined,
       minSelfDelegation: object.min_self_delegation
@@ -1551,14 +1547,14 @@ function createBaseValAddresses(): ValAddresses {
 export const ValAddresses = {
   typeUrl: "/cosmos.staking.v1beta1.ValAddresses",
   aminoType: "cosmos-sdk/ValAddresses",
-  encode(message: ValAddresses, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ValAddresses, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.addresses) {
       writer.uint32(10).string(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): ValAddresses {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): ValAddresses {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseValAddresses();
     while (reader.pos < end) {
@@ -1588,7 +1584,7 @@ export const ValAddresses = {
     }
     return obj;
   },
-  fromPartial(object: Partial<ValAddresses>): ValAddresses {
+  fromPartial(object: DeepPartial<ValAddresses>): ValAddresses {
     const message = createBaseValAddresses();
     message.addresses = object.addresses?.map(e => e) || [];
     return message;
@@ -1652,7 +1648,7 @@ function createBaseDVPair(): DVPair {
 export const DVPair = {
   typeUrl: "/cosmos.staking.v1beta1.DVPair",
   aminoType: "cosmos-sdk/DVPair",
-  encode(message: DVPair, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DVPair, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -1661,8 +1657,8 @@ export const DVPair = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DVPair {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DVPair {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDVPair();
     while (reader.pos < end) {
@@ -1693,7 +1689,7 @@ export const DVPair = {
     message.validatorAddress !== undefined && (obj.validatorAddress = message.validatorAddress);
     return obj;
   },
-  fromPartial(object: Partial<DVPair>): DVPair {
+  fromPartial(object: DeepPartial<DVPair>): DVPair {
     const message = createBaseDVPair();
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorAddress = object.validatorAddress ?? "";
@@ -1753,14 +1749,14 @@ function createBaseDVPairs(): DVPairs {
 export const DVPairs = {
   typeUrl: "/cosmos.staking.v1beta1.DVPairs",
   aminoType: "cosmos-sdk/DVPairs",
-  encode(message: DVPairs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DVPairs, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.pairs) {
       DVPair.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DVPairs {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DVPairs {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDVPairs();
     while (reader.pos < end) {
@@ -1790,7 +1786,7 @@ export const DVPairs = {
     }
     return obj;
   },
-  fromPartial(object: Partial<DVPairs>): DVPairs {
+  fromPartial(object: DeepPartial<DVPairs>): DVPairs {
     const message = createBaseDVPairs();
     message.pairs = object.pairs?.map(e => DVPair.fromPartial(e)) || [];
     return message;
@@ -1855,7 +1851,7 @@ function createBaseDVVTriplet(): DVVTriplet {
 export const DVVTriplet = {
   typeUrl: "/cosmos.staking.v1beta1.DVVTriplet",
   aminoType: "cosmos-sdk/DVVTriplet",
-  encode(message: DVVTriplet, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DVVTriplet, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -1867,8 +1863,8 @@ export const DVVTriplet = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DVVTriplet {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DVVTriplet {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDVVTriplet();
     while (reader.pos < end) {
@@ -1904,7 +1900,7 @@ export const DVVTriplet = {
     message.validatorDstAddress !== undefined && (obj.validatorDstAddress = message.validatorDstAddress);
     return obj;
   },
-  fromPartial(object: Partial<DVVTriplet>): DVVTriplet {
+  fromPartial(object: DeepPartial<DVVTriplet>): DVVTriplet {
     const message = createBaseDVVTriplet();
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorSrcAddress = object.validatorSrcAddress ?? "";
@@ -1969,14 +1965,14 @@ function createBaseDVVTriplets(): DVVTriplets {
 export const DVVTriplets = {
   typeUrl: "/cosmos.staking.v1beta1.DVVTriplets",
   aminoType: "cosmos-sdk/DVVTriplets",
-  encode(message: DVVTriplets, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DVVTriplets, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.triplets) {
       DVVTriplet.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DVVTriplets {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DVVTriplets {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDVVTriplets();
     while (reader.pos < end) {
@@ -2006,7 +2002,7 @@ export const DVVTriplets = {
     }
     return obj;
   },
-  fromPartial(object: Partial<DVVTriplets>): DVVTriplets {
+  fromPartial(object: DeepPartial<DVVTriplets>): DVVTriplets {
     const message = createBaseDVVTriplets();
     message.triplets = object.triplets?.map(e => DVVTriplet.fromPartial(e)) || [];
     return message;
@@ -2071,7 +2067,7 @@ function createBaseDelegation(): Delegation {
 export const Delegation = {
   typeUrl: "/cosmos.staking.v1beta1.Delegation",
   aminoType: "cosmos-sdk/Delegation",
-  encode(message: Delegation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Delegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -2079,12 +2075,12 @@ export const Delegation = {
       writer.uint32(18).string(message.validatorAddress);
     }
     if (message.shares !== "") {
-      writer.uint32(26).string(message.shares);
+      writer.uint32(26).string(Decimal.fromUserInput(message.shares, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Delegation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Delegation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDelegation();
     while (reader.pos < end) {
@@ -2097,7 +2093,7 @@ export const Delegation = {
           message.validatorAddress = reader.string();
           break;
         case 3:
-          message.shares = reader.string();
+          message.shares = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2120,7 +2116,7 @@ export const Delegation = {
     message.shares !== undefined && (obj.shares = message.shares);
     return obj;
   },
-  fromPartial(object: Partial<Delegation>): Delegation {
+  fromPartial(object: DeepPartial<Delegation>): Delegation {
     const message = createBaseDelegation();
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorAddress = object.validatorAddress ?? "";
@@ -2187,7 +2183,7 @@ function createBaseUnbondingDelegation(): UnbondingDelegation {
 export const UnbondingDelegation = {
   typeUrl: "/cosmos.staking.v1beta1.UnbondingDelegation",
   aminoType: "cosmos-sdk/UnbondingDelegation",
-  encode(message: UnbondingDelegation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: UnbondingDelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -2199,8 +2195,8 @@ export const UnbondingDelegation = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): UnbondingDelegation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): UnbondingDelegation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnbondingDelegation();
     while (reader.pos < end) {
@@ -2240,7 +2236,7 @@ export const UnbondingDelegation = {
     }
     return obj;
   },
-  fromPartial(object: Partial<UnbondingDelegation>): UnbondingDelegation {
+  fromPartial(object: DeepPartial<UnbondingDelegation>): UnbondingDelegation {
     const message = createBaseUnbondingDelegation();
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorAddress = object.validatorAddress ?? "";
@@ -2307,7 +2303,7 @@ export const UnbondingDelegation = {
 };
 function createBaseUnbondingDelegationEntry(): UnbondingDelegationEntry {
   return {
-    creationHeight: Long.ZERO,
+    creationHeight: BigInt("0"),
     completionTime: undefined,
     initialBalance: "",
     balance: ""
@@ -2316,12 +2312,12 @@ function createBaseUnbondingDelegationEntry(): UnbondingDelegationEntry {
 export const UnbondingDelegationEntry = {
   typeUrl: "/cosmos.staking.v1beta1.UnbondingDelegationEntry",
   aminoType: "cosmos-sdk/UnbondingDelegationEntry",
-  encode(message: UnbondingDelegationEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.creationHeight.isZero()) {
+  encode(message: UnbondingDelegationEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.creationHeight !== BigInt(0)) {
       writer.uint32(8).int64(message.creationHeight);
     }
     if (message.completionTime !== undefined) {
-      Timestamp.encode(message.completionTime, writer.uint32(18).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.completionTime), writer.uint32(18).fork()).ldelim();
     }
     if (message.initialBalance !== "") {
       writer.uint32(26).string(message.initialBalance);
@@ -2331,18 +2327,18 @@ export const UnbondingDelegationEntry = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): UnbondingDelegationEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): UnbondingDelegationEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnbondingDelegationEntry();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.creationHeight = (reader.int64() as Long);
+          message.creationHeight = BigInt(reader.int64().toString());
           break;
         case 2:
-          message.completionTime = Timestamp.decode(reader, reader.uint32());
+          message.completionTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 3:
           message.initialBalance = reader.string();
@@ -2359,7 +2355,7 @@ export const UnbondingDelegationEntry = {
   },
   fromJSON(object: any): UnbondingDelegationEntry {
     return {
-      creationHeight: isSet(object.creationHeight) ? Long.fromValue(object.creationHeight) : Long.ZERO,
+      creationHeight: isSet(object.creationHeight) ? BigInt(object.creationHeight.toString()) : BigInt("0"),
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
       initialBalance: isSet(object.initialBalance) ? String(object.initialBalance) : "",
       balance: isSet(object.balance) ? String(object.balance) : ""
@@ -2367,16 +2363,16 @@ export const UnbondingDelegationEntry = {
   },
   toJSON(message: UnbondingDelegationEntry): unknown {
     const obj: any = {};
-    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || Long.ZERO).toString());
-    message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
+    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || BigInt("0")).toString());
+    message.completionTime !== undefined && (obj.completionTime = message.completionTime.toISOString());
     message.initialBalance !== undefined && (obj.initialBalance = message.initialBalance);
     message.balance !== undefined && (obj.balance = message.balance);
     return obj;
   },
-  fromPartial(object: Partial<UnbondingDelegationEntry>): UnbondingDelegationEntry {
+  fromPartial(object: DeepPartial<UnbondingDelegationEntry>): UnbondingDelegationEntry {
     const message = createBaseUnbondingDelegationEntry();
-    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? Long.fromValue(object.creationHeight) : Long.ZERO;
-    message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
+    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? BigInt(object.creationHeight.toString()) : BigInt("0");
+    message.completionTime = object.completionTime ?? undefined;
     message.initialBalance = object.initialBalance ?? "";
     message.balance = object.balance ?? "";
     return message;
@@ -2399,7 +2395,7 @@ export const UnbondingDelegationEntry = {
   },
   fromAmino(object: UnbondingDelegationEntryAmino): UnbondingDelegationEntry {
     return {
-      creationHeight: Long.fromString(object.creation_height),
+      creationHeight: BigInt(object.creation_height),
       completionTime: object?.completion_time ? Timestamp.fromAmino(object.completion_time) : undefined,
       initialBalance: object.initial_balance,
       balance: object.balance
@@ -2437,7 +2433,7 @@ export const UnbondingDelegationEntry = {
 };
 function createBaseRedelegationEntry(): RedelegationEntry {
   return {
-    creationHeight: Long.ZERO,
+    creationHeight: BigInt("0"),
     completionTime: undefined,
     initialBalance: "",
     sharesDst: ""
@@ -2446,39 +2442,39 @@ function createBaseRedelegationEntry(): RedelegationEntry {
 export const RedelegationEntry = {
   typeUrl: "/cosmos.staking.v1beta1.RedelegationEntry",
   aminoType: "cosmos-sdk/RedelegationEntry",
-  encode(message: RedelegationEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.creationHeight.isZero()) {
+  encode(message: RedelegationEntry, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
+    if (message.creationHeight !== BigInt(0)) {
       writer.uint32(8).int64(message.creationHeight);
     }
     if (message.completionTime !== undefined) {
-      Timestamp.encode(message.completionTime, writer.uint32(18).fork()).ldelim();
+      Timestamp.encode(toTimestamp(message.completionTime), writer.uint32(18).fork()).ldelim();
     }
     if (message.initialBalance !== "") {
       writer.uint32(26).string(message.initialBalance);
     }
     if (message.sharesDst !== "") {
-      writer.uint32(34).string(message.sharesDst);
+      writer.uint32(34).string(Decimal.fromUserInput(message.sharesDst, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): RedelegationEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): RedelegationEntry {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRedelegationEntry();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.creationHeight = (reader.int64() as Long);
+          message.creationHeight = BigInt(reader.int64().toString());
           break;
         case 2:
-          message.completionTime = Timestamp.decode(reader, reader.uint32());
+          message.completionTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 3:
           message.initialBalance = reader.string();
           break;
         case 4:
-          message.sharesDst = reader.string();
+          message.sharesDst = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2489,7 +2485,7 @@ export const RedelegationEntry = {
   },
   fromJSON(object: any): RedelegationEntry {
     return {
-      creationHeight: isSet(object.creationHeight) ? Long.fromValue(object.creationHeight) : Long.ZERO,
+      creationHeight: isSet(object.creationHeight) ? BigInt(object.creationHeight.toString()) : BigInt("0"),
       completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
       initialBalance: isSet(object.initialBalance) ? String(object.initialBalance) : "",
       sharesDst: isSet(object.sharesDst) ? String(object.sharesDst) : ""
@@ -2497,16 +2493,16 @@ export const RedelegationEntry = {
   },
   toJSON(message: RedelegationEntry): unknown {
     const obj: any = {};
-    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || Long.ZERO).toString());
-    message.completionTime !== undefined && (obj.completionTime = fromTimestamp(message.completionTime).toISOString());
+    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || BigInt("0")).toString());
+    message.completionTime !== undefined && (obj.completionTime = message.completionTime.toISOString());
     message.initialBalance !== undefined && (obj.initialBalance = message.initialBalance);
     message.sharesDst !== undefined && (obj.sharesDst = message.sharesDst);
     return obj;
   },
-  fromPartial(object: Partial<RedelegationEntry>): RedelegationEntry {
+  fromPartial(object: DeepPartial<RedelegationEntry>): RedelegationEntry {
     const message = createBaseRedelegationEntry();
-    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? Long.fromValue(object.creationHeight) : Long.ZERO;
-    message.completionTime = object.completionTime !== undefined && object.completionTime !== null ? Timestamp.fromPartial(object.completionTime) : undefined;
+    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? BigInt(object.creationHeight.toString()) : BigInt("0");
+    message.completionTime = object.completionTime ?? undefined;
     message.initialBalance = object.initialBalance ?? "";
     message.sharesDst = object.sharesDst ?? "";
     return message;
@@ -2529,7 +2525,7 @@ export const RedelegationEntry = {
   },
   fromAmino(object: RedelegationEntryAmino): RedelegationEntry {
     return {
-      creationHeight: Long.fromString(object.creation_height),
+      creationHeight: BigInt(object.creation_height),
       completionTime: object?.completion_time ? Timestamp.fromAmino(object.completion_time) : undefined,
       initialBalance: object.initial_balance,
       sharesDst: object.shares_dst
@@ -2576,7 +2572,7 @@ function createBaseRedelegation(): Redelegation {
 export const Redelegation = {
   typeUrl: "/cosmos.staking.v1beta1.Redelegation",
   aminoType: "cosmos-sdk/Redelegation",
-  encode(message: Redelegation, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Redelegation, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegatorAddress !== "") {
       writer.uint32(10).string(message.delegatorAddress);
     }
@@ -2591,8 +2587,8 @@ export const Redelegation = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Redelegation {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Redelegation {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRedelegation();
     while (reader.pos < end) {
@@ -2637,7 +2633,7 @@ export const Redelegation = {
     }
     return obj;
   },
-  fromPartial(object: Partial<Redelegation>): Redelegation {
+  fromPartial(object: DeepPartial<Redelegation>): Redelegation {
     const message = createBaseRedelegation();
     message.delegatorAddress = object.delegatorAddress ?? "";
     message.validatorSrcAddress = object.validatorSrcAddress ?? "";
@@ -2714,14 +2710,13 @@ function createBaseParams(): Params {
     maxEntries: 0,
     historicalEntries: 0,
     bondDenom: "",
-    minCommissionRate: "",
-    minSelfDelegation: ""
+    minCommissionRate: ""
   };
 }
 export const Params = {
   typeUrl: "/cosmos.staking.v1beta1.Params",
-  aminoType: "cosmos-sdk/x/staking/Params",
-  encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/Params",
+  encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.unbondingTime !== undefined) {
       Duration.encode(message.unbondingTime, writer.uint32(10).fork()).ldelim();
     }
@@ -2738,15 +2733,12 @@ export const Params = {
       writer.uint32(42).string(message.bondDenom);
     }
     if (message.minCommissionRate !== "") {
-      writer.uint32(50).string(message.minCommissionRate);
-    }
-    if (message.minSelfDelegation !== "") {
-      writer.uint32(58).string(message.minSelfDelegation);
+      writer.uint32(50).string(Decimal.fromUserInput(message.minCommissionRate, 18).atomics);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Params {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Params {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParams();
     while (reader.pos < end) {
@@ -2768,10 +2760,7 @@ export const Params = {
           message.bondDenom = reader.string();
           break;
         case 6:
-          message.minCommissionRate = reader.string();
-          break;
-        case 7:
-          message.minSelfDelegation = reader.string();
+          message.minCommissionRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2787,8 +2776,7 @@ export const Params = {
       maxEntries: isSet(object.maxEntries) ? Number(object.maxEntries) : 0,
       historicalEntries: isSet(object.historicalEntries) ? Number(object.historicalEntries) : 0,
       bondDenom: isSet(object.bondDenom) ? String(object.bondDenom) : "",
-      minCommissionRate: isSet(object.minCommissionRate) ? String(object.minCommissionRate) : "",
-      minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : ""
+      minCommissionRate: isSet(object.minCommissionRate) ? String(object.minCommissionRate) : ""
     };
   },
   toJSON(message: Params): unknown {
@@ -2799,10 +2787,9 @@ export const Params = {
     message.historicalEntries !== undefined && (obj.historicalEntries = Math.round(message.historicalEntries));
     message.bondDenom !== undefined && (obj.bondDenom = message.bondDenom);
     message.minCommissionRate !== undefined && (obj.minCommissionRate = message.minCommissionRate);
-    message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
     return obj;
   },
-  fromPartial(object: Partial<Params>): Params {
+  fromPartial(object: DeepPartial<Params>): Params {
     const message = createBaseParams();
     message.unbondingTime = object.unbondingTime !== undefined && object.unbondingTime !== null ? Duration.fromPartial(object.unbondingTime) : undefined;
     message.maxValidators = object.maxValidators ?? 0;
@@ -2810,7 +2797,6 @@ export const Params = {
     message.historicalEntries = object.historicalEntries ?? 0;
     message.bondDenom = object.bondDenom ?? "";
     message.minCommissionRate = object.minCommissionRate ?? "";
-    message.minSelfDelegation = object.minSelfDelegation ?? "";
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -2820,8 +2806,7 @@ export const Params = {
       maxEntries: object?.max_entries,
       historicalEntries: object?.historical_entries,
       bondDenom: object?.bond_denom,
-      minCommissionRate: object?.min_commission_rate,
-      minSelfDelegation: object?.min_self_delegation
+      minCommissionRate: object?.min_commission_rate
     };
   },
   toSDK(message: Params): ParamsSDKType {
@@ -2832,7 +2817,6 @@ export const Params = {
     obj.historical_entries = message.historicalEntries;
     obj.bond_denom = message.bondDenom;
     obj.min_commission_rate = message.minCommissionRate;
-    obj.min_self_delegation = message.minSelfDelegation;
     return obj;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -2842,8 +2826,7 @@ export const Params = {
       maxEntries: object.max_entries,
       historicalEntries: object.historical_entries,
       bondDenom: object.bond_denom,
-      minCommissionRate: object.min_commission_rate,
-      minSelfDelegation: object.min_self_delegation
+      minCommissionRate: object.min_commission_rate
     };
   },
   toAmino(message: Params): ParamsAmino {
@@ -2854,7 +2837,6 @@ export const Params = {
     obj.historical_entries = message.historicalEntries;
     obj.bond_denom = message.bondDenom;
     obj.min_commission_rate = message.minCommissionRate;
-    obj.min_self_delegation = message.minSelfDelegation;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -2862,7 +2844,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "cosmos-sdk/x/staking/Params",
+      type: "cosmos-sdk/Params",
       value: Params.toAmino(message)
     };
   },
@@ -2888,7 +2870,7 @@ function createBaseDelegationResponse(): DelegationResponse {
 export const DelegationResponse = {
   typeUrl: "/cosmos.staking.v1beta1.DelegationResponse",
   aminoType: "cosmos-sdk/DelegationResponse",
-  encode(message: DelegationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: DelegationResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.delegation !== undefined) {
       Delegation.encode(message.delegation, writer.uint32(10).fork()).ldelim();
     }
@@ -2897,8 +2879,8 @@ export const DelegationResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): DelegationResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): DelegationResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDelegationResponse();
     while (reader.pos < end) {
@@ -2929,7 +2911,7 @@ export const DelegationResponse = {
     message.balance !== undefined && (obj.balance = message.balance ? Coin.toJSON(message.balance) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<DelegationResponse>): DelegationResponse {
+  fromPartial(object: DeepPartial<DelegationResponse>): DelegationResponse {
     const message = createBaseDelegationResponse();
     message.delegation = object.delegation !== undefined && object.delegation !== null ? Delegation.fromPartial(object.delegation) : undefined;
     message.balance = object.balance !== undefined && object.balance !== null ? Coin.fromPartial(object.balance) : undefined;
@@ -2990,7 +2972,7 @@ function createBaseRedelegationEntryResponse(): RedelegationEntryResponse {
 export const RedelegationEntryResponse = {
   typeUrl: "/cosmos.staking.v1beta1.RedelegationEntryResponse",
   aminoType: "cosmos-sdk/RedelegationEntryResponse",
-  encode(message: RedelegationEntryResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: RedelegationEntryResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.redelegationEntry !== undefined) {
       RedelegationEntry.encode(message.redelegationEntry, writer.uint32(10).fork()).ldelim();
     }
@@ -2999,8 +2981,8 @@ export const RedelegationEntryResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): RedelegationEntryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): RedelegationEntryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRedelegationEntryResponse();
     while (reader.pos < end) {
@@ -3031,7 +3013,7 @@ export const RedelegationEntryResponse = {
     message.balance !== undefined && (obj.balance = message.balance);
     return obj;
   },
-  fromPartial(object: Partial<RedelegationEntryResponse>): RedelegationEntryResponse {
+  fromPartial(object: DeepPartial<RedelegationEntryResponse>): RedelegationEntryResponse {
     const message = createBaseRedelegationEntryResponse();
     message.redelegationEntry = object.redelegationEntry !== undefined && object.redelegationEntry !== null ? RedelegationEntry.fromPartial(object.redelegationEntry) : undefined;
     message.balance = object.balance ?? "";
@@ -3092,7 +3074,7 @@ function createBaseRedelegationResponse(): RedelegationResponse {
 export const RedelegationResponse = {
   typeUrl: "/cosmos.staking.v1beta1.RedelegationResponse",
   aminoType: "cosmos-sdk/RedelegationResponse",
-  encode(message: RedelegationResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: RedelegationResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.redelegation !== undefined) {
       Redelegation.encode(message.redelegation, writer.uint32(10).fork()).ldelim();
     }
@@ -3101,8 +3083,8 @@ export const RedelegationResponse = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): RedelegationResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): RedelegationResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRedelegationResponse();
     while (reader.pos < end) {
@@ -3137,7 +3119,7 @@ export const RedelegationResponse = {
     }
     return obj;
   },
-  fromPartial(object: Partial<RedelegationResponse>): RedelegationResponse {
+  fromPartial(object: DeepPartial<RedelegationResponse>): RedelegationResponse {
     const message = createBaseRedelegationResponse();
     message.redelegation = object.redelegation !== undefined && object.redelegation !== null ? Redelegation.fromPartial(object.redelegation) : undefined;
     message.entries = object.entries?.map(e => RedelegationEntryResponse.fromPartial(e)) || [];
@@ -3206,7 +3188,7 @@ function createBasePool(): Pool {
 export const Pool = {
   typeUrl: "/cosmos.staking.v1beta1.Pool",
   aminoType: "cosmos-sdk/Pool",
-  encode(message: Pool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Pool, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.notBondedTokens !== "") {
       writer.uint32(10).string(message.notBondedTokens);
     }
@@ -3215,8 +3197,8 @@ export const Pool = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Pool {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Pool {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePool();
     while (reader.pos < end) {
@@ -3247,7 +3229,7 @@ export const Pool = {
     message.bondedTokens !== undefined && (obj.bondedTokens = message.bondedTokens);
     return obj;
   },
-  fromPartial(object: Partial<Pool>): Pool {
+  fromPartial(object: DeepPartial<Pool>): Pool {
     const message = createBasePool();
     message.notBondedTokens = object.notBondedTokens ?? "";
     message.bondedTokens = object.bondedTokens ?? "";
@@ -3299,8 +3281,8 @@ export const Pool = {
     };
   }
 };
-export const Cosmos_cryptoPubKey_InterfaceDecoder = (input: _m0.Reader | Uint8Array): Any => {
-  const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+export const Cosmos_cryptoPubKey_InterfaceDecoder = (input: BinaryReader | Uint8Array): Any => {
+  const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
   const data = Any.decode(reader, reader.uint32());
   switch (data.typeUrl) {
     default:

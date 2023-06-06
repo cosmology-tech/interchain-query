@@ -1,5 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet, bytesFromBase64, base64FromBytes } from "../../helpers";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, bytesFromBase64, base64FromBytes, DeepPartial } from "../../helpers";
 /** PublicKey defines the keys available for use with Tendermint Validators */
 export interface PublicKey {
   ed25519?: Uint8Array;
@@ -31,7 +31,7 @@ function createBasePublicKey(): PublicKey {
 }
 export const PublicKey = {
   typeUrl: "/tendermint.crypto.PublicKey",
-  encode(message: PublicKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: PublicKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.ed25519 !== undefined) {
       writer.uint32(10).bytes(message.ed25519);
     }
@@ -40,8 +40,8 @@ export const PublicKey = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): PublicKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): PublicKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePublicKey();
     while (reader.pos < end) {
@@ -72,7 +72,7 @@ export const PublicKey = {
     message.secp256k1 !== undefined && (obj.secp256k1 = message.secp256k1 !== undefined ? base64FromBytes(message.secp256k1) : undefined);
     return obj;
   },
-  fromPartial(object: Partial<PublicKey>): PublicKey {
+  fromPartial(object: DeepPartial<PublicKey>): PublicKey {
     const message = createBasePublicKey();
     message.ed25519 = object.ed25519 ?? undefined;
     message.secp256k1 = object.secp256k1 ?? undefined;

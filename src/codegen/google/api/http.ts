@@ -1,5 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../helpers";
+import { BinaryReader, BinaryWriter } from "../../binary";
+import { isSet, DeepPartial } from "../../helpers";
 /**
  * Defines the HTTP configuration for an API service. It contains a list of
  * [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
@@ -1033,7 +1033,7 @@ function createBaseHttp(): Http {
 }
 export const Http = {
   typeUrl: "/google.api.Http",
-  encode(message: Http, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: Http, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.rules) {
       HttpRule.encode(v!, writer.uint32(10).fork()).ldelim();
     }
@@ -1042,8 +1042,8 @@ export const Http = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): Http {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): Http {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHttp();
     while (reader.pos < end) {
@@ -1078,7 +1078,7 @@ export const Http = {
     message.fullyDecodeReservedExpansion !== undefined && (obj.fullyDecodeReservedExpansion = message.fullyDecodeReservedExpansion);
     return obj;
   },
-  fromPartial(object: Partial<Http>): Http {
+  fromPartial(object: DeepPartial<Http>): Http {
     const message = createBaseHttp();
     message.rules = object.rules?.map(e => HttpRule.fromPartial(e)) || [];
     message.fullyDecodeReservedExpansion = object.fullyDecodeReservedExpansion ?? false;
@@ -1148,7 +1148,7 @@ function createBaseHttpRule(): HttpRule {
 }
 export const HttpRule = {
   typeUrl: "/google.api.HttpRule",
-  encode(message: HttpRule, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: HttpRule, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.selector !== "") {
       writer.uint32(10).string(message.selector);
     }
@@ -1181,8 +1181,8 @@ export const HttpRule = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): HttpRule {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): HttpRule {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseHttpRule();
     while (reader.pos < end) {
@@ -1257,7 +1257,7 @@ export const HttpRule = {
     }
     return obj;
   },
-  fromPartial(object: Partial<HttpRule>): HttpRule {
+  fromPartial(object: DeepPartial<HttpRule>): HttpRule {
     const message = createBaseHttpRule();
     message.selector = object.selector ?? "";
     message.get = object.get ?? undefined;
@@ -1359,7 +1359,7 @@ function createBaseCustomHttpPattern(): CustomHttpPattern {
 }
 export const CustomHttpPattern = {
   typeUrl: "/google.api.CustomHttpPattern",
-  encode(message: CustomHttpPattern, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CustomHttpPattern, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.kind !== "") {
       writer.uint32(10).string(message.kind);
     }
@@ -1368,8 +1368,8 @@ export const CustomHttpPattern = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CustomHttpPattern {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CustomHttpPattern {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCustomHttpPattern();
     while (reader.pos < end) {
@@ -1400,7 +1400,7 @@ export const CustomHttpPattern = {
     message.path !== undefined && (obj.path = message.path);
     return obj;
   },
-  fromPartial(object: Partial<CustomHttpPattern>): CustomHttpPattern {
+  fromPartial(object: DeepPartial<CustomHttpPattern>): CustomHttpPattern {
     const message = createBaseCustomHttpPattern();
     message.kind = object.kind ?? "";
     message.path = object.path ?? "";

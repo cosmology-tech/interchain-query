@@ -1,6 +1,6 @@
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
-import * as _m0 from "protobufjs/minimal";
-import { isSet } from "../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../binary";
+import { isSet, DeepPartial } from "../../../helpers";
 /**
  * LegacyAminoPubKey specifies a public key type
  * which nests multiple public keys and a threshold,
@@ -24,7 +24,7 @@ export interface LegacyAminoPubKeyAmino {
   public_keys: AnyAmino[];
 }
 export interface LegacyAminoPubKeyAminoMsg {
-  type: "tendermint/PubKeyMultisigThreshold";
+  type: "cosmos-sdk/LegacyAminoPubKey";
   value: LegacyAminoPubKeyAmino;
 }
 /**
@@ -44,8 +44,8 @@ function createBaseLegacyAminoPubKey(): LegacyAminoPubKey {
 }
 export const LegacyAminoPubKey = {
   typeUrl: "/cosmos.crypto.multisig.LegacyAminoPubKey",
-  aminoType: "tendermint/PubKeyMultisigThreshold",
-  encode(message: LegacyAminoPubKey, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  aminoType: "cosmos-sdk/LegacyAminoPubKey",
+  encode(message: LegacyAminoPubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.threshold !== 0) {
       writer.uint32(8).uint32(message.threshold);
     }
@@ -54,8 +54,8 @@ export const LegacyAminoPubKey = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): LegacyAminoPubKey {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): LegacyAminoPubKey {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLegacyAminoPubKey();
     while (reader.pos < end) {
@@ -90,7 +90,7 @@ export const LegacyAminoPubKey = {
     }
     return obj;
   },
-  fromPartial(object: Partial<LegacyAminoPubKey>): LegacyAminoPubKey {
+  fromPartial(object: DeepPartial<LegacyAminoPubKey>): LegacyAminoPubKey {
     const message = createBaseLegacyAminoPubKey();
     message.threshold = object.threshold ?? 0;
     message.publicKeys = object.publicKeys?.map(e => Any.fromPartial(e)) || [];
@@ -133,7 +133,7 @@ export const LegacyAminoPubKey = {
   },
   toAminoMsg(message: LegacyAminoPubKey): LegacyAminoPubKeyAminoMsg {
     return {
-      type: "tendermint/PubKeyMultisigThreshold",
+      type: "cosmos-sdk/LegacyAminoPubKey",
       value: LegacyAminoPubKey.toAmino(message)
     };
   },

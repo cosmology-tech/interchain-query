@@ -1,5 +1,5 @@
-import * as _m0 from "protobufjs/minimal";
-import { bytesFromBase64, base64FromBytes, isSet } from "../../../../helpers";
+import { BinaryReader, BinaryWriter } from "../../../../binary";
+import { bytesFromBase64, base64FromBytes, DeepPartial, isSet } from "../../../../helpers";
 /**
  * MultiSignature wraps the signatures from a multisig.LegacyAminoPubKey.
  * See cosmos.tx.v1betata1.ModeInfo.Multi for how to specify which signers
@@ -78,14 +78,14 @@ function createBaseMultiSignature(): MultiSignature {
 export const MultiSignature = {
   typeUrl: "/cosmos.crypto.multisig.v1beta1.MultiSignature",
   aminoType: "cosmos-sdk/MultiSignature",
-  encode(message: MultiSignature, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MultiSignature, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.signatures) {
       writer.uint32(10).bytes(v!);
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): MultiSignature {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): MultiSignature {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMultiSignature();
     while (reader.pos < end) {
@@ -115,7 +115,7 @@ export const MultiSignature = {
     }
     return obj;
   },
-  fromPartial(object: Partial<MultiSignature>): MultiSignature {
+  fromPartial(object: DeepPartial<MultiSignature>): MultiSignature {
     const message = createBaseMultiSignature();
     message.signatures = object.signatures?.map(e => e) || [];
     return message;
@@ -179,7 +179,7 @@ function createBaseCompactBitArray(): CompactBitArray {
 export const CompactBitArray = {
   typeUrl: "/cosmos.crypto.multisig.v1beta1.CompactBitArray",
   aminoType: "cosmos-sdk/CompactBitArray",
-  encode(message: CompactBitArray, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CompactBitArray, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.extraBitsStored !== 0) {
       writer.uint32(8).uint32(message.extraBitsStored);
     }
@@ -188,8 +188,8 @@ export const CompactBitArray = {
     }
     return writer;
   },
-  decode(input: _m0.Reader | Uint8Array, length?: number): CompactBitArray {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+  decode(input: BinaryReader | Uint8Array, length?: number): CompactBitArray {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCompactBitArray();
     while (reader.pos < end) {
@@ -220,7 +220,7 @@ export const CompactBitArray = {
     message.elems !== undefined && (obj.elems = base64FromBytes(message.elems !== undefined ? message.elems : new Uint8Array()));
     return obj;
   },
-  fromPartial(object: Partial<CompactBitArray>): CompactBitArray {
+  fromPartial(object: DeepPartial<CompactBitArray>): CompactBitArray {
     const message = createBaseCompactBitArray();
     message.extraBitsStored = object.extraBitsStored ?? 0;
     message.elems = object.elems ?? new Uint8Array();
