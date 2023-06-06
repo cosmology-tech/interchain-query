@@ -4,8 +4,11 @@ import { sync as rimraf } from 'rimraf';
 import { AMINO_MAP } from './aminos';
 
 const protoDirs = [
+  join(__dirname, '/../ics23/proto'),
   join(__dirname, '/../cosmos-sdk/proto'),
+  join(__dirname, '/../ibc-go/proto'),
   join(__dirname, '/../wasmd/proto'),
+  // join(__dirname, '/../osmosis/proto'),
   join(__dirname, '/../proto')
 ];
 const outPath = join(__dirname, '../src/codegen');

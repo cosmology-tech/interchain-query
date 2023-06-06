@@ -7,6 +7,3 @@
 [submodule "wasmd"]
 	path = wasmd
 	url = git@github.com:CosmWasm/wasmd.git
-[submodule "cosmos-sdk"]
-	path = cosmos-sdk
-	url = git@github.com:osmosis-labs/cosmos-sdk
