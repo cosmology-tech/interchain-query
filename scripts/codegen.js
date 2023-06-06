@@ -64,7 +64,9 @@ telescope({
       useOptionalNullable: true,
       allowUndefinedTypes: false
     },
-
+    reactQuery: {
+      enabled: true
+    },
     aminoEncoding: {
       enabled: true,
       useRecursiveV2encoding: true,

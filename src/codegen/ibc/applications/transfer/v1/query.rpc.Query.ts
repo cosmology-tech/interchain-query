@@ -1,6 +1,8 @@
 import { Rpc } from "../../../../helpers";
 import * as _m0 from "protobufjs/minimal";
-import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
+import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
+import { ReactQueryParams } from "../../../../react-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryDenomTraceRequest, QueryDenomTraceResponse, QueryDenomTracesRequest, QueryDenomTracesResponse, QueryParamsRequest, QueryParamsResponse, QueryDenomHashRequest, QueryDenomHashResponse, QueryEscrowAddressRequest, QueryEscrowAddressResponse, QueryTotalEscrowForDenomRequest, QueryTotalEscrowForDenomResponse } from "./query";
 /** Query provides defines the gRPC querier service. */
 export interface Query {
@@ -83,5 +85,98 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     totalEscrowForDenom(request: QueryTotalEscrowForDenomRequest): Promise<QueryTotalEscrowForDenomResponse> {
       return queryService.totalEscrowForDenom(request);
     }
+  };
+};
+export interface UseDenomTraceQuery<TData> extends ReactQueryParams<QueryDenomTraceResponse, TData> {
+  request: QueryDenomTraceRequest;
+}
+export interface UseDenomTracesQuery<TData> extends ReactQueryParams<QueryDenomTracesResponse, TData> {
+  request?: QueryDenomTracesRequest;
+}
+export interface UseParamsQuery<TData> extends ReactQueryParams<QueryParamsResponse, TData> {
+  request?: QueryParamsRequest;
+}
+export interface UseDenomHashQuery<TData> extends ReactQueryParams<QueryDenomHashResponse, TData> {
+  request: QueryDenomHashRequest;
+}
+export interface UseEscrowAddressQuery<TData> extends ReactQueryParams<QueryEscrowAddressResponse, TData> {
+  request: QueryEscrowAddressRequest;
+}
+export interface UseTotalEscrowForDenomQuery<TData> extends ReactQueryParams<QueryTotalEscrowForDenomResponse, TData> {
+  request: QueryTotalEscrowForDenomRequest;
+}
+const _queryClients: WeakMap<ProtobufRpcClient, QueryClientImpl> = new WeakMap();
+const getQueryService = (rpc: ProtobufRpcClient | undefined): QueryClientImpl | undefined => {
+  if (!rpc) return;
+  if (_queryClients.has(rpc)) {
+    return _queryClients.get(rpc);
+  }
+  const queryService = new QueryClientImpl(rpc);
+  _queryClients.set(rpc, queryService);
+  return queryService;
+};
+export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
+  const queryService = getQueryService(rpc);
+  const useDenomTrace = <TData = QueryDenomTraceResponse,>({
+    request,
+    options
+  }: UseDenomTraceQuery<TData>) => {
+    return useQuery<QueryDenomTraceResponse, Error, TData>(["denomTraceQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.denomTrace(request);
+    }, options);
+  };
+  const useDenomTraces = <TData = QueryDenomTracesResponse,>({
+    request,
+    options
+  }: UseDenomTracesQuery<TData>) => {
+    return useQuery<QueryDenomTracesResponse, Error, TData>(["denomTracesQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.denomTraces(request);
+    }, options);
+  };
+  const useParams = <TData = QueryParamsResponse,>({
+    request,
+    options
+  }: UseParamsQuery<TData>) => {
+    return useQuery<QueryParamsResponse, Error, TData>(["paramsQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.params(request);
+    }, options);
+  };
+  const useDenomHash = <TData = QueryDenomHashResponse,>({
+    request,
+    options
+  }: UseDenomHashQuery<TData>) => {
+    return useQuery<QueryDenomHashResponse, Error, TData>(["denomHashQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.denomHash(request);
+    }, options);
+  };
+  const useEscrowAddress = <TData = QueryEscrowAddressResponse,>({
+    request,
+    options
+  }: UseEscrowAddressQuery<TData>) => {
+    return useQuery<QueryEscrowAddressResponse, Error, TData>(["escrowAddressQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.escrowAddress(request);
+    }, options);
+  };
+  const useTotalEscrowForDenom = <TData = QueryTotalEscrowForDenomResponse,>({
+    request,
+    options
+  }: UseTotalEscrowForDenomQuery<TData>) => {
+    return useQuery<QueryTotalEscrowForDenomResponse, Error, TData>(["totalEscrowForDenomQuery", request], () => {
+      if (!queryService) throw new Error("Query Service not initialized");
+      return queryService.totalEscrowForDenom(request);
+    }, options);
+  };
+  return {
+    /** DenomTrace queries a denomination trace information. */useDenomTrace,
+    /** DenomTraces queries all denomination traces. */useDenomTraces,
+    /** Params queries all parameters of the ibc-transfer module. */useParams,
+    /** DenomHash queries a denomination hash information. */useDenomHash,
+    /** EscrowAddress returns the escrow address for a particular port and channel id. */useEscrowAddress,
+    /** TotalEscrowForDenom returns the total amount of tokens in escrow based on the denom. */useTotalEscrowForDenom
   };
 };
