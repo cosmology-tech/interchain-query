@@ -18,6 +18,7 @@ telescope({
   protoDirs,
   outPath,
   options: {
+    env: 'v-next',
     tsDisable: {
       files: [
         'cosmos/authz/v1beta1/tx.amino.ts',

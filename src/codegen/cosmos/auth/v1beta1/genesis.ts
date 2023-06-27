@@ -5,7 +5,7 @@ import { isSet, DeepPartial } from "../../../helpers";
 /** GenesisState defines the auth module's genesis state. */
 export interface GenesisState {
   /** params defines all the paramaters of the module. */
-  params?: Params;
+  params: Params;
   /** accounts are the accounts present at genesis. */
   accounts: Any[];
 }
@@ -26,12 +26,12 @@ export interface GenesisStateAminoMsg {
 }
 /** GenesisState defines the auth module's genesis state. */
 export interface GenesisStateSDKType {
-  params?: ParamsSDKType;
+  params: ParamsSDKType;
   accounts: AnySDKType[];
 }
 function createBaseGenesisState(): GenesisState {
   return {
-    params: undefined,
+    params: Params.fromPartial({}),
     accounts: []
   };
 }

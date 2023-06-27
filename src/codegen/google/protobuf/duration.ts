@@ -212,7 +212,7 @@ export interface DurationSDKType {
 }
 function createBaseDuration(): Duration {
   return {
-    seconds: BigInt("0"),
+    seconds: BigInt(0),
     nanos: 0
   };
 }
@@ -235,7 +235,7 @@ export const Duration = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.seconds = BigInt(reader.int64().toString());
+          message.seconds = reader.int64();
           break;
         case 2:
           message.nanos = reader.int32();
@@ -249,19 +249,19 @@ export const Duration = {
   },
   fromJSON(object: any): Duration {
     return {
-      seconds: isSet(object.seconds) ? BigInt(object.seconds.toString()) : BigInt("0"),
+      seconds: isSet(object.seconds) ? BigInt(object.seconds.toString()) : BigInt(0),
       nanos: isSet(object.nanos) ? Number(object.nanos) : 0
     };
   },
   toJSON(message: Duration): unknown {
     const obj: any = {};
-    message.seconds !== undefined && (obj.seconds = (message.seconds || BigInt("0")).toString());
+    message.seconds !== undefined && (obj.seconds = (message.seconds || BigInt(0)).toString());
     message.nanos !== undefined && (obj.nanos = Math.round(message.nanos));
     return obj;
   },
   fromPartial(object: DeepPartial<Duration>): Duration {
     const message = createBaseDuration();
-    message.seconds = object.seconds !== undefined && object.seconds !== null ? BigInt(object.seconds.toString()) : BigInt("0");
+    message.seconds = object.seconds !== undefined && object.seconds !== null ? BigInt(object.seconds.toString()) : BigInt(0);
     message.nanos = object.nanos ?? 0;
     return message;
   },
@@ -278,14 +278,14 @@ export const Duration = {
     return obj;
   },
   fromAmino(object: DurationAmino): Duration {
-    const value = parseInt(object);
+    const value = BigInt(object);
     return {
-      seconds: BigInt(Math.floor(value / 1_000_000_000)),
-      nanos: value % 1_000_000_000
+      seconds: value / BigInt("1000000000"),
+      nanos: Number(value % BigInt("1000000000"))
     };
   },
   toAmino(message: Duration): DurationAmino {
-    return (message.seconds.toInt() * 1_000_000_000 + message.nanos).toString();
+    return (message.seconds * BigInt("1000000000") + BigInt(message.nanos)).toString();
   },
   fromAminoMsg(object: DurationAminoMsg): Duration {
     return Duration.fromAmino(object.value);

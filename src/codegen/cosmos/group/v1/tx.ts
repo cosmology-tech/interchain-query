@@ -1,5 +1,5 @@
-import { Member, MemberAmino, MemberSDKType, VoteOption, ThresholdDecisionPolicy, ThresholdDecisionPolicyProtoMsg, ThresholdDecisionPolicySDKType, PercentageDecisionPolicy, PercentageDecisionPolicyProtoMsg, PercentageDecisionPolicySDKType, voteOptionFromJSON, voteOptionToJSON } from "./types";
-import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
+import { Member, MemberAmino, MemberSDKType, VoteOption, voteOptionFromJSON, voteOptionToJSON } from "./types";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial } from "../../../helpers";
 /** Exec defines modes of execution of a proposal on creation or on new vote. */
@@ -252,15 +252,12 @@ export interface MsgCreateGroupPolicy {
   /** metadata is any arbitrary metadata attached to the group policy. */
   metadata: string;
   /** decision_policy specifies the group policy's decision policy. */
-  decisionPolicy?: (ThresholdDecisionPolicy & PercentageDecisionPolicy & Any) | undefined;
+  decisionPolicy: Any;
 }
 export interface MsgCreateGroupPolicyProtoMsg {
   typeUrl: "/cosmos.group.v1.MsgCreateGroupPolicy";
   value: Uint8Array;
 }
-export type MsgCreateGroupPolicyEncoded = Omit<MsgCreateGroupPolicy, "decisionPolicy"> & {
-  /** decision_policy specifies the group policy's decision policy. */decisionPolicy?: ThresholdDecisionPolicyProtoMsg | PercentageDecisionPolicyProtoMsg | AnyProtoMsg | undefined;
-};
 /** MsgCreateGroupPolicy is the Msg/CreateGroupPolicy request type. */
 export interface MsgCreateGroupPolicyAmino {
   /** admin is the account address of the group admin. */
@@ -281,7 +278,7 @@ export interface MsgCreateGroupPolicySDKType {
   admin: string;
   group_id: bigint;
   metadata: string;
-  decision_policy?: ThresholdDecisionPolicySDKType | PercentageDecisionPolicySDKType | AnySDKType | undefined;
+  decision_policy: AnySDKType;
 }
 /** MsgCreateGroupPolicyResponse is the Msg/CreateGroupPolicy response type. */
 export interface MsgCreateGroupPolicyResponse {
@@ -350,15 +347,12 @@ export interface MsgCreateGroupWithPolicy {
   /** group_policy_as_admin is a boolean field, if set to true, the group policy account address will be used as group and group policy admin. */
   groupPolicyAsAdmin: boolean;
   /** decision_policy specifies the group policy's decision policy. */
-  decisionPolicy?: (ThresholdDecisionPolicy & PercentageDecisionPolicy & Any) | undefined;
+  decisionPolicy: Any;
 }
 export interface MsgCreateGroupWithPolicyProtoMsg {
   typeUrl: "/cosmos.group.v1.MsgCreateGroupWithPolicy";
   value: Uint8Array;
 }
-export type MsgCreateGroupWithPolicyEncoded = Omit<MsgCreateGroupWithPolicy, "decisionPolicy"> & {
-  /** decision_policy specifies the group policy's decision policy. */decisionPolicy?: ThresholdDecisionPolicyProtoMsg | PercentageDecisionPolicyProtoMsg | AnyProtoMsg | undefined;
-};
 /** MsgCreateGroupWithPolicy is the Msg/CreateGroupWithPolicy request type. */
 export interface MsgCreateGroupWithPolicyAmino {
   /** admin is the account address of the group and group policy admin. */
@@ -385,7 +379,7 @@ export interface MsgCreateGroupWithPolicySDKType {
   group_metadata: string;
   group_policy_metadata: string;
   group_policy_as_admin: boolean;
-  decision_policy?: ThresholdDecisionPolicySDKType | PercentageDecisionPolicySDKType | AnySDKType | undefined;
+  decision_policy: AnySDKType;
 }
 /** MsgCreateGroupWithPolicyResponse is the Msg/CreateGroupWithPolicy response type. */
 export interface MsgCreateGroupWithPolicyResponse {
@@ -435,15 +429,12 @@ export interface MsgUpdateGroupPolicyDecisionPolicy {
   /** address is the account address of group policy. */
   address: string;
   /** decision_policy is the updated group policy's decision policy. */
-  decisionPolicy?: (ThresholdDecisionPolicy & PercentageDecisionPolicy & Any) | undefined;
+  decisionPolicy: Any;
 }
 export interface MsgUpdateGroupPolicyDecisionPolicyProtoMsg {
   typeUrl: "/cosmos.group.v1.MsgUpdateGroupPolicyDecisionPolicy";
   value: Uint8Array;
 }
-export type MsgUpdateGroupPolicyDecisionPolicyEncoded = Omit<MsgUpdateGroupPolicyDecisionPolicy, "decisionPolicy"> & {
-  /** decision_policy is the updated group policy's decision policy. */decisionPolicy?: ThresholdDecisionPolicyProtoMsg | PercentageDecisionPolicyProtoMsg | AnyProtoMsg | undefined;
-};
 /** MsgUpdateGroupPolicyDecisionPolicy is the Msg/UpdateGroupPolicyDecisionPolicy request type. */
 export interface MsgUpdateGroupPolicyDecisionPolicyAmino {
   /** admin is the account address of the group admin. */
@@ -461,7 +452,7 @@ export interface MsgUpdateGroupPolicyDecisionPolicyAminoMsg {
 export interface MsgUpdateGroupPolicyDecisionPolicySDKType {
   admin: string;
   address: string;
-  decision_policy?: ThresholdDecisionPolicySDKType | PercentageDecisionPolicySDKType | AnySDKType | undefined;
+  decision_policy: AnySDKType;
 }
 /** MsgUpdateGroupPolicyDecisionPolicyResponse is the Msg/UpdateGroupPolicyDecisionPolicy response type. */
 export interface MsgUpdateGroupPolicyDecisionPolicyResponse {}
@@ -916,7 +907,7 @@ export const MsgCreateGroup = {
 };
 function createBaseMsgCreateGroupResponse(): MsgCreateGroupResponse {
   return {
-    groupId: BigInt("0")
+    groupId: BigInt(0)
   };
 }
 export const MsgCreateGroupResponse = {
@@ -936,7 +927,7 @@ export const MsgCreateGroupResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.groupId = BigInt(reader.uint64().toString());
+          message.groupId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -947,17 +938,17 @@ export const MsgCreateGroupResponse = {
   },
   fromJSON(object: any): MsgCreateGroupResponse {
     return {
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt("0")
+      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgCreateGroupResponse): unknown {
     const obj: any = {};
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt("0")).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: DeepPartial<MsgCreateGroupResponse>): MsgCreateGroupResponse {
     const message = createBaseMsgCreateGroupResponse();
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt("0");
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: MsgCreateGroupResponseSDKType): MsgCreateGroupResponse {
@@ -1005,7 +996,7 @@ export const MsgCreateGroupResponse = {
 function createBaseMsgUpdateGroupMembers(): MsgUpdateGroupMembers {
   return {
     admin: "",
-    groupId: BigInt("0"),
+    groupId: BigInt(0),
     memberUpdates: []
   };
 }
@@ -1035,7 +1026,7 @@ export const MsgUpdateGroupMembers = {
           message.admin = reader.string();
           break;
         case 2:
-          message.groupId = BigInt(reader.uint64().toString());
+          message.groupId = reader.uint64();
           break;
         case 3:
           message.memberUpdates.push(Member.decode(reader, reader.uint32()));
@@ -1050,14 +1041,14 @@ export const MsgUpdateGroupMembers = {
   fromJSON(object: any): MsgUpdateGroupMembers {
     return {
       admin: isSet(object.admin) ? String(object.admin) : "",
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt("0"),
+      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0),
       memberUpdates: Array.isArray(object?.memberUpdates) ? object.memberUpdates.map((e: any) => Member.fromJSON(e)) : []
     };
   },
   toJSON(message: MsgUpdateGroupMembers): unknown {
     const obj: any = {};
     message.admin !== undefined && (obj.admin = message.admin);
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt("0")).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
     if (message.memberUpdates) {
       obj.memberUpdates = message.memberUpdates.map(e => e ? Member.toJSON(e) : undefined);
     } else {
@@ -1068,7 +1059,7 @@ export const MsgUpdateGroupMembers = {
   fromPartial(object: DeepPartial<MsgUpdateGroupMembers>): MsgUpdateGroupMembers {
     const message = createBaseMsgUpdateGroupMembers();
     message.admin = object.admin ?? "";
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt("0");
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
     message.memberUpdates = object.memberUpdates?.map(e => Member.fromPartial(e)) || [];
     return message;
   },
@@ -1203,7 +1194,7 @@ export const MsgUpdateGroupMembersResponse = {
 function createBaseMsgUpdateGroupAdmin(): MsgUpdateGroupAdmin {
   return {
     admin: "",
-    groupId: BigInt("0"),
+    groupId: BigInt(0),
     newAdmin: ""
   };
 }
@@ -1233,7 +1224,7 @@ export const MsgUpdateGroupAdmin = {
           message.admin = reader.string();
           break;
         case 2:
-          message.groupId = BigInt(reader.uint64().toString());
+          message.groupId = reader.uint64();
           break;
         case 3:
           message.newAdmin = reader.string();
@@ -1248,21 +1239,21 @@ export const MsgUpdateGroupAdmin = {
   fromJSON(object: any): MsgUpdateGroupAdmin {
     return {
       admin: isSet(object.admin) ? String(object.admin) : "",
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt("0"),
+      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0),
       newAdmin: isSet(object.newAdmin) ? String(object.newAdmin) : ""
     };
   },
   toJSON(message: MsgUpdateGroupAdmin): unknown {
     const obj: any = {};
     message.admin !== undefined && (obj.admin = message.admin);
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt("0")).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
     message.newAdmin !== undefined && (obj.newAdmin = message.newAdmin);
     return obj;
   },
   fromPartial(object: DeepPartial<MsgUpdateGroupAdmin>): MsgUpdateGroupAdmin {
     const message = createBaseMsgUpdateGroupAdmin();
     message.admin = object.admin ?? "";
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt("0");
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
     message.newAdmin = object.newAdmin ?? "";
     return message;
   },
@@ -1389,7 +1380,7 @@ export const MsgUpdateGroupAdminResponse = {
 function createBaseMsgUpdateGroupMetadata(): MsgUpdateGroupMetadata {
   return {
     admin: "",
-    groupId: BigInt("0"),
+    groupId: BigInt(0),
     metadata: ""
   };
 }
@@ -1419,7 +1410,7 @@ export const MsgUpdateGroupMetadata = {
           message.admin = reader.string();
           break;
         case 2:
-          message.groupId = BigInt(reader.uint64().toString());
+          message.groupId = reader.uint64();
           break;
         case 3:
           message.metadata = reader.string();
@@ -1434,21 +1425,21 @@ export const MsgUpdateGroupMetadata = {
   fromJSON(object: any): MsgUpdateGroupMetadata {
     return {
       admin: isSet(object.admin) ? String(object.admin) : "",
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt("0"),
+      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0),
       metadata: isSet(object.metadata) ? String(object.metadata) : ""
     };
   },
   toJSON(message: MsgUpdateGroupMetadata): unknown {
     const obj: any = {};
     message.admin !== undefined && (obj.admin = message.admin);
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt("0")).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
     message.metadata !== undefined && (obj.metadata = message.metadata);
     return obj;
   },
   fromPartial(object: DeepPartial<MsgUpdateGroupMetadata>): MsgUpdateGroupMetadata {
     const message = createBaseMsgUpdateGroupMetadata();
     message.admin = object.admin ?? "";
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt("0");
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
     message.metadata = object.metadata ?? "";
     return message;
   },
@@ -1575,7 +1566,7 @@ export const MsgUpdateGroupMetadataResponse = {
 function createBaseMsgCreateGroupPolicy(): MsgCreateGroupPolicy {
   return {
     admin: "",
-    groupId: BigInt("0"),
+    groupId: BigInt(0),
     metadata: "",
     decisionPolicy: undefined
   };
@@ -1594,7 +1585,7 @@ export const MsgCreateGroupPolicy = {
       writer.uint32(26).string(message.metadata);
     }
     if (message.decisionPolicy !== undefined) {
-      Any.encode((message.decisionPolicy as Any), writer.uint32(34).fork()).ldelim();
+      Any.encode(message.decisionPolicy, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -1609,13 +1600,13 @@ export const MsgCreateGroupPolicy = {
           message.admin = reader.string();
           break;
         case 2:
-          message.groupId = BigInt(reader.uint64().toString());
+          message.groupId = reader.uint64();
           break;
         case 3:
           message.metadata = reader.string();
           break;
         case 4:
-          message.decisionPolicy = (Cosmos_groupDecisionPolicy_InterfaceDecoder(reader) as Any);
+          message.decisionPolicy = Any.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1627,7 +1618,7 @@ export const MsgCreateGroupPolicy = {
   fromJSON(object: any): MsgCreateGroupPolicy {
     return {
       admin: isSet(object.admin) ? String(object.admin) : "",
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt("0"),
+      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0),
       metadata: isSet(object.metadata) ? String(object.metadata) : "",
       decisionPolicy: isSet(object.decisionPolicy) ? Any.fromJSON(object.decisionPolicy) : undefined
     };
@@ -1635,7 +1626,7 @@ export const MsgCreateGroupPolicy = {
   toJSON(message: MsgCreateGroupPolicy): unknown {
     const obj: any = {};
     message.admin !== undefined && (obj.admin = message.admin);
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt("0")).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
     message.metadata !== undefined && (obj.metadata = message.metadata);
     message.decisionPolicy !== undefined && (obj.decisionPolicy = message.decisionPolicy ? Any.toJSON(message.decisionPolicy) : undefined);
     return obj;
@@ -1643,7 +1634,7 @@ export const MsgCreateGroupPolicy = {
   fromPartial(object: DeepPartial<MsgCreateGroupPolicy>): MsgCreateGroupPolicy {
     const message = createBaseMsgCreateGroupPolicy();
     message.admin = object.admin ?? "";
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt("0");
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
     message.metadata = object.metadata ?? "";
     message.decisionPolicy = object.decisionPolicy !== undefined && object.decisionPolicy !== null ? Any.fromPartial(object.decisionPolicy) : undefined;
     return message;
@@ -1669,7 +1660,7 @@ export const MsgCreateGroupPolicy = {
       admin: object.admin,
       groupId: BigInt(object.group_id),
       metadata: object.metadata,
-      decisionPolicy: object?.decision_policy ? Cosmos_groupDecisionPolicy_FromAmino(object.decision_policy) : undefined
+      decisionPolicy: object?.decision_policy ? Any.fromAmino(object.decision_policy) : undefined
     };
   },
   toAmino(message: MsgCreateGroupPolicy): MsgCreateGroupPolicyAmino {
@@ -1677,7 +1668,7 @@ export const MsgCreateGroupPolicy = {
     obj.admin = message.admin;
     obj.group_id = message.groupId ? message.groupId.toString() : undefined;
     obj.metadata = message.metadata;
-    obj.decision_policy = message.decisionPolicy ? Cosmos_groupDecisionPolicy_ToAmino((message.decisionPolicy as Any)) : undefined;
+    obj.decision_policy = message.decisionPolicy ? Any.toAmino(message.decisionPolicy) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCreateGroupPolicyAminoMsg): MsgCreateGroupPolicy {
@@ -1936,7 +1927,7 @@ export const MsgCreateGroupWithPolicy = {
       writer.uint32(40).bool(message.groupPolicyAsAdmin);
     }
     if (message.decisionPolicy !== undefined) {
-      Any.encode((message.decisionPolicy as Any), writer.uint32(50).fork()).ldelim();
+      Any.encode(message.decisionPolicy, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
@@ -1963,7 +1954,7 @@ export const MsgCreateGroupWithPolicy = {
           message.groupPolicyAsAdmin = reader.bool();
           break;
         case 6:
-          message.decisionPolicy = (Cosmos_groupDecisionPolicy_InterfaceDecoder(reader) as Any);
+          message.decisionPolicy = Any.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2037,7 +2028,7 @@ export const MsgCreateGroupWithPolicy = {
       groupMetadata: object.group_metadata,
       groupPolicyMetadata: object.group_policy_metadata,
       groupPolicyAsAdmin: object.group_policy_as_admin,
-      decisionPolicy: object?.decision_policy ? Cosmos_groupDecisionPolicy_FromAmino(object.decision_policy) : undefined
+      decisionPolicy: object?.decision_policy ? Any.fromAmino(object.decision_policy) : undefined
     };
   },
   toAmino(message: MsgCreateGroupWithPolicy): MsgCreateGroupWithPolicyAmino {
@@ -2051,7 +2042,7 @@ export const MsgCreateGroupWithPolicy = {
     obj.group_metadata = message.groupMetadata;
     obj.group_policy_metadata = message.groupPolicyMetadata;
     obj.group_policy_as_admin = message.groupPolicyAsAdmin;
-    obj.decision_policy = message.decisionPolicy ? Cosmos_groupDecisionPolicy_ToAmino((message.decisionPolicy as Any)) : undefined;
+    obj.decision_policy = message.decisionPolicy ? Any.toAmino(message.decisionPolicy) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgCreateGroupWithPolicyAminoMsg): MsgCreateGroupWithPolicy {
@@ -2078,7 +2069,7 @@ export const MsgCreateGroupWithPolicy = {
 };
 function createBaseMsgCreateGroupWithPolicyResponse(): MsgCreateGroupWithPolicyResponse {
   return {
-    groupId: BigInt("0"),
+    groupId: BigInt(0),
     groupPolicyAddress: ""
   };
 }
@@ -2102,7 +2093,7 @@ export const MsgCreateGroupWithPolicyResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.groupId = BigInt(reader.uint64().toString());
+          message.groupId = reader.uint64();
           break;
         case 2:
           message.groupPolicyAddress = reader.string();
@@ -2116,19 +2107,19 @@ export const MsgCreateGroupWithPolicyResponse = {
   },
   fromJSON(object: any): MsgCreateGroupWithPolicyResponse {
     return {
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt("0"),
+      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0),
       groupPolicyAddress: isSet(object.groupPolicyAddress) ? String(object.groupPolicyAddress) : ""
     };
   },
   toJSON(message: MsgCreateGroupWithPolicyResponse): unknown {
     const obj: any = {};
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt("0")).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
     message.groupPolicyAddress !== undefined && (obj.groupPolicyAddress = message.groupPolicyAddress);
     return obj;
   },
   fromPartial(object: DeepPartial<MsgCreateGroupWithPolicyResponse>): MsgCreateGroupWithPolicyResponse {
     const message = createBaseMsgCreateGroupWithPolicyResponse();
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt("0");
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
     message.groupPolicyAddress = object.groupPolicyAddress ?? "";
     return message;
   },
@@ -2266,7 +2257,7 @@ export const MsgUpdateGroupPolicyDecisionPolicy = {
       writer.uint32(18).string(message.address);
     }
     if (message.decisionPolicy !== undefined) {
-      Any.encode((message.decisionPolicy as Any), writer.uint32(26).fork()).ldelim();
+      Any.encode(message.decisionPolicy, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -2284,7 +2275,7 @@ export const MsgUpdateGroupPolicyDecisionPolicy = {
           message.address = reader.string();
           break;
         case 3:
-          message.decisionPolicy = (Cosmos_groupDecisionPolicy_InterfaceDecoder(reader) as Any);
+          message.decisionPolicy = Any.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2332,14 +2323,14 @@ export const MsgUpdateGroupPolicyDecisionPolicy = {
     return {
       admin: object.admin,
       address: object.address,
-      decisionPolicy: object?.decision_policy ? Cosmos_groupDecisionPolicy_FromAmino(object.decision_policy) : undefined
+      decisionPolicy: object?.decision_policy ? Any.fromAmino(object.decision_policy) : undefined
     };
   },
   toAmino(message: MsgUpdateGroupPolicyDecisionPolicy): MsgUpdateGroupPolicyDecisionPolicyAmino {
     const obj: any = {};
     obj.admin = message.admin;
     obj.address = message.address;
-    obj.decision_policy = message.decisionPolicy ? Cosmos_groupDecisionPolicy_ToAmino((message.decisionPolicy as Any)) : undefined;
+    obj.decision_policy = message.decisionPolicy ? Any.toAmino(message.decisionPolicy) : undefined;
     return obj;
   },
   fromAminoMsg(object: MsgUpdateGroupPolicyDecisionPolicyAminoMsg): MsgUpdateGroupPolicyDecisionPolicy {
@@ -2685,7 +2676,7 @@ export const MsgSubmitProposal = {
       proposers: Array.isArray(object?.proposers) ? object.proposers.map((e: any) => String(e)) : [],
       metadata: isSet(object.metadata) ? String(object.metadata) : "",
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromJSON(e)) : [],
-      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : -1
     };
   },
   toJSON(message: MsgSubmitProposal): unknown {
@@ -2720,7 +2711,7 @@ export const MsgSubmitProposal = {
       proposers: Array.isArray(object?.proposers) ? object.proposers.map((e: any) => e) : [],
       metadata: object?.metadata,
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromSDK(e)) : [],
-      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : -1
     };
   },
   toSDK(message: MsgSubmitProposal): MsgSubmitProposalSDKType {
@@ -2746,7 +2737,7 @@ export const MsgSubmitProposal = {
       proposers: Array.isArray(object?.proposers) ? object.proposers.map((e: any) => e) : [],
       metadata: object.metadata,
       messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Any.fromAmino(e)) : [],
-      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : -1
     };
   },
   toAmino(message: MsgSubmitProposal): MsgSubmitProposalAmino {
@@ -2790,7 +2781,7 @@ export const MsgSubmitProposal = {
 };
 function createBaseMsgSubmitProposalResponse(): MsgSubmitProposalResponse {
   return {
-    proposalId: BigInt("0")
+    proposalId: BigInt(0)
   };
 }
 export const MsgSubmitProposalResponse = {
@@ -2810,7 +2801,7 @@ export const MsgSubmitProposalResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = BigInt(reader.uint64().toString());
+          message.proposalId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -2821,17 +2812,17 @@ export const MsgSubmitProposalResponse = {
   },
   fromJSON(object: any): MsgSubmitProposalResponse {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt("0")
+      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgSubmitProposalResponse): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt("0")).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: DeepPartial<MsgSubmitProposalResponse>): MsgSubmitProposalResponse {
     const message = createBaseMsgSubmitProposalResponse();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt("0");
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: MsgSubmitProposalResponseSDKType): MsgSubmitProposalResponse {
@@ -2878,7 +2869,7 @@ export const MsgSubmitProposalResponse = {
 };
 function createBaseMsgWithdrawProposal(): MsgWithdrawProposal {
   return {
-    proposalId: BigInt("0"),
+    proposalId: BigInt(0),
     address: ""
   };
 }
@@ -2902,7 +2893,7 @@ export const MsgWithdrawProposal = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = BigInt(reader.uint64().toString());
+          message.proposalId = reader.uint64();
           break;
         case 2:
           message.address = reader.string();
@@ -2916,19 +2907,19 @@ export const MsgWithdrawProposal = {
   },
   fromJSON(object: any): MsgWithdrawProposal {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt("0"),
+      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0),
       address: isSet(object.address) ? String(object.address) : ""
     };
   },
   toJSON(message: MsgWithdrawProposal): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt("0")).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.address !== undefined && (obj.address = message.address);
     return obj;
   },
   fromPartial(object: DeepPartial<MsgWithdrawProposal>): MsgWithdrawProposal {
     const message = createBaseMsgWithdrawProposal();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt("0");
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
     message.address = object.address ?? "";
     return message;
   },
@@ -3050,7 +3041,7 @@ export const MsgWithdrawProposalResponse = {
 };
 function createBaseMsgVote(): MsgVote {
   return {
-    proposalId: BigInt("0"),
+    proposalId: BigInt(0),
     voter: "",
     option: 0,
     metadata: "",
@@ -3086,7 +3077,7 @@ export const MsgVote = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = BigInt(reader.uint64().toString());
+          message.proposalId = reader.uint64();
           break;
         case 2:
           message.voter = reader.string();
@@ -3109,16 +3100,16 @@ export const MsgVote = {
   },
   fromJSON(object: any): MsgVote {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt("0"),
+      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0),
       voter: isSet(object.voter) ? String(object.voter) : "",
-      option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
+      option: isSet(object.option) ? voteOptionFromJSON(object.option) : -1,
       metadata: isSet(object.metadata) ? String(object.metadata) : "",
-      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : -1
     };
   },
   toJSON(message: MsgVote): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt("0")).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.voter !== undefined && (obj.voter = message.voter);
     message.option !== undefined && (obj.option = voteOptionToJSON(message.option));
     message.metadata !== undefined && (obj.metadata = message.metadata);
@@ -3127,7 +3118,7 @@ export const MsgVote = {
   },
   fromPartial(object: DeepPartial<MsgVote>): MsgVote {
     const message = createBaseMsgVote();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt("0");
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
     message.voter = object.voter ?? "";
     message.option = object.option ?? 0;
     message.metadata = object.metadata ?? "";
@@ -3138,9 +3129,9 @@ export const MsgVote = {
     return {
       proposalId: object?.proposal_id,
       voter: object?.voter,
-      option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
+      option: isSet(object.option) ? voteOptionFromJSON(object.option) : -1,
       metadata: object?.metadata,
-      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : -1
     };
   },
   toSDK(message: MsgVote): MsgVoteSDKType {
@@ -3156,9 +3147,9 @@ export const MsgVote = {
     return {
       proposalId: BigInt(object.proposal_id),
       voter: object.voter,
-      option: isSet(object.option) ? voteOptionFromJSON(object.option) : 0,
+      option: isSet(object.option) ? voteOptionFromJSON(object.option) : -1,
       metadata: object.metadata,
-      exec: isSet(object.exec) ? execFromJSON(object.exec) : 0
+      exec: isSet(object.exec) ? execFromJSON(object.exec) : -1
     };
   },
   toAmino(message: MsgVote): MsgVoteAmino {
@@ -3264,7 +3255,7 @@ export const MsgVoteResponse = {
 };
 function createBaseMsgExec(): MsgExec {
   return {
-    proposalId: BigInt("0"),
+    proposalId: BigInt(0),
     signer: ""
   };
 }
@@ -3288,7 +3279,7 @@ export const MsgExec = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.proposalId = BigInt(reader.uint64().toString());
+          message.proposalId = reader.uint64();
           break;
         case 2:
           message.signer = reader.string();
@@ -3302,19 +3293,19 @@ export const MsgExec = {
   },
   fromJSON(object: any): MsgExec {
     return {
-      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt("0"),
+      proposalId: isSet(object.proposalId) ? BigInt(object.proposalId.toString()) : BigInt(0),
       signer: isSet(object.signer) ? String(object.signer) : ""
     };
   },
   toJSON(message: MsgExec): unknown {
     const obj: any = {};
-    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt("0")).toString());
+    message.proposalId !== undefined && (obj.proposalId = (message.proposalId || BigInt(0)).toString());
     message.signer !== undefined && (obj.signer = message.signer);
     return obj;
   },
   fromPartial(object: DeepPartial<MsgExec>): MsgExec {
     const message = createBaseMsgExec();
-    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt("0");
+    message.proposalId = object.proposalId !== undefined && object.proposalId !== null ? BigInt(object.proposalId.toString()) : BigInt(0);
     message.signer = object.signer ?? "";
     return message;
   },
@@ -3437,7 +3428,7 @@ export const MsgExecResponse = {
 function createBaseMsgLeaveGroup(): MsgLeaveGroup {
   return {
     address: "",
-    groupId: BigInt("0")
+    groupId: BigInt(0)
   };
 }
 export const MsgLeaveGroup = {
@@ -3463,7 +3454,7 @@ export const MsgLeaveGroup = {
           message.address = reader.string();
           break;
         case 2:
-          message.groupId = BigInt(reader.uint64().toString());
+          message.groupId = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -3475,19 +3466,19 @@ export const MsgLeaveGroup = {
   fromJSON(object: any): MsgLeaveGroup {
     return {
       address: isSet(object.address) ? String(object.address) : "",
-      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt("0")
+      groupId: isSet(object.groupId) ? BigInt(object.groupId.toString()) : BigInt(0)
     };
   },
   toJSON(message: MsgLeaveGroup): unknown {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
-    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt("0")).toString());
+    message.groupId !== undefined && (obj.groupId = (message.groupId || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: DeepPartial<MsgLeaveGroup>): MsgLeaveGroup {
     const message = createBaseMsgLeaveGroup();
     message.address = object.address ?? "";
-    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt("0");
+    message.groupId = object.groupId !== undefined && object.groupId !== null ? BigInt(object.groupId.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: MsgLeaveGroupSDKType): MsgLeaveGroup {
@@ -3604,49 +3595,5 @@ export const MsgLeaveGroupResponse = {
       typeUrl: "/cosmos.group.v1.MsgLeaveGroupResponse",
       value: MsgLeaveGroupResponse.encode(message).finish()
     };
-  }
-};
-export const Cosmos_groupDecisionPolicy_InterfaceDecoder = (input: BinaryReader | Uint8Array): ThresholdDecisionPolicy | PercentageDecisionPolicy | Any => {
-  const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-  const data = Any.decode(reader, reader.uint32());
-  switch (data.typeUrl) {
-    case "/cosmos.group.v1.ThresholdDecisionPolicy":
-      return ThresholdDecisionPolicy.decode(data.value);
-    case "/cosmos.group.v1.PercentageDecisionPolicy":
-      return PercentageDecisionPolicy.decode(data.value);
-    default:
-      return data;
-  }
-};
-export const Cosmos_groupDecisionPolicy_FromAmino = (content: AnyAmino) => {
-  switch (content.type) {
-    case "cosmos-sdk/ThresholdDecisionPolicy":
-      return Any.fromPartial({
-        typeUrl: "/cosmos.group.v1.ThresholdDecisionPolicy",
-        value: ThresholdDecisionPolicy.encode(ThresholdDecisionPolicy.fromPartial(ThresholdDecisionPolicy.fromAmino(content.value))).finish()
-      });
-    case "cosmos-sdk/PercentageDecisionPolicy":
-      return Any.fromPartial({
-        typeUrl: "/cosmos.group.v1.PercentageDecisionPolicy",
-        value: PercentageDecisionPolicy.encode(PercentageDecisionPolicy.fromPartial(PercentageDecisionPolicy.fromAmino(content.value))).finish()
-      });
-    default:
-      return Any.fromAmino(content);
-  }
-};
-export const Cosmos_groupDecisionPolicy_ToAmino = (content: Any) => {
-  switch (content.typeUrl) {
-    case "/cosmos.group.v1.ThresholdDecisionPolicy":
-      return {
-        type: "cosmos-sdk/ThresholdDecisionPolicy",
-        value: ThresholdDecisionPolicy.toAmino(ThresholdDecisionPolicy.decode(content.value))
-      };
-    case "/cosmos.group.v1.PercentageDecisionPolicy":
-      return {
-        type: "cosmos-sdk/PercentageDecisionPolicy",
-        value: PercentageDecisionPolicy.toAmino(PercentageDecisionPolicy.decode(content.value))
-      };
-    default:
-      return Any.toAmino(content);
   }
 };

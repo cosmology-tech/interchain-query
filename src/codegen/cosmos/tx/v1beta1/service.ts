@@ -1,8 +1,6 @@
 import { Tx, TxAmino, TxSDKType } from "./tx";
 import { PageRequest, PageRequestAmino, PageRequestSDKType, PageResponse, PageResponseAmino, PageResponseSDKType } from "../../base/query/v1beta1/pagination";
 import { TxResponse, TxResponseAmino, TxResponseSDKType, GasInfo, GasInfoAmino, GasInfoSDKType, Result, ResultAmino, ResultSDKType } from "../../base/abci/v1beta1/abci";
-import { BlockID, BlockIDAmino, BlockIDSDKType } from "../../../tendermint/types/types";
-import { Block, BlockAmino, BlockSDKType } from "../../../tendermint/types/block";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, bytesFromBase64, base64FromBytes } from "../../../helpers";
 /** OrderBy defines the sorting order */
@@ -112,8 +110,8 @@ export function broadcastModeToJSON(object: BroadcastMode): string {
 export interface GetTxsEventRequest {
   /** events is the list of transaction event type. */
   events: string[];
-  /** pagination defines a pagination for the request. */
-  pagination?: PageRequest;
+  /** pagination defines an pagination for the request. */
+  pagination: PageRequest;
   orderBy: OrderBy;
 }
 export interface GetTxsEventRequestProtoMsg {
@@ -127,7 +125,7 @@ export interface GetTxsEventRequestProtoMsg {
 export interface GetTxsEventRequestAmino {
   /** events is the list of transaction event type. */
   events: string[];
-  /** pagination defines a pagination for the request. */
+  /** pagination defines an pagination for the request. */
   pagination?: PageRequestAmino;
   order_by: OrderBy;
 }
@@ -141,7 +139,7 @@ export interface GetTxsEventRequestAminoMsg {
  */
 export interface GetTxsEventRequestSDKType {
   events: string[];
-  pagination?: PageRequestSDKType;
+  pagination: PageRequestSDKType;
   order_by: OrderBy;
 }
 /**
@@ -153,8 +151,8 @@ export interface GetTxsEventResponse {
   txs: Tx[];
   /** tx_responses is the list of queried TxResponses. */
   txResponses: TxResponse[];
-  /** pagination defines a pagination for the response. */
-  pagination?: PageResponse;
+  /** pagination defines an pagination for the response. */
+  pagination: PageResponse;
 }
 export interface GetTxsEventResponseProtoMsg {
   typeUrl: "/cosmos.tx.v1beta1.GetTxsEventResponse";
@@ -169,7 +167,7 @@ export interface GetTxsEventResponseAmino {
   txs: TxAmino[];
   /** tx_responses is the list of queried TxResponses. */
   tx_responses: TxResponseAmino[];
-  /** pagination defines a pagination for the response. */
+  /** pagination defines an pagination for the response. */
   pagination?: PageResponseAmino;
 }
 export interface GetTxsEventResponseAminoMsg {
@@ -183,7 +181,7 @@ export interface GetTxsEventResponseAminoMsg {
 export interface GetTxsEventResponseSDKType {
   txs: TxSDKType[];
   tx_responses: TxResponseSDKType[];
-  pagination?: PageResponseSDKType;
+  pagination: PageResponseSDKType;
 }
 /**
  * BroadcastTxRequest is the request type for the Service.BroadcastTxRequest
@@ -225,7 +223,7 @@ export interface BroadcastTxRequestSDKType {
  */
 export interface BroadcastTxResponse {
   /** tx_response is the queried TxResponses. */
-  txResponse?: TxResponse;
+  txResponse: TxResponse;
 }
 export interface BroadcastTxResponseProtoMsg {
   typeUrl: "/cosmos.tx.v1beta1.BroadcastTxResponse";
@@ -248,7 +246,7 @@ export interface BroadcastTxResponseAminoMsg {
  * Service.BroadcastTx method.
  */
 export interface BroadcastTxResponseSDKType {
-  tx_response?: TxResponseSDKType;
+  tx_response: TxResponseSDKType;
 }
 /**
  * SimulateRequest is the request type for the Service.Simulate
@@ -260,7 +258,7 @@ export interface SimulateRequest {
    * Deprecated. Send raw tx bytes instead.
    */
   /** @deprecated */
-  tx?: Tx;
+  tx: Tx;
   /**
    * tx_bytes is the raw transaction.
    * 
@@ -300,7 +298,7 @@ export interface SimulateRequestAminoMsg {
  */
 export interface SimulateRequestSDKType {
   /** @deprecated */
-  tx?: TxSDKType;
+  tx: TxSDKType;
   tx_bytes: Uint8Array;
 }
 /**
@@ -309,9 +307,9 @@ export interface SimulateRequestSDKType {
  */
 export interface SimulateResponse {
   /** gas_info is the information about gas used in the simulation. */
-  gasInfo?: GasInfo;
+  gasInfo: GasInfo;
   /** result is the result of the simulation. */
-  result?: Result;
+  result: Result;
 }
 export interface SimulateResponseProtoMsg {
   typeUrl: "/cosmos.tx.v1beta1.SimulateResponse";
@@ -336,8 +334,8 @@ export interface SimulateResponseAminoMsg {
  * Service.SimulateRPC method.
  */
 export interface SimulateResponseSDKType {
-  gas_info?: GasInfoSDKType;
-  result?: ResultSDKType;
+  gas_info: GasInfoSDKType;
+  result: ResultSDKType;
 }
 /**
  * GetTxRequest is the request type for the Service.GetTx
@@ -373,9 +371,9 @@ export interface GetTxRequestSDKType {
 /** GetTxResponse is the response type for the Service.GetTx method. */
 export interface GetTxResponse {
   /** tx is the queried transaction. */
-  tx?: Tx;
+  tx: Tx;
   /** tx_response is the queried TxResponses. */
-  txResponse?: TxResponse;
+  txResponse: TxResponse;
 }
 export interface GetTxResponseProtoMsg {
   typeUrl: "/cosmos.tx.v1beta1.GetTxResponse";
@@ -394,100 +392,13 @@ export interface GetTxResponseAminoMsg {
 }
 /** GetTxResponse is the response type for the Service.GetTx method. */
 export interface GetTxResponseSDKType {
-  tx?: TxSDKType;
-  tx_response?: TxResponseSDKType;
-}
-/**
- * GetBlockWithTxsRequest is the request type for the Service.GetBlockWithTxs
- * RPC method.
- * 
- * Since: cosmos-sdk 0.45.2
- */
-export interface GetBlockWithTxsRequest {
-  /** height is the height of the block to query. */
-  height: bigint;
-  /** pagination defines a pagination for the request. */
-  pagination?: PageRequest;
-}
-export interface GetBlockWithTxsRequestProtoMsg {
-  typeUrl: "/cosmos.tx.v1beta1.GetBlockWithTxsRequest";
-  value: Uint8Array;
-}
-/**
- * GetBlockWithTxsRequest is the request type for the Service.GetBlockWithTxs
- * RPC method.
- * 
- * Since: cosmos-sdk 0.45.2
- */
-export interface GetBlockWithTxsRequestAmino {
-  /** height is the height of the block to query. */
-  height: string;
-  /** pagination defines a pagination for the request. */
-  pagination?: PageRequestAmino;
-}
-export interface GetBlockWithTxsRequestAminoMsg {
-  type: "cosmos-sdk/GetBlockWithTxsRequest";
-  value: GetBlockWithTxsRequestAmino;
-}
-/**
- * GetBlockWithTxsRequest is the request type for the Service.GetBlockWithTxs
- * RPC method.
- * 
- * Since: cosmos-sdk 0.45.2
- */
-export interface GetBlockWithTxsRequestSDKType {
-  height: bigint;
-  pagination?: PageRequestSDKType;
-}
-/**
- * GetBlockWithTxsResponse is the response type for the Service.GetBlockWithTxs method.
- * 
- * Since: cosmos-sdk 0.45.2
- */
-export interface GetBlockWithTxsResponse {
-  /** txs are the transactions in the block. */
-  txs: Tx[];
-  blockId?: BlockID;
-  block?: Block;
-  /** pagination defines a pagination for the response. */
-  pagination?: PageResponse;
-}
-export interface GetBlockWithTxsResponseProtoMsg {
-  typeUrl: "/cosmos.tx.v1beta1.GetBlockWithTxsResponse";
-  value: Uint8Array;
-}
-/**
- * GetBlockWithTxsResponse is the response type for the Service.GetBlockWithTxs method.
- * 
- * Since: cosmos-sdk 0.45.2
- */
-export interface GetBlockWithTxsResponseAmino {
-  /** txs are the transactions in the block. */
-  txs: TxAmino[];
-  block_id?: BlockIDAmino;
-  block?: BlockAmino;
-  /** pagination defines a pagination for the response. */
-  pagination?: PageResponseAmino;
-}
-export interface GetBlockWithTxsResponseAminoMsg {
-  type: "cosmos-sdk/GetBlockWithTxsResponse";
-  value: GetBlockWithTxsResponseAmino;
-}
-/**
- * GetBlockWithTxsResponse is the response type for the Service.GetBlockWithTxs method.
- * 
- * Since: cosmos-sdk 0.45.2
- */
-export interface GetBlockWithTxsResponseSDKType {
-  txs: TxSDKType[];
-  block_id?: BlockIDSDKType;
-  block?: BlockSDKType;
-  pagination?: PageResponseSDKType;
+  tx: TxSDKType;
+  tx_response: TxResponseSDKType;
 }
 function createBaseGetTxsEventRequest(): GetTxsEventRequest {
   return {
     events: [],
-    pagination: undefined,
+    pagination: PageRequest.fromPartial({}),
     orderBy: 0
   };
 }
@@ -533,7 +444,7 @@ export const GetTxsEventRequest = {
     return {
       events: Array.isArray(object?.events) ? object.events.map((e: any) => String(e)) : [],
       pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined,
-      orderBy: isSet(object.orderBy) ? orderByFromJSON(object.orderBy) : 0
+      orderBy: isSet(object.orderBy) ? orderByFromJSON(object.orderBy) : -1
     };
   },
   toJSON(message: GetTxsEventRequest): unknown {
@@ -558,7 +469,7 @@ export const GetTxsEventRequest = {
     return {
       events: Array.isArray(object?.events) ? object.events.map((e: any) => e) : [],
       pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined,
-      orderBy: isSet(object.order_by) ? orderByFromJSON(object.order_by) : 0
+      orderBy: isSet(object.order_by) ? orderByFromJSON(object.order_by) : -1
     };
   },
   toSDK(message: GetTxsEventRequest): GetTxsEventRequestSDKType {
@@ -576,7 +487,7 @@ export const GetTxsEventRequest = {
     return {
       events: Array.isArray(object?.events) ? object.events.map((e: any) => e) : [],
       pagination: object?.pagination ? PageRequest.fromAmino(object.pagination) : undefined,
-      orderBy: isSet(object.order_by) ? orderByFromJSON(object.order_by) : 0
+      orderBy: isSet(object.order_by) ? orderByFromJSON(object.order_by) : -1
     };
   },
   toAmino(message: GetTxsEventRequest): GetTxsEventRequestAmino {
@@ -616,7 +527,7 @@ function createBaseGetTxsEventResponse(): GetTxsEventResponse {
   return {
     txs: [],
     txResponses: [],
-    pagination: undefined
+    pagination: PageResponse.fromPartial({})
   };
 }
 export const GetTxsEventResponse = {
@@ -793,7 +704,7 @@ export const BroadcastTxRequest = {
   fromJSON(object: any): BroadcastTxRequest {
     return {
       txBytes: isSet(object.txBytes) ? bytesFromBase64(object.txBytes) : new Uint8Array(),
-      mode: isSet(object.mode) ? broadcastModeFromJSON(object.mode) : 0
+      mode: isSet(object.mode) ? broadcastModeFromJSON(object.mode) : -1
     };
   },
   toJSON(message: BroadcastTxRequest): unknown {
@@ -811,7 +722,7 @@ export const BroadcastTxRequest = {
   fromSDK(object: BroadcastTxRequestSDKType): BroadcastTxRequest {
     return {
       txBytes: object?.tx_bytes,
-      mode: isSet(object.mode) ? broadcastModeFromJSON(object.mode) : 0
+      mode: isSet(object.mode) ? broadcastModeFromJSON(object.mode) : -1
     };
   },
   toSDK(message: BroadcastTxRequest): BroadcastTxRequestSDKType {
@@ -823,7 +734,7 @@ export const BroadcastTxRequest = {
   fromAmino(object: BroadcastTxRequestAmino): BroadcastTxRequest {
     return {
       txBytes: object.tx_bytes,
-      mode: isSet(object.mode) ? broadcastModeFromJSON(object.mode) : 0
+      mode: isSet(object.mode) ? broadcastModeFromJSON(object.mode) : -1
     };
   },
   toAmino(message: BroadcastTxRequest): BroadcastTxRequestAmino {
@@ -856,7 +767,7 @@ export const BroadcastTxRequest = {
 };
 function createBaseBroadcastTxResponse(): BroadcastTxResponse {
   return {
-    txResponse: undefined
+    txResponse: TxResponse.fromPartial({})
   };
 }
 export const BroadcastTxResponse = {
@@ -944,7 +855,7 @@ export const BroadcastTxResponse = {
 };
 function createBaseSimulateRequest(): SimulateRequest {
   return {
-    tx: undefined,
+    tx: Tx.fromPartial({}),
     txBytes: new Uint8Array()
   };
 }
@@ -1046,8 +957,8 @@ export const SimulateRequest = {
 };
 function createBaseSimulateResponse(): SimulateResponse {
   return {
-    gasInfo: undefined,
-    result: undefined
+    gasInfo: GasInfo.fromPartial({}),
+    result: Result.fromPartial({})
   };
 }
 export const SimulateResponse = {
@@ -1236,8 +1147,8 @@ export const GetTxRequest = {
 };
 function createBaseGetTxResponse(): GetTxResponse {
   return {
-    tx: undefined,
-    txResponse: undefined
+    tx: Tx.fromPartial({}),
+    txResponse: TxResponse.fromPartial({})
   };
 }
 export const GetTxResponse = {
@@ -1333,250 +1244,6 @@ export const GetTxResponse = {
     return {
       typeUrl: "/cosmos.tx.v1beta1.GetTxResponse",
       value: GetTxResponse.encode(message).finish()
-    };
-  }
-};
-function createBaseGetBlockWithTxsRequest(): GetBlockWithTxsRequest {
-  return {
-    height: BigInt("0"),
-    pagination: undefined
-  };
-}
-export const GetBlockWithTxsRequest = {
-  typeUrl: "/cosmos.tx.v1beta1.GetBlockWithTxsRequest",
-  aminoType: "cosmos-sdk/GetBlockWithTxsRequest",
-  encode(message: GetBlockWithTxsRequest, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.height !== BigInt(0)) {
-      writer.uint32(8).int64(message.height);
-    }
-    if (message.pagination !== undefined) {
-      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): GetBlockWithTxsRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetBlockWithTxsRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.height = BigInt(reader.int64().toString());
-          break;
-        case 2:
-          message.pagination = PageRequest.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): GetBlockWithTxsRequest {
-    return {
-      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt("0"),
-      pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: GetBlockWithTxsRequest): unknown {
-    const obj: any = {};
-    message.height !== undefined && (obj.height = (message.height || BigInt("0")).toString());
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: DeepPartial<GetBlockWithTxsRequest>): GetBlockWithTxsRequest {
-    const message = createBaseGetBlockWithTxsRequest();
-    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt("0");
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageRequest.fromPartial(object.pagination) : undefined;
-    return message;
-  },
-  fromSDK(object: GetBlockWithTxsRequestSDKType): GetBlockWithTxsRequest {
-    return {
-      height: object?.height,
-      pagination: object.pagination ? PageRequest.fromSDK(object.pagination) : undefined
-    };
-  },
-  toSDK(message: GetBlockWithTxsRequest): GetBlockWithTxsRequestSDKType {
-    const obj: any = {};
-    obj.height = message.height;
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageRequest.toSDK(message.pagination) : undefined);
-    return obj;
-  },
-  fromAmino(object: GetBlockWithTxsRequestAmino): GetBlockWithTxsRequest {
-    return {
-      height: BigInt(object.height),
-      pagination: object?.pagination ? PageRequest.fromAmino(object.pagination) : undefined
-    };
-  },
-  toAmino(message: GetBlockWithTxsRequest): GetBlockWithTxsRequestAmino {
-    const obj: any = {};
-    obj.height = message.height ? message.height.toString() : undefined;
-    obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
-    return obj;
-  },
-  fromAminoMsg(object: GetBlockWithTxsRequestAminoMsg): GetBlockWithTxsRequest {
-    return GetBlockWithTxsRequest.fromAmino(object.value);
-  },
-  toAminoMsg(message: GetBlockWithTxsRequest): GetBlockWithTxsRequestAminoMsg {
-    return {
-      type: "cosmos-sdk/GetBlockWithTxsRequest",
-      value: GetBlockWithTxsRequest.toAmino(message)
-    };
-  },
-  fromProtoMsg(message: GetBlockWithTxsRequestProtoMsg): GetBlockWithTxsRequest {
-    return GetBlockWithTxsRequest.decode(message.value);
-  },
-  toProto(message: GetBlockWithTxsRequest): Uint8Array {
-    return GetBlockWithTxsRequest.encode(message).finish();
-  },
-  toProtoMsg(message: GetBlockWithTxsRequest): GetBlockWithTxsRequestProtoMsg {
-    return {
-      typeUrl: "/cosmos.tx.v1beta1.GetBlockWithTxsRequest",
-      value: GetBlockWithTxsRequest.encode(message).finish()
-    };
-  }
-};
-function createBaseGetBlockWithTxsResponse(): GetBlockWithTxsResponse {
-  return {
-    txs: [],
-    blockId: undefined,
-    block: undefined,
-    pagination: undefined
-  };
-}
-export const GetBlockWithTxsResponse = {
-  typeUrl: "/cosmos.tx.v1beta1.GetBlockWithTxsResponse",
-  aminoType: "cosmos-sdk/GetBlockWithTxsResponse",
-  encode(message: GetBlockWithTxsResponse, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    for (const v of message.txs) {
-      Tx.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.blockId !== undefined) {
-      BlockID.encode(message.blockId, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.block !== undefined) {
-      Block.encode(message.block, writer.uint32(26).fork()).ldelim();
-    }
-    if (message.pagination !== undefined) {
-      PageResponse.encode(message.pagination, writer.uint32(34).fork()).ldelim();
-    }
-    return writer;
-  },
-  decode(input: BinaryReader | Uint8Array, length?: number): GetBlockWithTxsResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetBlockWithTxsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.txs.push(Tx.decode(reader, reader.uint32()));
-          break;
-        case 2:
-          message.blockId = BlockID.decode(reader, reader.uint32());
-          break;
-        case 3:
-          message.block = Block.decode(reader, reader.uint32());
-          break;
-        case 4:
-          message.pagination = PageResponse.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-  fromJSON(object: any): GetBlockWithTxsResponse {
-    return {
-      txs: Array.isArray(object?.txs) ? object.txs.map((e: any) => Tx.fromJSON(e)) : [],
-      blockId: isSet(object.blockId) ? BlockID.fromJSON(object.blockId) : undefined,
-      block: isSet(object.block) ? Block.fromJSON(object.block) : undefined,
-      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
-    };
-  },
-  toJSON(message: GetBlockWithTxsResponse): unknown {
-    const obj: any = {};
-    if (message.txs) {
-      obj.txs = message.txs.map(e => e ? Tx.toJSON(e) : undefined);
-    } else {
-      obj.txs = [];
-    }
-    message.blockId !== undefined && (obj.blockId = message.blockId ? BlockID.toJSON(message.blockId) : undefined);
-    message.block !== undefined && (obj.block = message.block ? Block.toJSON(message.block) : undefined);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
-    return obj;
-  },
-  fromPartial(object: DeepPartial<GetBlockWithTxsResponse>): GetBlockWithTxsResponse {
-    const message = createBaseGetBlockWithTxsResponse();
-    message.txs = object.txs?.map(e => Tx.fromPartial(e)) || [];
-    message.blockId = object.blockId !== undefined && object.blockId !== null ? BlockID.fromPartial(object.blockId) : undefined;
-    message.block = object.block !== undefined && object.block !== null ? Block.fromPartial(object.block) : undefined;
-    message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
-    return message;
-  },
-  fromSDK(object: GetBlockWithTxsResponseSDKType): GetBlockWithTxsResponse {
-    return {
-      txs: Array.isArray(object?.txs) ? object.txs.map((e: any) => Tx.fromSDK(e)) : [],
-      blockId: object.block_id ? BlockID.fromSDK(object.block_id) : undefined,
-      block: object.block ? Block.fromSDK(object.block) : undefined,
-      pagination: object.pagination ? PageResponse.fromSDK(object.pagination) : undefined
-    };
-  },
-  toSDK(message: GetBlockWithTxsResponse): GetBlockWithTxsResponseSDKType {
-    const obj: any = {};
-    if (message.txs) {
-      obj.txs = message.txs.map(e => e ? Tx.toSDK(e) : undefined);
-    } else {
-      obj.txs = [];
-    }
-    message.blockId !== undefined && (obj.block_id = message.blockId ? BlockID.toSDK(message.blockId) : undefined);
-    message.block !== undefined && (obj.block = message.block ? Block.toSDK(message.block) : undefined);
-    message.pagination !== undefined && (obj.pagination = message.pagination ? PageResponse.toSDK(message.pagination) : undefined);
-    return obj;
-  },
-  fromAmino(object: GetBlockWithTxsResponseAmino): GetBlockWithTxsResponse {
-    return {
-      txs: Array.isArray(object?.txs) ? object.txs.map((e: any) => Tx.fromAmino(e)) : [],
-      blockId: object?.block_id ? BlockID.fromAmino(object.block_id) : undefined,
-      block: object?.block ? Block.fromAmino(object.block) : undefined,
-      pagination: object?.pagination ? PageResponse.fromAmino(object.pagination) : undefined
-    };
-  },
-  toAmino(message: GetBlockWithTxsResponse): GetBlockWithTxsResponseAmino {
-    const obj: any = {};
-    if (message.txs) {
-      obj.txs = message.txs.map(e => e ? Tx.toAmino(e) : undefined);
-    } else {
-      obj.txs = [];
-    }
-    obj.block_id = message.blockId ? BlockID.toAmino(message.blockId) : undefined;
-    obj.block = message.block ? Block.toAmino(message.block) : undefined;
-    obj.pagination = message.pagination ? PageResponse.toAmino(message.pagination) : undefined;
-    return obj;
-  },
-  fromAminoMsg(object: GetBlockWithTxsResponseAminoMsg): GetBlockWithTxsResponse {
-    return GetBlockWithTxsResponse.fromAmino(object.value);
-  },
-  toAminoMsg(message: GetBlockWithTxsResponse): GetBlockWithTxsResponseAminoMsg {
-    return {
-      type: "cosmos-sdk/GetBlockWithTxsResponse",
-      value: GetBlockWithTxsResponse.toAmino(message)
-    };
-  },
-  fromProtoMsg(message: GetBlockWithTxsResponseProtoMsg): GetBlockWithTxsResponse {
-    return GetBlockWithTxsResponse.decode(message.value);
-  },
-  toProto(message: GetBlockWithTxsResponse): Uint8Array {
-    return GetBlockWithTxsResponse.encode(message).finish();
-  },
-  toProtoMsg(message: GetBlockWithTxsResponse): GetBlockWithTxsResponseProtoMsg {
-    return {
-      typeUrl: "/cosmos.tx.v1beta1.GetBlockWithTxsResponse",
-      value: GetBlockWithTxsResponse.encode(message).finish()
     };
   }
 };

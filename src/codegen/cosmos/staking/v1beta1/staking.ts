@@ -1,10 +1,10 @@
 import { Header, HeaderAmino, HeaderSDKType } from "../../../tendermint/types/types";
 import { Timestamp } from "../../../google/protobuf/timestamp";
-import { Any, AnyProtoMsg, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
+import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
 import { Duration, DurationAmino, DurationSDKType } from "../../../google/protobuf/duration";
 import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { isSet, DeepPartial, toTimestamp, fromTimestamp, fromJsonTimestamp } from "../../../helpers";
+import { isSet, DeepPartial, toTimestamp, fromTimestamp } from "../../../helpers";
 import { Decimal } from "@cosmjs/math";
 import { toBase64, fromBase64 } from "@cosmjs/encoding";
 import { encodeBech32Pubkey, decodeBech32Pubkey } from "@cosmjs/amino";
@@ -64,7 +64,7 @@ export function bondStatusToJSON(object: BondStatus): string {
  * (`n` is set by the staking module's `historical_entries` parameter).
  */
 export interface HistoricalInfo {
-  header?: Header;
+  header: Header;
   valset: Validator[];
 }
 export interface HistoricalInfoProtoMsg {
@@ -92,7 +92,7 @@ export interface HistoricalInfoAminoMsg {
  * (`n` is set by the staking module's `historical_entries` parameter).
  */
 export interface HistoricalInfoSDKType {
-  header?: HeaderSDKType;
+  header: HeaderSDKType;
   valset: ValidatorSDKType[];
 }
 /**
@@ -139,9 +139,9 @@ export interface CommissionRatesSDKType {
 /** Commission defines commission parameters for a given validator. */
 export interface Commission {
   /** commission_rates defines the initial commission rates to be used for creating a validator. */
-  commissionRates?: CommissionRates;
+  commissionRates: CommissionRates;
   /** update_time is the last time the commission rate was changed. */
-  updateTime?: Date;
+  updateTime: Date;
 }
 export interface CommissionProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Commission";
@@ -160,8 +160,8 @@ export interface CommissionAminoMsg {
 }
 /** Commission defines commission parameters for a given validator. */
 export interface CommissionSDKType {
-  commission_rates?: CommissionRatesSDKType;
-  update_time?: Date;
+  commission_rates: CommissionRatesSDKType;
+  update_time: Date;
 }
 /** Description defines a validator description. */
 export interface Description {
@@ -219,7 +219,7 @@ export interface Validator {
   /** operator_address defines the address of the validator's operator; bech encoded in JSON. */
   operatorAddress: string;
   /** consensus_pubkey is the consensus public key of the validator, as a Protobuf Any. */
-  consensusPubkey?: (Any) | undefined;
+  consensusPubkey: Any;
   /** jailed defined whether the validator has been jailed from bonded status or not. */
   jailed: boolean;
   /** status is the validator status (bonded/unbonding/unbonded). */
@@ -229,13 +229,13 @@ export interface Validator {
   /** delegator_shares defines total shares issued to a validator's delegators. */
   delegatorShares: string;
   /** description defines the description terms for the validator. */
-  description?: Description;
+  description: Description;
   /** unbonding_height defines, if unbonding, the height at which this validator has begun unbonding. */
   unbondingHeight: bigint;
   /** unbonding_time defines, if unbonding, the min time for the validator to complete unbonding. */
-  unbondingTime?: Date;
+  unbondingTime: Date;
   /** commission defines the commission parameters. */
-  commission?: Commission;
+  commission: Commission;
   /** min_self_delegation is the validator's self declared minimum self delegation. */
   minSelfDelegation: string;
 }
@@ -243,9 +243,6 @@ export interface ValidatorProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Validator";
   value: Uint8Array;
 }
-export type ValidatorEncoded = Omit<Validator, "consensusPubkey"> & {
-  /** consensus_pubkey is the consensus public key of the validator, as a Protobuf Any. */consensusPubkey?: AnyProtoMsg | undefined;
-};
 /**
  * Validator defines a validator, together with the total amount of the
  * Validator's bond shares and their exchange rate to coins. Slashing results in
@@ -296,15 +293,15 @@ export interface ValidatorAminoMsg {
  */
 export interface ValidatorSDKType {
   operator_address: string;
-  consensus_pubkey?: AnySDKType | undefined;
+  consensus_pubkey: AnySDKType;
   jailed: boolean;
   status: BondStatus;
   tokens: string;
   delegator_shares: string;
-  description?: DescriptionSDKType;
+  description: DescriptionSDKType;
   unbonding_height: bigint;
-  unbonding_time?: Date;
-  commission?: CommissionSDKType;
+  unbonding_time: Date;
+  commission: CommissionSDKType;
   min_self_delegation: string;
 }
 /** ValAddresses defines a repeated set of validator addresses. */
@@ -533,7 +530,7 @@ export interface UnbondingDelegationEntry {
   /** creation_height is the height which the unbonding took place. */
   creationHeight: bigint;
   /** completion_time is the unix time for unbonding completion. */
-  completionTime?: Date;
+  completionTime: Date;
   /** initial_balance defines the tokens initially scheduled to receive at completion. */
   initialBalance: string;
   /** balance defines the tokens to receive at completion. */
@@ -561,7 +558,7 @@ export interface UnbondingDelegationEntryAminoMsg {
 /** UnbondingDelegationEntry defines an unbonding object with relevant metadata. */
 export interface UnbondingDelegationEntrySDKType {
   creation_height: bigint;
-  completion_time?: Date;
+  completion_time: Date;
   initial_balance: string;
   balance: string;
 }
@@ -570,7 +567,7 @@ export interface RedelegationEntry {
   /** creation_height  defines the height which the redelegation took place. */
   creationHeight: bigint;
   /** completion_time defines the unix time for redelegation completion. */
-  completionTime?: Date;
+  completionTime: Date;
   /** initial_balance defines the initial balance when redelegation started. */
   initialBalance: string;
   /** shares_dst is the amount of destination-validator shares created by redelegation. */
@@ -598,7 +595,7 @@ export interface RedelegationEntryAminoMsg {
 /** RedelegationEntry defines a redelegation object with relevant metadata. */
 export interface RedelegationEntrySDKType {
   creation_height: bigint;
-  completion_time?: Date;
+  completion_time: Date;
   initial_balance: string;
   shares_dst: string;
 }
@@ -651,7 +648,7 @@ export interface RedelegationSDKType {
 /** Params defines the parameters for the staking module. */
 export interface Params {
   /** unbonding_time is the time duration of unbonding. */
-  unbondingTime?: Duration;
+  unbondingTime: Duration;
   /** max_validators is the maximum number of validators. */
   maxValidators: number;
   /** max_entries is the max entries for either unbonding delegation or redelegation (per pair/trio). */
@@ -662,6 +659,8 @@ export interface Params {
   bondDenom: string;
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
   minCommissionRate: string;
+  /** min_self_delegation is the chain-wide minimum amount that a validator has to self delegate */
+  minSelfDelegation: string;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Params";
@@ -681,27 +680,30 @@ export interface ParamsAmino {
   bond_denom: string;
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
   min_commission_rate: string;
+  /** min_self_delegation is the chain-wide minimum amount that a validator has to self delegate */
+  min_self_delegation: string;
 }
 export interface ParamsAminoMsg {
-  type: "cosmos-sdk/Params";
+  type: "cosmos-sdk/x/staking/Params";
   value: ParamsAmino;
 }
 /** Params defines the parameters for the staking module. */
 export interface ParamsSDKType {
-  unbonding_time?: DurationSDKType;
+  unbonding_time: DurationSDKType;
   max_validators: number;
   max_entries: number;
   historical_entries: number;
   bond_denom: string;
   min_commission_rate: string;
+  min_self_delegation: string;
 }
 /**
  * DelegationResponse is equivalent to Delegation except that it contains a
  * balance in addition to shares which is more suitable for client responses.
  */
 export interface DelegationResponse {
-  delegation?: Delegation;
-  balance?: Coin;
+  delegation: Delegation;
+  balance: Coin;
 }
 export interface DelegationResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.DelegationResponse";
@@ -724,8 +726,8 @@ export interface DelegationResponseAminoMsg {
  * balance in addition to shares which is more suitable for client responses.
  */
 export interface DelegationResponseSDKType {
-  delegation?: DelegationSDKType;
-  balance?: CoinSDKType;
+  delegation: DelegationSDKType;
+  balance: CoinSDKType;
 }
 /**
  * RedelegationEntryResponse is equivalent to a RedelegationEntry except that it
@@ -733,7 +735,7 @@ export interface DelegationResponseSDKType {
  * responses.
  */
 export interface RedelegationEntryResponse {
-  redelegationEntry?: RedelegationEntry;
+  redelegationEntry: RedelegationEntry;
   balance: string;
 }
 export interface RedelegationEntryResponseProtoMsg {
@@ -759,7 +761,7 @@ export interface RedelegationEntryResponseAminoMsg {
  * responses.
  */
 export interface RedelegationEntryResponseSDKType {
-  redelegation_entry?: RedelegationEntrySDKType;
+  redelegation_entry: RedelegationEntrySDKType;
   balance: string;
 }
 /**
@@ -768,7 +770,7 @@ export interface RedelegationEntryResponseSDKType {
  * responses.
  */
 export interface RedelegationResponse {
-  redelegation?: Redelegation;
+  redelegation: Redelegation;
   entries: RedelegationEntryResponse[];
 }
 export interface RedelegationResponseProtoMsg {
@@ -794,7 +796,7 @@ export interface RedelegationResponseAminoMsg {
  * responses.
  */
 export interface RedelegationResponseSDKType {
-  redelegation?: RedelegationSDKType;
+  redelegation: RedelegationSDKType;
   entries: RedelegationEntryResponseSDKType[];
 }
 /**
@@ -831,7 +833,7 @@ export interface PoolSDKType {
 }
 function createBaseHistoricalInfo(): HistoricalInfo {
   return {
-    header: undefined,
+    header: Header.fromPartial({}),
     valset: []
   };
 }
@@ -1061,7 +1063,7 @@ export const CommissionRates = {
 };
 function createBaseCommission(): Commission {
   return {
-    commissionRates: undefined,
+    commissionRates: CommissionRates.fromPartial({}),
     updateTime: undefined
   };
 }
@@ -1100,7 +1102,7 @@ export const Commission = {
   fromJSON(object: any): Commission {
     return {
       commissionRates: isSet(object.commissionRates) ? CommissionRates.fromJSON(object.commissionRates) : undefined,
-      updateTime: isSet(object.updateTime) ? fromJsonTimestamp(object.updateTime) : undefined
+      updateTime: isSet(object.updateTime) ? new Date(object.updateTime) : undefined
     };
   },
   toJSON(message: Commission): unknown {
@@ -1118,25 +1120,25 @@ export const Commission = {
   fromSDK(object: CommissionSDKType): Commission {
     return {
       commissionRates: object.commission_rates ? CommissionRates.fromSDK(object.commission_rates) : undefined,
-      updateTime: object.update_time ? Timestamp.fromSDK(object.update_time) : undefined
+      updateTime: object.update_time ?? undefined
     };
   },
   toSDK(message: Commission): CommissionSDKType {
     const obj: any = {};
     message.commissionRates !== undefined && (obj.commission_rates = message.commissionRates ? CommissionRates.toSDK(message.commissionRates) : undefined);
-    message.updateTime !== undefined && (obj.update_time = message.updateTime ? Timestamp.toSDK(message.updateTime) : undefined);
+    message.updateTime !== undefined && (obj.update_time = message.updateTime ?? undefined);
     return obj;
   },
   fromAmino(object: CommissionAmino): Commission {
     return {
       commissionRates: object?.commission_rates ? CommissionRates.fromAmino(object.commission_rates) : undefined,
-      updateTime: object?.update_time ? Timestamp.fromAmino(object.update_time) : undefined
+      updateTime: object.update_time
     };
   },
   toAmino(message: Commission): CommissionAmino {
     const obj: any = {};
     obj.commission_rates = message.commissionRates ? CommissionRates.toAmino(message.commissionRates) : undefined;
-    obj.update_time = message.updateTime ? Timestamp.toAmino(message.updateTime) : undefined;
+    obj.update_time = message.updateTime;
     return obj;
   },
   fromAminoMsg(object: CommissionAminoMsg): Commission {
@@ -1313,10 +1315,10 @@ function createBaseValidator(): Validator {
     status: 0,
     tokens: "",
     delegatorShares: "",
-    description: undefined,
-    unbondingHeight: BigInt("0"),
+    description: Description.fromPartial({}),
+    unbondingHeight: BigInt(0),
     unbondingTime: undefined,
-    commission: undefined,
+    commission: Commission.fromPartial({}),
     minSelfDelegation: ""
   };
 }
@@ -1328,7 +1330,7 @@ export const Validator = {
       writer.uint32(10).string(message.operatorAddress);
     }
     if (message.consensusPubkey !== undefined) {
-      Any.encode((message.consensusPubkey as Any), writer.uint32(18).fork()).ldelim();
+      Any.encode(message.consensusPubkey, writer.uint32(18).fork()).ldelim();
     }
     if (message.jailed === true) {
       writer.uint32(24).bool(message.jailed);
@@ -1370,7 +1372,7 @@ export const Validator = {
           message.operatorAddress = reader.string();
           break;
         case 2:
-          message.consensusPubkey = (Cosmos_cryptoPubKey_InterfaceDecoder(reader) as Any);
+          message.consensusPubkey = Any.decode(reader, reader.uint32());
           break;
         case 3:
           message.jailed = reader.bool();
@@ -1388,7 +1390,7 @@ export const Validator = {
           message.description = Description.decode(reader, reader.uint32());
           break;
         case 8:
-          message.unbondingHeight = BigInt(reader.int64().toString());
+          message.unbondingHeight = reader.int64();
           break;
         case 9:
           message.unbondingTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -1411,12 +1413,12 @@ export const Validator = {
       operatorAddress: isSet(object.operatorAddress) ? String(object.operatorAddress) : "",
       consensusPubkey: isSet(object.consensusPubkey) ? Any.fromJSON(object.consensusPubkey) : undefined,
       jailed: isSet(object.jailed) ? Boolean(object.jailed) : false,
-      status: isSet(object.status) ? bondStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? bondStatusFromJSON(object.status) : -1,
       tokens: isSet(object.tokens) ? String(object.tokens) : "",
       delegatorShares: isSet(object.delegatorShares) ? String(object.delegatorShares) : "",
       description: isSet(object.description) ? Description.fromJSON(object.description) : undefined,
-      unbondingHeight: isSet(object.unbondingHeight) ? BigInt(object.unbondingHeight.toString()) : BigInt("0"),
-      unbondingTime: isSet(object.unbondingTime) ? fromJsonTimestamp(object.unbondingTime) : undefined,
+      unbondingHeight: isSet(object.unbondingHeight) ? BigInt(object.unbondingHeight.toString()) : BigInt(0),
+      unbondingTime: isSet(object.unbondingTime) ? new Date(object.unbondingTime) : undefined,
       commission: isSet(object.commission) ? Commission.fromJSON(object.commission) : undefined,
       minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : ""
     };
@@ -1430,7 +1432,7 @@ export const Validator = {
     message.tokens !== undefined && (obj.tokens = message.tokens);
     message.delegatorShares !== undefined && (obj.delegatorShares = message.delegatorShares);
     message.description !== undefined && (obj.description = message.description ? Description.toJSON(message.description) : undefined);
-    message.unbondingHeight !== undefined && (obj.unbondingHeight = (message.unbondingHeight || BigInt("0")).toString());
+    message.unbondingHeight !== undefined && (obj.unbondingHeight = (message.unbondingHeight || BigInt(0)).toString());
     message.unbondingTime !== undefined && (obj.unbondingTime = message.unbondingTime.toISOString());
     message.commission !== undefined && (obj.commission = message.commission ? Commission.toJSON(message.commission) : undefined);
     message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
@@ -1445,7 +1447,7 @@ export const Validator = {
     message.tokens = object.tokens ?? "";
     message.delegatorShares = object.delegatorShares ?? "";
     message.description = object.description !== undefined && object.description !== null ? Description.fromPartial(object.description) : undefined;
-    message.unbondingHeight = object.unbondingHeight !== undefined && object.unbondingHeight !== null ? BigInt(object.unbondingHeight.toString()) : BigInt("0");
+    message.unbondingHeight = object.unbondingHeight !== undefined && object.unbondingHeight !== null ? BigInt(object.unbondingHeight.toString()) : BigInt(0);
     message.unbondingTime = object.unbondingTime ?? undefined;
     message.commission = object.commission !== undefined && object.commission !== null ? Commission.fromPartial(object.commission) : undefined;
     message.minSelfDelegation = object.minSelfDelegation ?? "";
@@ -1456,12 +1458,12 @@ export const Validator = {
       operatorAddress: object?.operator_address,
       consensusPubkey: object.consensus_pubkey ? Any.fromSDK(object.consensus_pubkey) : undefined,
       jailed: object?.jailed,
-      status: isSet(object.status) ? bondStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? bondStatusFromJSON(object.status) : -1,
       tokens: object?.tokens,
       delegatorShares: object?.delegator_shares,
       description: object.description ? Description.fromSDK(object.description) : undefined,
       unbondingHeight: object?.unbonding_height,
-      unbondingTime: object.unbonding_time ? Timestamp.fromSDK(object.unbonding_time) : undefined,
+      unbondingTime: object.unbonding_time ?? undefined,
       commission: object.commission ? Commission.fromSDK(object.commission) : undefined,
       minSelfDelegation: object?.min_self_delegation
     };
@@ -1476,7 +1478,7 @@ export const Validator = {
     obj.delegator_shares = message.delegatorShares;
     message.description !== undefined && (obj.description = message.description ? Description.toSDK(message.description) : undefined);
     obj.unbonding_height = message.unbondingHeight;
-    message.unbondingTime !== undefined && (obj.unbonding_time = message.unbondingTime ? Timestamp.toSDK(message.unbondingTime) : undefined);
+    message.unbondingTime !== undefined && (obj.unbonding_time = message.unbondingTime ?? undefined);
     message.commission !== undefined && (obj.commission = message.commission ? Commission.toSDK(message.commission) : undefined);
     obj.min_self_delegation = message.minSelfDelegation;
     return obj;
@@ -1489,12 +1491,12 @@ export const Validator = {
         value: toBase64(object.consensus_pubkey.value)
       }, "cosmos"),
       jailed: object.jailed,
-      status: isSet(object.status) ? bondStatusFromJSON(object.status) : 0,
+      status: isSet(object.status) ? bondStatusFromJSON(object.status) : -1,
       tokens: object.tokens,
       delegatorShares: object.delegator_shares,
       description: object?.description ? Description.fromAmino(object.description) : undefined,
       unbondingHeight: BigInt(object.unbonding_height),
-      unbondingTime: object?.unbonding_time ? Timestamp.fromAmino(object.unbonding_time) : undefined,
+      unbondingTime: object.unbonding_time,
       commission: object?.commission ? Commission.fromAmino(object.commission) : undefined,
       minSelfDelegation: object.min_self_delegation
     };
@@ -1512,7 +1514,7 @@ export const Validator = {
     obj.delegator_shares = message.delegatorShares;
     obj.description = message.description ? Description.toAmino(message.description) : undefined;
     obj.unbonding_height = message.unbondingHeight ? message.unbondingHeight.toString() : undefined;
-    obj.unbonding_time = message.unbondingTime ? Timestamp.toAmino(message.unbondingTime) : undefined;
+    obj.unbonding_time = message.unbondingTime;
     obj.commission = message.commission ? Commission.toAmino(message.commission) : undefined;
     obj.min_self_delegation = message.minSelfDelegation;
     return obj;
@@ -2303,7 +2305,7 @@ export const UnbondingDelegation = {
 };
 function createBaseUnbondingDelegationEntry(): UnbondingDelegationEntry {
   return {
-    creationHeight: BigInt("0"),
+    creationHeight: BigInt(0),
     completionTime: undefined,
     initialBalance: "",
     balance: ""
@@ -2335,7 +2337,7 @@ export const UnbondingDelegationEntry = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.creationHeight = BigInt(reader.int64().toString());
+          message.creationHeight = reader.int64();
           break;
         case 2:
           message.completionTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -2355,15 +2357,15 @@ export const UnbondingDelegationEntry = {
   },
   fromJSON(object: any): UnbondingDelegationEntry {
     return {
-      creationHeight: isSet(object.creationHeight) ? BigInt(object.creationHeight.toString()) : BigInt("0"),
-      completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
+      creationHeight: isSet(object.creationHeight) ? BigInt(object.creationHeight.toString()) : BigInt(0),
+      completionTime: isSet(object.completionTime) ? new Date(object.completionTime) : undefined,
       initialBalance: isSet(object.initialBalance) ? String(object.initialBalance) : "",
       balance: isSet(object.balance) ? String(object.balance) : ""
     };
   },
   toJSON(message: UnbondingDelegationEntry): unknown {
     const obj: any = {};
-    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || BigInt("0")).toString());
+    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || BigInt(0)).toString());
     message.completionTime !== undefined && (obj.completionTime = message.completionTime.toISOString());
     message.initialBalance !== undefined && (obj.initialBalance = message.initialBalance);
     message.balance !== undefined && (obj.balance = message.balance);
@@ -2371,7 +2373,7 @@ export const UnbondingDelegationEntry = {
   },
   fromPartial(object: DeepPartial<UnbondingDelegationEntry>): UnbondingDelegationEntry {
     const message = createBaseUnbondingDelegationEntry();
-    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? BigInt(object.creationHeight.toString()) : BigInt("0");
+    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? BigInt(object.creationHeight.toString()) : BigInt(0);
     message.completionTime = object.completionTime ?? undefined;
     message.initialBalance = object.initialBalance ?? "";
     message.balance = object.balance ?? "";
@@ -2380,7 +2382,7 @@ export const UnbondingDelegationEntry = {
   fromSDK(object: UnbondingDelegationEntrySDKType): UnbondingDelegationEntry {
     return {
       creationHeight: object?.creation_height,
-      completionTime: object.completion_time ? Timestamp.fromSDK(object.completion_time) : undefined,
+      completionTime: object.completion_time ?? undefined,
       initialBalance: object?.initial_balance,
       balance: object?.balance
     };
@@ -2388,7 +2390,7 @@ export const UnbondingDelegationEntry = {
   toSDK(message: UnbondingDelegationEntry): UnbondingDelegationEntrySDKType {
     const obj: any = {};
     obj.creation_height = message.creationHeight;
-    message.completionTime !== undefined && (obj.completion_time = message.completionTime ? Timestamp.toSDK(message.completionTime) : undefined);
+    message.completionTime !== undefined && (obj.completion_time = message.completionTime ?? undefined);
     obj.initial_balance = message.initialBalance;
     obj.balance = message.balance;
     return obj;
@@ -2396,7 +2398,7 @@ export const UnbondingDelegationEntry = {
   fromAmino(object: UnbondingDelegationEntryAmino): UnbondingDelegationEntry {
     return {
       creationHeight: BigInt(object.creation_height),
-      completionTime: object?.completion_time ? Timestamp.fromAmino(object.completion_time) : undefined,
+      completionTime: object.completion_time,
       initialBalance: object.initial_balance,
       balance: object.balance
     };
@@ -2404,7 +2406,7 @@ export const UnbondingDelegationEntry = {
   toAmino(message: UnbondingDelegationEntry): UnbondingDelegationEntryAmino {
     const obj: any = {};
     obj.creation_height = message.creationHeight ? message.creationHeight.toString() : undefined;
-    obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime) : undefined;
+    obj.completion_time = message.completionTime;
     obj.initial_balance = message.initialBalance;
     obj.balance = message.balance;
     return obj;
@@ -2433,7 +2435,7 @@ export const UnbondingDelegationEntry = {
 };
 function createBaseRedelegationEntry(): RedelegationEntry {
   return {
-    creationHeight: BigInt("0"),
+    creationHeight: BigInt(0),
     completionTime: undefined,
     initialBalance: "",
     sharesDst: ""
@@ -2465,7 +2467,7 @@ export const RedelegationEntry = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.creationHeight = BigInt(reader.int64().toString());
+          message.creationHeight = reader.int64();
           break;
         case 2:
           message.completionTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
@@ -2485,15 +2487,15 @@ export const RedelegationEntry = {
   },
   fromJSON(object: any): RedelegationEntry {
     return {
-      creationHeight: isSet(object.creationHeight) ? BigInt(object.creationHeight.toString()) : BigInt("0"),
-      completionTime: isSet(object.completionTime) ? fromJsonTimestamp(object.completionTime) : undefined,
+      creationHeight: isSet(object.creationHeight) ? BigInt(object.creationHeight.toString()) : BigInt(0),
+      completionTime: isSet(object.completionTime) ? new Date(object.completionTime) : undefined,
       initialBalance: isSet(object.initialBalance) ? String(object.initialBalance) : "",
       sharesDst: isSet(object.sharesDst) ? String(object.sharesDst) : ""
     };
   },
   toJSON(message: RedelegationEntry): unknown {
     const obj: any = {};
-    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || BigInt("0")).toString());
+    message.creationHeight !== undefined && (obj.creationHeight = (message.creationHeight || BigInt(0)).toString());
     message.completionTime !== undefined && (obj.completionTime = message.completionTime.toISOString());
     message.initialBalance !== undefined && (obj.initialBalance = message.initialBalance);
     message.sharesDst !== undefined && (obj.sharesDst = message.sharesDst);
@@ -2501,7 +2503,7 @@ export const RedelegationEntry = {
   },
   fromPartial(object: DeepPartial<RedelegationEntry>): RedelegationEntry {
     const message = createBaseRedelegationEntry();
-    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? BigInt(object.creationHeight.toString()) : BigInt("0");
+    message.creationHeight = object.creationHeight !== undefined && object.creationHeight !== null ? BigInt(object.creationHeight.toString()) : BigInt(0);
     message.completionTime = object.completionTime ?? undefined;
     message.initialBalance = object.initialBalance ?? "";
     message.sharesDst = object.sharesDst ?? "";
@@ -2510,7 +2512,7 @@ export const RedelegationEntry = {
   fromSDK(object: RedelegationEntrySDKType): RedelegationEntry {
     return {
       creationHeight: object?.creation_height,
-      completionTime: object.completion_time ? Timestamp.fromSDK(object.completion_time) : undefined,
+      completionTime: object.completion_time ?? undefined,
       initialBalance: object?.initial_balance,
       sharesDst: object?.shares_dst
     };
@@ -2518,7 +2520,7 @@ export const RedelegationEntry = {
   toSDK(message: RedelegationEntry): RedelegationEntrySDKType {
     const obj: any = {};
     obj.creation_height = message.creationHeight;
-    message.completionTime !== undefined && (obj.completion_time = message.completionTime ? Timestamp.toSDK(message.completionTime) : undefined);
+    message.completionTime !== undefined && (obj.completion_time = message.completionTime ?? undefined);
     obj.initial_balance = message.initialBalance;
     obj.shares_dst = message.sharesDst;
     return obj;
@@ -2526,7 +2528,7 @@ export const RedelegationEntry = {
   fromAmino(object: RedelegationEntryAmino): RedelegationEntry {
     return {
       creationHeight: BigInt(object.creation_height),
-      completionTime: object?.completion_time ? Timestamp.fromAmino(object.completion_time) : undefined,
+      completionTime: object.completion_time,
       initialBalance: object.initial_balance,
       sharesDst: object.shares_dst
     };
@@ -2534,7 +2536,7 @@ export const RedelegationEntry = {
   toAmino(message: RedelegationEntry): RedelegationEntryAmino {
     const obj: any = {};
     obj.creation_height = message.creationHeight ? message.creationHeight.toString() : undefined;
-    obj.completion_time = message.completionTime ? Timestamp.toAmino(message.completionTime) : undefined;
+    obj.completion_time = message.completionTime;
     obj.initial_balance = message.initialBalance;
     obj.shares_dst = message.sharesDst;
     return obj;
@@ -2710,12 +2712,13 @@ function createBaseParams(): Params {
     maxEntries: 0,
     historicalEntries: 0,
     bondDenom: "",
-    minCommissionRate: ""
+    minCommissionRate: "",
+    minSelfDelegation: ""
   };
 }
 export const Params = {
   typeUrl: "/cosmos.staking.v1beta1.Params",
-  aminoType: "cosmos-sdk/Params",
+  aminoType: "cosmos-sdk/x/staking/Params",
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.unbondingTime !== undefined) {
       Duration.encode(message.unbondingTime, writer.uint32(10).fork()).ldelim();
@@ -2734,6 +2737,9 @@ export const Params = {
     }
     if (message.minCommissionRate !== "") {
       writer.uint32(50).string(Decimal.fromUserInput(message.minCommissionRate, 18).atomics);
+    }
+    if (message.minSelfDelegation !== "") {
+      writer.uint32(58).string(message.minSelfDelegation);
     }
     return writer;
   },
@@ -2762,6 +2768,9 @@ export const Params = {
         case 6:
           message.minCommissionRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
+        case 7:
+          message.minSelfDelegation = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2776,7 +2785,8 @@ export const Params = {
       maxEntries: isSet(object.maxEntries) ? Number(object.maxEntries) : 0,
       historicalEntries: isSet(object.historicalEntries) ? Number(object.historicalEntries) : 0,
       bondDenom: isSet(object.bondDenom) ? String(object.bondDenom) : "",
-      minCommissionRate: isSet(object.minCommissionRate) ? String(object.minCommissionRate) : ""
+      minCommissionRate: isSet(object.minCommissionRate) ? String(object.minCommissionRate) : "",
+      minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : ""
     };
   },
   toJSON(message: Params): unknown {
@@ -2787,6 +2797,7 @@ export const Params = {
     message.historicalEntries !== undefined && (obj.historicalEntries = Math.round(message.historicalEntries));
     message.bondDenom !== undefined && (obj.bondDenom = message.bondDenom);
     message.minCommissionRate !== undefined && (obj.minCommissionRate = message.minCommissionRate);
+    message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
     return obj;
   },
   fromPartial(object: DeepPartial<Params>): Params {
@@ -2797,6 +2808,7 @@ export const Params = {
     message.historicalEntries = object.historicalEntries ?? 0;
     message.bondDenom = object.bondDenom ?? "";
     message.minCommissionRate = object.minCommissionRate ?? "";
+    message.minSelfDelegation = object.minSelfDelegation ?? "";
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -2806,7 +2818,8 @@ export const Params = {
       maxEntries: object?.max_entries,
       historicalEntries: object?.historical_entries,
       bondDenom: object?.bond_denom,
-      minCommissionRate: object?.min_commission_rate
+      minCommissionRate: object?.min_commission_rate,
+      minSelfDelegation: object?.min_self_delegation
     };
   },
   toSDK(message: Params): ParamsSDKType {
@@ -2817,6 +2830,7 @@ export const Params = {
     obj.historical_entries = message.historicalEntries;
     obj.bond_denom = message.bondDenom;
     obj.min_commission_rate = message.minCommissionRate;
+    obj.min_self_delegation = message.minSelfDelegation;
     return obj;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -2826,7 +2840,8 @@ export const Params = {
       maxEntries: object.max_entries,
       historicalEntries: object.historical_entries,
       bondDenom: object.bond_denom,
-      minCommissionRate: object.min_commission_rate
+      minCommissionRate: object.min_commission_rate,
+      minSelfDelegation: object.min_self_delegation
     };
   },
   toAmino(message: Params): ParamsAmino {
@@ -2837,6 +2852,7 @@ export const Params = {
     obj.historical_entries = message.historicalEntries;
     obj.bond_denom = message.bondDenom;
     obj.min_commission_rate = message.minCommissionRate;
+    obj.min_self_delegation = message.minSelfDelegation;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -2844,7 +2860,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "cosmos-sdk/Params",
+      type: "cosmos-sdk/x/staking/Params",
       value: Params.toAmino(message)
     };
   },
@@ -2863,7 +2879,7 @@ export const Params = {
 };
 function createBaseDelegationResponse(): DelegationResponse {
   return {
-    delegation: undefined,
+    delegation: Delegation.fromPartial({}),
     balance: undefined
   };
 }
@@ -2965,7 +2981,7 @@ export const DelegationResponse = {
 };
 function createBaseRedelegationEntryResponse(): RedelegationEntryResponse {
   return {
-    redelegationEntry: undefined,
+    redelegationEntry: RedelegationEntry.fromPartial({}),
     balance: ""
   };
 }
@@ -3067,7 +3083,7 @@ export const RedelegationEntryResponse = {
 };
 function createBaseRedelegationResponse(): RedelegationResponse {
   return {
-    redelegation: undefined,
+    redelegation: Redelegation.fromPartial({}),
     entries: []
   };
 }
@@ -3280,24 +3296,4 @@ export const Pool = {
       value: Pool.encode(message).finish()
     };
   }
-};
-export const Cosmos_cryptoPubKey_InterfaceDecoder = (input: BinaryReader | Uint8Array): Any => {
-  const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-  const data = Any.decode(reader, reader.uint32());
-  switch (data.typeUrl) {
-    default:
-      return data;
-  }
-};
-export const Cosmos_cryptoPubKey_FromAmino = (content: AnyAmino) => {
-  return encodeBech32Pubkey({
-    type: "tendermint/PubKeySecp256k1",
-    value: toBase64(content.value)
-  }, "cosmos");
-};
-export const Cosmos_cryptoPubKey_ToAmino = (content: Any) => {
-  return {
-    typeUrl: "/cosmos.crypto.secp256k1.PubKey",
-    value: fromBase64(decodeBech32Pubkey(content).value)
-  };
 };

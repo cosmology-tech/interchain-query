@@ -1,13 +1,13 @@
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { BinaryReader, BinaryWriter } from "../../../binary";
-import { toTimestamp, fromTimestamp, isSet, fromJsonTimestamp, DeepPartial } from "../../../helpers";
+import { toTimestamp, fromTimestamp, isSet, DeepPartial } from "../../../helpers";
 /**
  * Equivocation implements the Evidence interface and defines evidence of double
  * signing misbehavior.
  */
 export interface Equivocation {
   height: bigint;
-  time?: Date;
+  time: Date;
   power: bigint;
   consensusAddress: string;
 }
@@ -35,15 +35,15 @@ export interface EquivocationAminoMsg {
  */
 export interface EquivocationSDKType {
   height: bigint;
-  time?: Date;
+  time: Date;
   power: bigint;
   consensus_address: string;
 }
 function createBaseEquivocation(): Equivocation {
   return {
-    height: BigInt("0"),
+    height: BigInt(0),
     time: undefined,
-    power: BigInt("0"),
+    power: BigInt(0),
     consensusAddress: ""
   };
 }
@@ -73,13 +73,13 @@ export const Equivocation = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.height = BigInt(reader.int64().toString());
+          message.height = reader.int64();
           break;
         case 2:
           message.time = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 3:
-          message.power = BigInt(reader.int64().toString());
+          message.power = reader.int64();
           break;
         case 4:
           message.consensusAddress = reader.string();
@@ -93,32 +93,32 @@ export const Equivocation = {
   },
   fromJSON(object: any): Equivocation {
     return {
-      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt("0"),
-      time: isSet(object.time) ? fromJsonTimestamp(object.time) : undefined,
-      power: isSet(object.power) ? BigInt(object.power.toString()) : BigInt("0"),
+      height: isSet(object.height) ? BigInt(object.height.toString()) : BigInt(0),
+      time: isSet(object.time) ? new Date(object.time) : undefined,
+      power: isSet(object.power) ? BigInt(object.power.toString()) : BigInt(0),
       consensusAddress: isSet(object.consensusAddress) ? String(object.consensusAddress) : ""
     };
   },
   toJSON(message: Equivocation): unknown {
     const obj: any = {};
-    message.height !== undefined && (obj.height = (message.height || BigInt("0")).toString());
+    message.height !== undefined && (obj.height = (message.height || BigInt(0)).toString());
     message.time !== undefined && (obj.time = message.time.toISOString());
-    message.power !== undefined && (obj.power = (message.power || BigInt("0")).toString());
+    message.power !== undefined && (obj.power = (message.power || BigInt(0)).toString());
     message.consensusAddress !== undefined && (obj.consensusAddress = message.consensusAddress);
     return obj;
   },
   fromPartial(object: DeepPartial<Equivocation>): Equivocation {
     const message = createBaseEquivocation();
-    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt("0");
+    message.height = object.height !== undefined && object.height !== null ? BigInt(object.height.toString()) : BigInt(0);
     message.time = object.time ?? undefined;
-    message.power = object.power !== undefined && object.power !== null ? BigInt(object.power.toString()) : BigInt("0");
+    message.power = object.power !== undefined && object.power !== null ? BigInt(object.power.toString()) : BigInt(0);
     message.consensusAddress = object.consensusAddress ?? "";
     return message;
   },
   fromSDK(object: EquivocationSDKType): Equivocation {
     return {
       height: object?.height,
-      time: object.time ? Timestamp.fromSDK(object.time) : undefined,
+      time: object.time ?? undefined,
       power: object?.power,
       consensusAddress: object?.consensus_address
     };
@@ -126,7 +126,7 @@ export const Equivocation = {
   toSDK(message: Equivocation): EquivocationSDKType {
     const obj: any = {};
     obj.height = message.height;
-    message.time !== undefined && (obj.time = message.time ? Timestamp.toSDK(message.time) : undefined);
+    message.time !== undefined && (obj.time = message.time ?? undefined);
     obj.power = message.power;
     obj.consensus_address = message.consensusAddress;
     return obj;
@@ -134,7 +134,7 @@ export const Equivocation = {
   fromAmino(object: EquivocationAmino): Equivocation {
     return {
       height: BigInt(object.height),
-      time: object?.time ? Timestamp.fromAmino(object.time) : undefined,
+      time: object.time,
       power: BigInt(object.power),
       consensusAddress: object.consensus_address
     };
@@ -142,7 +142,7 @@ export const Equivocation = {
   toAmino(message: Equivocation): EquivocationAmino {
     const obj: any = {};
     obj.height = message.height ? message.height.toString() : undefined;
-    obj.time = message.time ? Timestamp.toAmino(message.time) : undefined;
+    obj.time = message.time;
     obj.power = message.power ? message.power.toString() : undefined;
     obj.consensus_address = message.consensusAddress;
     return obj;

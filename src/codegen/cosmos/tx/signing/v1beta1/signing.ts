@@ -2,47 +2,42 @@ import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from ".
 import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { DeepPartial, isSet, bytesFromBase64, base64FromBytes } from "../../../../helpers";
-/**
- * SignMode represents a signing mode with its own security guarantees.
- * 
- * This enum should be considered a registry of all known sign modes
- * in the Cosmos ecosystem. Apps are not expected to support all known
- * sign modes. Apps that would like to support custom  sign modes are
- * encouraged to open a small PR against this file to add a new case
- * to this SignMode enum describing their sign mode so that different
- * apps have a consistent version of this enum.
- */
+/** SignMode represents a signing mode with its own security guarantees. */
 export enum SignMode {
   /**
    * SIGN_MODE_UNSPECIFIED - SIGN_MODE_UNSPECIFIED specifies an unknown signing mode and will be
-   * rejected.
+   * rejected
    */
   SIGN_MODE_UNSPECIFIED = 0,
   /**
    * SIGN_MODE_DIRECT - SIGN_MODE_DIRECT specifies a signing mode which uses SignDoc and is
-   * verified with raw bytes from Tx.
+   * verified with raw bytes from Tx
    */
   SIGN_MODE_DIRECT = 1,
   /**
    * SIGN_MODE_TEXTUAL - SIGN_MODE_TEXTUAL is a future signing mode that will verify some
    * human-readable textual representation on top of the binary representation
-   * from SIGN_MODE_DIRECT. It is currently not supported.
+   * from SIGN_MODE_DIRECT
    */
   SIGN_MODE_TEXTUAL = 2,
   /**
-   * SIGN_MODE_DIRECT_AUX - SIGN_MODE_DIRECT_AUX specifies a signing mode which uses
-   * SignDocDirectAux. As opposed to SIGN_MODE_DIRECT, this sign mode does not
-   * require signers signing over other signers' `signer_info`. It also allows
-   * for adding Tips in transactions.
-   * 
-   * Since: cosmos-sdk 0.46
-   */
-  SIGN_MODE_DIRECT_AUX = 3,
-  /**
    * SIGN_MODE_LEGACY_AMINO_JSON - SIGN_MODE_LEGACY_AMINO_JSON is a backwards compatibility mode which uses
-   * Amino JSON and will be removed in the future.
+   * Amino JSON and will be removed in the future
    */
   SIGN_MODE_LEGACY_AMINO_JSON = 127,
+  /**
+   * SIGN_MODE_EIP_191 - SIGN_MODE_EIP_191 specifies the sign mode for EIP 191 signing on the Cosmos
+   * SDK. Ref: https://eips.ethereum.org/EIPS/eip-191
+   * 
+   * Currently, SIGN_MODE_EIP_191 is registered as a SignMode enum variant,
+   * but is not implemented on the SDK by default. To enable EIP-191, you need
+   * to pass a custom `TxConfig` that has an implementation of
+   * `SignModeHandler` for EIP-191. The SDK may decide to fully support
+   * EIP-191 in the future.
+   * 
+   * Since: cosmos-sdk 0.45.2
+   */
+  SIGN_MODE_EIP_191 = 191,
   UNRECOGNIZED = -1,
 }
 export const SignModeSDKType = SignMode;
@@ -58,12 +53,12 @@ export function signModeFromJSON(object: any): SignMode {
     case 2:
     case "SIGN_MODE_TEXTUAL":
       return SignMode.SIGN_MODE_TEXTUAL;
-    case 3:
-    case "SIGN_MODE_DIRECT_AUX":
-      return SignMode.SIGN_MODE_DIRECT_AUX;
     case 127:
     case "SIGN_MODE_LEGACY_AMINO_JSON":
       return SignMode.SIGN_MODE_LEGACY_AMINO_JSON;
+    case 191:
+    case "SIGN_MODE_EIP_191":
+      return SignMode.SIGN_MODE_EIP_191;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -78,10 +73,10 @@ export function signModeToJSON(object: SignMode): string {
       return "SIGN_MODE_DIRECT";
     case SignMode.SIGN_MODE_TEXTUAL:
       return "SIGN_MODE_TEXTUAL";
-    case SignMode.SIGN_MODE_DIRECT_AUX:
-      return "SIGN_MODE_DIRECT_AUX";
     case SignMode.SIGN_MODE_LEGACY_AMINO_JSON:
       return "SIGN_MODE_LEGACY_AMINO_JSON";
+    case SignMode.SIGN_MODE_EIP_191:
+      return "SIGN_MODE_EIP_191";
     case SignMode.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -117,8 +112,8 @@ export interface SignatureDescriptorsSDKType {
  */
 export interface SignatureDescriptor {
   /** public_key is the public key of the signer */
-  publicKey?: Any;
-  data?: SignatureDescriptor_Data;
+  publicKey: Any;
+  data: SignatureDescriptor_Data;
   /**
    * sequence is the sequence of the account, which describes the
    * number of committed transactions signed by a given address. It is used to prevent
@@ -158,8 +153,8 @@ export interface SignatureDescriptorAminoMsg {
  * clients.
  */
 export interface SignatureDescriptorSDKType {
-  public_key?: AnySDKType;
-  data?: SignatureDescriptor_DataSDKType;
+  public_key: AnySDKType;
+  data: SignatureDescriptor_DataSDKType;
   sequence: bigint;
 }
 /** Data represents signature data */
@@ -219,7 +214,7 @@ export interface SignatureDescriptor_Data_SingleSDKType {
 /** Multi is the signature data for a multisig public key */
 export interface SignatureDescriptor_Data_Multi {
   /** bitarray specifies which keys within the multisig are signing */
-  bitarray?: CompactBitArray;
+  bitarray: CompactBitArray;
   /** signatures is the signatures of the multi-signature */
   signatures: SignatureDescriptor_Data[];
 }
@@ -240,7 +235,7 @@ export interface SignatureDescriptor_Data_MultiAminoMsg {
 }
 /** Multi is the signature data for a multisig public key */
 export interface SignatureDescriptor_Data_MultiSDKType {
-  bitarray?: CompactBitArraySDKType;
+  bitarray: CompactBitArraySDKType;
   signatures: SignatureDescriptor_DataSDKType[];
 }
 function createBaseSignatureDescriptors(): SignatureDescriptors {
@@ -346,8 +341,8 @@ export const SignatureDescriptors = {
 function createBaseSignatureDescriptor(): SignatureDescriptor {
   return {
     publicKey: undefined,
-    data: undefined,
-    sequence: BigInt("0")
+    data: Data.fromPartial({}),
+    sequence: BigInt(0)
   };
 }
 export const SignatureDescriptor = {
@@ -379,7 +374,7 @@ export const SignatureDescriptor = {
           message.data = SignatureDescriptor_Data.decode(reader, reader.uint32());
           break;
         case 3:
-          message.sequence = BigInt(reader.uint64().toString());
+          message.sequence = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -392,21 +387,21 @@ export const SignatureDescriptor = {
     return {
       publicKey: isSet(object.publicKey) ? Any.fromJSON(object.publicKey) : undefined,
       data: isSet(object.data) ? SignatureDescriptor_Data.fromJSON(object.data) : undefined,
-      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt("0")
+      sequence: isSet(object.sequence) ? BigInt(object.sequence.toString()) : BigInt(0)
     };
   },
   toJSON(message: SignatureDescriptor): unknown {
     const obj: any = {};
     message.publicKey !== undefined && (obj.publicKey = message.publicKey ? Any.toJSON(message.publicKey) : undefined);
     message.data !== undefined && (obj.data = message.data ? SignatureDescriptor_Data.toJSON(message.data) : undefined);
-    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt("0")).toString());
+    message.sequence !== undefined && (obj.sequence = (message.sequence || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: DeepPartial<SignatureDescriptor>): SignatureDescriptor {
     const message = createBaseSignatureDescriptor();
     message.publicKey = object.publicKey !== undefined && object.publicKey !== null ? Any.fromPartial(object.publicKey) : undefined;
     message.data = object.data !== undefined && object.data !== null ? SignatureDescriptor_Data.fromPartial(object.data) : undefined;
-    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt("0");
+    message.sequence = object.sequence !== undefined && object.sequence !== null ? BigInt(object.sequence.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: SignatureDescriptorSDKType): SignatureDescriptor {
@@ -601,7 +596,7 @@ export const SignatureDescriptor_Data_Single = {
   },
   fromJSON(object: any): SignatureDescriptor_Data_Single {
     return {
-      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : 0,
+      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : -1,
       signature: isSet(object.signature) ? bytesFromBase64(object.signature) : new Uint8Array()
     };
   },
@@ -619,7 +614,7 @@ export const SignatureDescriptor_Data_Single = {
   },
   fromSDK(object: SignatureDescriptor_Data_SingleSDKType): SignatureDescriptor_Data_Single {
     return {
-      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : 0,
+      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : -1,
       signature: object?.signature
     };
   },
@@ -631,7 +626,7 @@ export const SignatureDescriptor_Data_Single = {
   },
   fromAmino(object: SignatureDescriptor_Data_SingleAmino): SignatureDescriptor_Data_Single {
     return {
-      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : 0,
+      mode: isSet(object.mode) ? signModeFromJSON(object.mode) : -1,
       signature: object.signature
     };
   },
@@ -665,7 +660,7 @@ export const SignatureDescriptor_Data_Single = {
 };
 function createBaseSignatureDescriptor_Data_Multi(): SignatureDescriptor_Data_Multi {
   return {
-    bitarray: undefined,
+    bitarray: CompactBitArray.fromPartial({}),
     signatures: []
   };
 }
