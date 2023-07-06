@@ -21,12 +21,18 @@ telescope({
     env: 'v-next',
     tsDisable: {
       files: [
+        'ibc/core/types/v1/genesis.ts',
+        'ibc/applications/interchain_accounts/genesis/v1/genesis.ts',
+        'cosmos/tx/signing/v1beta1/signing.ts',
+        'cosmos/staking/v1beta1/tx.ts',
+        'cosmos/staking/v1beta1/staking.ts',
+
         'cosmos/authz/v1beta1/tx.amino.ts',
         'cosmos/staking/v1beta1/tx.amino.ts'
       ]
     },
     interfaces: {
-      enabled: true,
+      enabled: false,
       useUnionTypes: false
     },
     prototypes: {
