@@ -107,14 +107,14 @@ export const BitArray = {
   fromAmino(object: BitArrayAmino): BitArray {
     return {
       bits: BigInt(object.bits),
-      elems: Array.isArray(object?.elems) ? object.elems.map((e: any) => e) : []
+      elems: Array.isArray(object?.elems) ? object.elems.map((e: any) => BigInt(e)) : []
     };
   },
   toAmino(message: BitArray): BitArrayAmino {
     const obj: any = {};
     obj.bits = message.bits ? message.bits.toString() : undefined;
     if (message.elems) {
-      obj.elems = message.elems.map(e => e);
+      obj.elems = message.elems.map(e => e.toString());
     } else {
       obj.elems = [];
     }

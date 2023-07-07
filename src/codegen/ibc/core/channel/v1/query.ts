@@ -3299,7 +3299,7 @@ export const QueryPacketAcknowledgementsRequest = {
       portId: object.port_id,
       channelId: object.channel_id,
       pagination: object?.pagination ? PageRequest.fromAmino(object.pagination) : undefined,
-      packetCommitmentSequences: Array.isArray(object?.packet_commitment_sequences) ? object.packet_commitment_sequences.map((e: any) => e) : []
+      packetCommitmentSequences: Array.isArray(object?.packet_commitment_sequences) ? object.packet_commitment_sequences.map((e: any) => BigInt(e)) : []
     };
   },
   toAmino(message: QueryPacketAcknowledgementsRequest): QueryPacketAcknowledgementsRequestAmino {
@@ -3308,7 +3308,7 @@ export const QueryPacketAcknowledgementsRequest = {
     obj.channel_id = message.channelId;
     obj.pagination = message.pagination ? PageRequest.toAmino(message.pagination) : undefined;
     if (message.packetCommitmentSequences) {
-      obj.packet_commitment_sequences = message.packetCommitmentSequences.map(e => e);
+      obj.packet_commitment_sequences = message.packetCommitmentSequences.map(e => e.toString());
     } else {
       obj.packet_commitment_sequences = [];
     }
@@ -3565,7 +3565,7 @@ export const QueryUnreceivedPacketsRequest = {
     return {
       portId: object.port_id,
       channelId: object.channel_id,
-      packetCommitmentSequences: Array.isArray(object?.packet_commitment_sequences) ? object.packet_commitment_sequences.map((e: any) => e) : []
+      packetCommitmentSequences: Array.isArray(object?.packet_commitment_sequences) ? object.packet_commitment_sequences.map((e: any) => BigInt(e)) : []
     };
   },
   toAmino(message: QueryUnreceivedPacketsRequest): QueryUnreceivedPacketsRequestAmino {
@@ -3573,7 +3573,7 @@ export const QueryUnreceivedPacketsRequest = {
     obj.port_id = message.portId;
     obj.channel_id = message.channelId;
     if (message.packetCommitmentSequences) {
-      obj.packet_commitment_sequences = message.packetCommitmentSequences.map(e => e);
+      obj.packet_commitment_sequences = message.packetCommitmentSequences.map(e => e.toString());
     } else {
       obj.packet_commitment_sequences = [];
     }
@@ -3688,14 +3688,14 @@ export const QueryUnreceivedPacketsResponse = {
   },
   fromAmino(object: QueryUnreceivedPacketsResponseAmino): QueryUnreceivedPacketsResponse {
     return {
-      sequences: Array.isArray(object?.sequences) ? object.sequences.map((e: any) => e) : [],
+      sequences: Array.isArray(object?.sequences) ? object.sequences.map((e: any) => BigInt(e)) : [],
       height: object?.height ? Height.fromAmino(object.height) : undefined
     };
   },
   toAmino(message: QueryUnreceivedPacketsResponse): QueryUnreceivedPacketsResponseAmino {
     const obj: any = {};
     if (message.sequences) {
-      obj.sequences = message.sequences.map(e => e);
+      obj.sequences = message.sequences.map(e => e.toString());
     } else {
       obj.sequences = [];
     }
@@ -3825,7 +3825,7 @@ export const QueryUnreceivedAcksRequest = {
     return {
       portId: object.port_id,
       channelId: object.channel_id,
-      packetAckSequences: Array.isArray(object?.packet_ack_sequences) ? object.packet_ack_sequences.map((e: any) => e) : []
+      packetAckSequences: Array.isArray(object?.packet_ack_sequences) ? object.packet_ack_sequences.map((e: any) => BigInt(e)) : []
     };
   },
   toAmino(message: QueryUnreceivedAcksRequest): QueryUnreceivedAcksRequestAmino {
@@ -3833,7 +3833,7 @@ export const QueryUnreceivedAcksRequest = {
     obj.port_id = message.portId;
     obj.channel_id = message.channelId;
     if (message.packetAckSequences) {
-      obj.packet_ack_sequences = message.packetAckSequences.map(e => e);
+      obj.packet_ack_sequences = message.packetAckSequences.map(e => e.toString());
     } else {
       obj.packet_ack_sequences = [];
     }
@@ -3948,14 +3948,14 @@ export const QueryUnreceivedAcksResponse = {
   },
   fromAmino(object: QueryUnreceivedAcksResponseAmino): QueryUnreceivedAcksResponse {
     return {
-      sequences: Array.isArray(object?.sequences) ? object.sequences.map((e: any) => e) : [],
+      sequences: Array.isArray(object?.sequences) ? object.sequences.map((e: any) => BigInt(e)) : [],
       height: object?.height ? Height.fromAmino(object.height) : undefined
     };
   },
   toAmino(message: QueryUnreceivedAcksResponse): QueryUnreceivedAcksResponseAmino {
     const obj: any = {};
     if (message.sequences) {
-      obj.sequences = message.sequences.map(e => e);
+      obj.sequences = message.sequences.map(e => e.toString());
     } else {
       obj.sequences = [];
     }

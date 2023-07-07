@@ -3199,14 +3199,14 @@ export const MsgPinCodes = {
   fromAmino(object: MsgPinCodesAmino): MsgPinCodes {
     return {
       authority: object.authority,
-      codeIds: Array.isArray(object?.code_ids) ? object.code_ids.map((e: any) => e) : []
+      codeIds: Array.isArray(object?.code_ids) ? object.code_ids.map((e: any) => BigInt(e)) : []
     };
   },
   toAmino(message: MsgPinCodes): MsgPinCodesAmino {
     const obj: any = {};
     obj.authority = message.authority;
     if (message.codeIds) {
-      obj.code_ids = message.codeIds.map(e => e);
+      obj.code_ids = message.codeIds.map(e => e.toString());
     } else {
       obj.code_ids = [];
     }
@@ -3392,14 +3392,14 @@ export const MsgUnpinCodes = {
   fromAmino(object: MsgUnpinCodesAmino): MsgUnpinCodes {
     return {
       authority: object.authority,
-      codeIds: Array.isArray(object?.code_ids) ? object.code_ids.map((e: any) => e) : []
+      codeIds: Array.isArray(object?.code_ids) ? object.code_ids.map((e: any) => BigInt(e)) : []
     };
   },
   toAmino(message: MsgUnpinCodes): MsgUnpinCodesAmino {
     const obj: any = {};
     obj.authority = message.authority;
     if (message.codeIds) {
-      obj.code_ids = message.codeIds.map(e => e);
+      obj.code_ids = message.codeIds.map(e => e.toString());
     } else {
       obj.code_ids = [];
     }
