@@ -1,6 +1,6 @@
 {
   "name": "interchain-query",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "description": "Cosmos RPC with React Query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/interchain-query#readme",
@@ -29,10 +29,10 @@
   },
   "exports": {
     "./*": {
-      "types": "./dist/codegen/*.d.ts",
-      "import": "./dist/codegen/*.mjs",
-      "require": "./dist/codegen/*.js",
-      "default": "./dist/codegen/*.js"
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.mjs",
+      "require": "./dist/*.js",
+      "default": "./dist/*.js"
     }
   },
   "directories": {
