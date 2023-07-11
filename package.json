@@ -8,31 +8,18 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
-  "tsup": {
-    "clean": true,
-    "dts": true,
-    "dts-resolve": true,
-    "entry": [
-      "src/index.ts"
-    ],
-    "format": [
-      "cjs",
-      "esm"
-    ],
-    "splitting": false,
-    "sourcemap": true,
-    "skipNodeModulesBundle": true,
-    "bundle": true,
-    "external": [
-      "react"
-    ]
-  },
   "exports": {
     "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.mjs",
-      "require": "./dist/*.js",
-      "default": "./dist/*.js"
+      "types": "./dist/codegen/*.d.ts",
+      "import": "./dist/codegen/*.mjs",
+      "require": "./dist/codegen/*.js",
+      "default": "./dist/codegen/*.js"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "directories": {
@@ -43,7 +30,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build:cjs": "yarn tsc -p tsconfig.json --outDir dist --module commonjs",
+    "build:mjs": "yarn tsc -p tsconfig.json --outDir mjs --module es2022 --declaration false",
+    "build": "rm -rf dist && !(yarn build:cjs || yarn build:mjs) && find mjs -type f -name *.js -exec rename -S '.js' '.mjs' {} +  && find mjs -type f -name *.mjs -exec rename -S 'mjs/' 'dist/' {} + && rm -rf mjs",
     "codegen": "cross-env NODE_ENV=development babel-node scripts/codegen.js",
     "prepare": "npm run build",
     "lint": "eslint src --fix",
