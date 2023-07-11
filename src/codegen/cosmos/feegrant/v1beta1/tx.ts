@@ -10,7 +10,7 @@ export interface MsgGrantAllowance {
   granter: string;
   /** grantee is the address of the user being granted an allowance of another user's funds. */
   grantee: string;
-  /** allowance can be any of basic and filtered fee allowance. */
+  /** allowance can be any of basic, periodic, allowed fee allowance. */
   allowance: Any;
 }
 export interface MsgGrantAllowanceProtoMsg {
@@ -26,7 +26,7 @@ export interface MsgGrantAllowanceAmino {
   granter: string;
   /** grantee is the address of the user being granted an allowance of another user's funds. */
   grantee: string;
-  /** allowance can be any of basic and filtered fee allowance. */
+  /** allowance can be any of basic, periodic, allowed fee allowance. */
   allowance?: AnyAmino;
 }
 export interface MsgGrantAllowanceAminoMsg {

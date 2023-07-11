@@ -25,7 +25,7 @@ export interface PubKeyAmino {
   key: Uint8Array;
 }
 export interface PubKeyAminoMsg {
-  type: "tendermint/PubKeySecp256k1";
+  type: "cosmos-sdk/PubKey";
   value: PubKeyAmino;
 }
 /**
@@ -51,7 +51,7 @@ export interface PrivKeyAmino {
   key: Uint8Array;
 }
 export interface PrivKeyAminoMsg {
-  type: "tendermint/PrivKeySecp256k1";
+  type: "cosmos-sdk/PrivKey";
   value: PrivKeyAmino;
 }
 /** PrivKey defines a secp256k1 private key. */
@@ -65,7 +65,7 @@ function createBasePubKey(): PubKey {
 }
 export const PubKey = {
   typeUrl: "/cosmos.crypto.secp256k1.PubKey",
-  aminoType: "tendermint/PubKeySecp256k1",
+  aminoType: "cosmos-sdk/PubKey",
   encode(message: PubKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
@@ -129,7 +129,7 @@ export const PubKey = {
   },
   toAminoMsg(message: PubKey): PubKeyAminoMsg {
     return {
-      type: "tendermint/PubKeySecp256k1",
+      type: "cosmos-sdk/PubKey",
       value: PubKey.toAmino(message)
     };
   },
@@ -153,7 +153,7 @@ function createBasePrivKey(): PrivKey {
 }
 export const PrivKey = {
   typeUrl: "/cosmos.crypto.secp256k1.PrivKey",
-  aminoType: "tendermint/PrivKeySecp256k1",
+  aminoType: "cosmos-sdk/PrivKey",
   encode(message: PrivKey, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
@@ -217,7 +217,7 @@ export const PrivKey = {
   },
   toAminoMsg(message: PrivKey): PrivKeyAminoMsg {
     return {
-      type: "tendermint/PrivKeySecp256k1",
+      type: "cosmos-sdk/PrivKey",
       value: PrivKey.toAmino(message)
     };
   },

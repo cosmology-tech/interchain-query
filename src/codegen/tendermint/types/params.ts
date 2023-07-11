@@ -51,6 +51,13 @@ export interface BlockParams {
    * Note: must be greater or equal to -1
    */
   maxGas: bigint;
+  /**
+   * Minimum time increment between consecutive blocks (in milliseconds) If the
+   * block header timestamp is ahead of the system clock, decrease this value.
+   * 
+   * Not exposed to the application.
+   */
+  timeIotaMs: bigint;
 }
 export interface BlockParamsProtoMsg {
   typeUrl: "/tendermint.types.BlockParams";
@@ -68,6 +75,13 @@ export interface BlockParamsAmino {
    * Note: must be greater or equal to -1
    */
   max_gas: string;
+  /**
+   * Minimum time increment between consecutive blocks (in milliseconds) If the
+   * block header timestamp is ahead of the system clock, decrease this value.
+   * 
+   * Not exposed to the application.
+   */
+  time_iota_ms: string;
 }
 export interface BlockParamsAminoMsg {
   type: "/tendermint.types.BlockParams";
@@ -77,6 +91,7 @@ export interface BlockParamsAminoMsg {
 export interface BlockParamsSDKType {
   max_bytes: bigint;
   max_gas: bigint;
+  time_iota_ms: bigint;
 }
 /** EvidenceParams determine how we handle evidence of malfeasance. */
 export interface EvidenceParams {
@@ -171,7 +186,7 @@ export interface ValidatorParamsSDKType {
 }
 /** VersionParams contains the ABCI application version. */
 export interface VersionParams {
-  app: bigint;
+  appVersion: bigint;
 }
 export interface VersionParamsProtoMsg {
   typeUrl: "/tendermint.types.VersionParams";
@@ -179,7 +194,7 @@ export interface VersionParamsProtoMsg {
 }
 /** VersionParams contains the ABCI application version. */
 export interface VersionParamsAmino {
-  app: string;
+  app_version: string;
 }
 export interface VersionParamsAminoMsg {
   type: "/tendermint.types.VersionParams";
@@ -187,7 +202,7 @@ export interface VersionParamsAminoMsg {
 }
 /** VersionParams contains the ABCI application version. */
 export interface VersionParamsSDKType {
-  app: bigint;
+  app_version: bigint;
 }
 /**
  * HashedParams is a subset of ConsensusParams.
@@ -350,7 +365,8 @@ export const ConsensusParams = {
 function createBaseBlockParams(): BlockParams {
   return {
     maxBytes: BigInt(0),
-    maxGas: BigInt(0)
+    maxGas: BigInt(0),
+    timeIotaMs: BigInt(0)
   };
 }
 export const BlockParams = {
@@ -361,6 +377,9 @@ export const BlockParams = {
     }
     if (message.maxGas !== BigInt(0)) {
       writer.uint32(16).int64(message.maxGas);
+    }
+    if (message.timeIotaMs !== BigInt(0)) {
+      writer.uint32(24).int64(message.timeIotaMs);
     }
     return writer;
   },
@@ -377,6 +396,9 @@ export const BlockParams = {
         case 2:
           message.maxGas = reader.int64();
           break;
+        case 3:
+          message.timeIotaMs = reader.int64();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -387,43 +409,50 @@ export const BlockParams = {
   fromJSON(object: any): BlockParams {
     return {
       maxBytes: isSet(object.maxBytes) ? BigInt(object.maxBytes.toString()) : BigInt(0),
-      maxGas: isSet(object.maxGas) ? BigInt(object.maxGas.toString()) : BigInt(0)
+      maxGas: isSet(object.maxGas) ? BigInt(object.maxGas.toString()) : BigInt(0),
+      timeIotaMs: isSet(object.timeIotaMs) ? BigInt(object.timeIotaMs.toString()) : BigInt(0)
     };
   },
   toJSON(message: BlockParams): unknown {
     const obj: any = {};
     message.maxBytes !== undefined && (obj.maxBytes = (message.maxBytes || BigInt(0)).toString());
     message.maxGas !== undefined && (obj.maxGas = (message.maxGas || BigInt(0)).toString());
+    message.timeIotaMs !== undefined && (obj.timeIotaMs = (message.timeIotaMs || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: DeepPartial<BlockParams>): BlockParams {
     const message = createBaseBlockParams();
     message.maxBytes = object.maxBytes !== undefined && object.maxBytes !== null ? BigInt(object.maxBytes.toString()) : BigInt(0);
     message.maxGas = object.maxGas !== undefined && object.maxGas !== null ? BigInt(object.maxGas.toString()) : BigInt(0);
+    message.timeIotaMs = object.timeIotaMs !== undefined && object.timeIotaMs !== null ? BigInt(object.timeIotaMs.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: BlockParamsSDKType): BlockParams {
     return {
       maxBytes: object?.max_bytes,
-      maxGas: object?.max_gas
+      maxGas: object?.max_gas,
+      timeIotaMs: object?.time_iota_ms
     };
   },
   toSDK(message: BlockParams): BlockParamsSDKType {
     const obj: any = {};
     obj.max_bytes = message.maxBytes;
     obj.max_gas = message.maxGas;
+    obj.time_iota_ms = message.timeIotaMs;
     return obj;
   },
   fromAmino(object: BlockParamsAmino): BlockParams {
     return {
       maxBytes: BigInt(object.max_bytes),
-      maxGas: BigInt(object.max_gas)
+      maxGas: BigInt(object.max_gas),
+      timeIotaMs: BigInt(object.time_iota_ms)
     };
   },
   toAmino(message: BlockParams): BlockParamsAmino {
     const obj: any = {};
     obj.max_bytes = message.maxBytes ? message.maxBytes.toString() : undefined;
     obj.max_gas = message.maxGas ? message.maxGas.toString() : undefined;
+    obj.time_iota_ms = message.timeIotaMs ? message.timeIotaMs.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: BlockParamsAminoMsg): BlockParams {
@@ -646,14 +675,14 @@ export const ValidatorParams = {
 };
 function createBaseVersionParams(): VersionParams {
   return {
-    app: BigInt(0)
+    appVersion: BigInt(0)
   };
 }
 export const VersionParams = {
   typeUrl: "/tendermint.types.VersionParams",
   encode(message: VersionParams, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
-    if (message.app !== BigInt(0)) {
-      writer.uint32(8).uint64(message.app);
+    if (message.appVersion !== BigInt(0)) {
+      writer.uint32(8).uint64(message.appVersion);
     }
     return writer;
   },
@@ -665,7 +694,7 @@ export const VersionParams = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.app = reader.uint64();
+          message.appVersion = reader.uint64();
           break;
         default:
           reader.skipType(tag & 7);
@@ -676,37 +705,37 @@ export const VersionParams = {
   },
   fromJSON(object: any): VersionParams {
     return {
-      app: isSet(object.app) ? BigInt(object.app.toString()) : BigInt(0)
+      appVersion: isSet(object.appVersion) ? BigInt(object.appVersion.toString()) : BigInt(0)
     };
   },
   toJSON(message: VersionParams): unknown {
     const obj: any = {};
-    message.app !== undefined && (obj.app = (message.app || BigInt(0)).toString());
+    message.appVersion !== undefined && (obj.appVersion = (message.appVersion || BigInt(0)).toString());
     return obj;
   },
   fromPartial(object: DeepPartial<VersionParams>): VersionParams {
     const message = createBaseVersionParams();
-    message.app = object.app !== undefined && object.app !== null ? BigInt(object.app.toString()) : BigInt(0);
+    message.appVersion = object.appVersion !== undefined && object.appVersion !== null ? BigInt(object.appVersion.toString()) : BigInt(0);
     return message;
   },
   fromSDK(object: VersionParamsSDKType): VersionParams {
     return {
-      app: object?.app
+      appVersion: object?.app_version
     };
   },
   toSDK(message: VersionParams): VersionParamsSDKType {
     const obj: any = {};
-    obj.app = message.app;
+    obj.app_version = message.appVersion;
     return obj;
   },
   fromAmino(object: VersionParamsAmino): VersionParams {
     return {
-      app: BigInt(object.app)
+      appVersion: BigInt(object.app_version)
     };
   },
   toAmino(message: VersionParams): VersionParamsAmino {
     const obj: any = {};
-    obj.app = message.app ? message.app.toString() : undefined;
+    obj.app_version = message.appVersion ? message.appVersion.toString() : undefined;
     return obj;
   },
   fromAminoMsg(object: VersionParamsAminoMsg): VersionParams {

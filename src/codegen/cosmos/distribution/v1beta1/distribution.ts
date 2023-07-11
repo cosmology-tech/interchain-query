@@ -21,7 +21,7 @@ export interface ParamsAmino {
   withdraw_addr_enabled: boolean;
 }
 export interface ParamsAminoMsg {
-  type: "cosmos-sdk/x/distribution/Params";
+  type: "cosmos-sdk/Params";
   value: ParamsAmino;
 }
 /** Params defines the set of params for the distribution module. */
@@ -435,7 +435,7 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.distribution.v1beta1.Params",
-  aminoType: "cosmos-sdk/x/distribution/Params",
+  aminoType: "cosmos-sdk/Params",
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.communityTax !== "") {
       writer.uint32(10).string(Decimal.fromUserInput(message.communityTax, 18).atomics);
@@ -538,7 +538,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "cosmos-sdk/x/distribution/Params",
+      type: "cosmos-sdk/Params",
       value: Params.toAmino(message)
     };
   },

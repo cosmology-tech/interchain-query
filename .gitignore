@@ -43,6 +43,7 @@ jspm_packages
 
 # Lib
 lib
+mjs
 
 # npm package lock
 package-lock.json

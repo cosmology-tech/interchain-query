@@ -660,8 +660,6 @@ export interface Params {
   bondDenom: string;
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
   minCommissionRate: string;
-  /** min_self_delegation is the chain-wide minimum amount that a validator has to self delegate */
-  minSelfDelegation: string;
 }
 export interface ParamsProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Params";
@@ -681,11 +679,9 @@ export interface ParamsAmino {
   bond_denom: string;
   /** min_commission_rate is the chain-wide minimum commission rate that a validator can charge their delegators */
   min_commission_rate: string;
-  /** min_self_delegation is the chain-wide minimum amount that a validator has to self delegate */
-  min_self_delegation: string;
 }
 export interface ParamsAminoMsg {
-  type: "cosmos-sdk/x/staking/Params";
+  type: "cosmos-sdk/Params";
   value: ParamsAmino;
 }
 /** Params defines the parameters for the staking module. */
@@ -696,7 +692,6 @@ export interface ParamsSDKType {
   historical_entries: number;
   bond_denom: string;
   min_commission_rate: string;
-  min_self_delegation: string;
 }
 /**
  * DelegationResponse is equivalent to Delegation except that it contains a
@@ -2713,13 +2708,12 @@ function createBaseParams(): Params {
     maxEntries: 0,
     historicalEntries: 0,
     bondDenom: "",
-    minCommissionRate: "",
-    minSelfDelegation: ""
+    minCommissionRate: ""
   };
 }
 export const Params = {
   typeUrl: "/cosmos.staking.v1beta1.Params",
-  aminoType: "cosmos-sdk/x/staking/Params",
+  aminoType: "cosmos-sdk/Params",
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.unbondingTime !== undefined) {
       Duration.encode(message.unbondingTime, writer.uint32(10).fork()).ldelim();
@@ -2738,9 +2732,6 @@ export const Params = {
     }
     if (message.minCommissionRate !== "") {
       writer.uint32(50).string(Decimal.fromUserInput(message.minCommissionRate, 18).atomics);
-    }
-    if (message.minSelfDelegation !== "") {
-      writer.uint32(58).string(message.minSelfDelegation);
     }
     return writer;
   },
@@ -2769,9 +2760,6 @@ export const Params = {
         case 6:
           message.minCommissionRate = Decimal.fromAtomics(reader.string(), 18).toString();
           break;
-        case 7:
-          message.minSelfDelegation = reader.string();
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -2786,8 +2774,7 @@ export const Params = {
       maxEntries: isSet(object.maxEntries) ? Number(object.maxEntries) : 0,
       historicalEntries: isSet(object.historicalEntries) ? Number(object.historicalEntries) : 0,
       bondDenom: isSet(object.bondDenom) ? String(object.bondDenom) : "",
-      minCommissionRate: isSet(object.minCommissionRate) ? String(object.minCommissionRate) : "",
-      minSelfDelegation: isSet(object.minSelfDelegation) ? String(object.minSelfDelegation) : ""
+      minCommissionRate: isSet(object.minCommissionRate) ? String(object.minCommissionRate) : ""
     };
   },
   toJSON(message: Params): unknown {
@@ -2798,7 +2785,6 @@ export const Params = {
     message.historicalEntries !== undefined && (obj.historicalEntries = Math.round(message.historicalEntries));
     message.bondDenom !== undefined && (obj.bondDenom = message.bondDenom);
     message.minCommissionRate !== undefined && (obj.minCommissionRate = message.minCommissionRate);
-    message.minSelfDelegation !== undefined && (obj.minSelfDelegation = message.minSelfDelegation);
     return obj;
   },
   fromPartial(object: DeepPartial<Params>): Params {
@@ -2809,7 +2795,6 @@ export const Params = {
     message.historicalEntries = object.historicalEntries ?? 0;
     message.bondDenom = object.bondDenom ?? "";
     message.minCommissionRate = object.minCommissionRate ?? "";
-    message.minSelfDelegation = object.minSelfDelegation ?? "";
     return message;
   },
   fromSDK(object: ParamsSDKType): Params {
@@ -2819,8 +2804,7 @@ export const Params = {
       maxEntries: object?.max_entries,
       historicalEntries: object?.historical_entries,
       bondDenom: object?.bond_denom,
-      minCommissionRate: object?.min_commission_rate,
-      minSelfDelegation: object?.min_self_delegation
+      minCommissionRate: object?.min_commission_rate
     };
   },
   toSDK(message: Params): ParamsSDKType {
@@ -2831,7 +2815,6 @@ export const Params = {
     obj.historical_entries = message.historicalEntries;
     obj.bond_denom = message.bondDenom;
     obj.min_commission_rate = message.minCommissionRate;
-    obj.min_self_delegation = message.minSelfDelegation;
     return obj;
   },
   fromAmino(object: ParamsAmino): Params {
@@ -2841,8 +2824,7 @@ export const Params = {
       maxEntries: object.max_entries,
       historicalEntries: object.historical_entries,
       bondDenom: object.bond_denom,
-      minCommissionRate: object.min_commission_rate,
-      minSelfDelegation: object.min_self_delegation
+      minCommissionRate: object.min_commission_rate
     };
   },
   toAmino(message: Params): ParamsAmino {
@@ -2853,7 +2835,6 @@ export const Params = {
     obj.historical_entries = message.historicalEntries;
     obj.bond_denom = message.bondDenom;
     obj.min_commission_rate = message.minCommissionRate;
-    obj.min_self_delegation = message.minSelfDelegation;
     return obj;
   },
   fromAminoMsg(object: ParamsAminoMsg): Params {
@@ -2861,7 +2842,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "cosmos-sdk/x/staking/Params",
+      type: "cosmos-sdk/Params",
       value: Params.toAmino(message)
     };
   },

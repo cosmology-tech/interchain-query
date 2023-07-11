@@ -20,6 +20,7 @@ telescope({
   options: {
     env: 'v-next',
     tsDisable: {
+      patterns: ['**/tx.registry.ts'],
       files: [
         'ibc/core/types/v1/genesis.ts',
         'ibc/applications/interchain_accounts/genesis/v1/genesis.ts',
