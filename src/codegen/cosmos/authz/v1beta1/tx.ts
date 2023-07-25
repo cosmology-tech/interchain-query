@@ -9,7 +9,7 @@ import { isSet, DeepPartial, bytesFromBase64, base64FromBytes } from "../../../h
 export interface MsgGrant {
   granter: string;
   grantee: string;
-  grant: Grant;
+  grant: Grant | undefined;
 }
 export interface MsgGrantProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.MsgGrant";
@@ -22,7 +22,7 @@ export interface MsgGrantProtoMsg {
 export interface MsgGrantAmino {
   granter: string;
   grantee: string;
-  grant?: GrantAmino;
+  grant?: GrantAmino | undefined;
 }
 export interface MsgGrantAminoMsg {
   type: "cosmos-sdk/MsgGrant";
@@ -35,7 +35,7 @@ export interface MsgGrantAminoMsg {
 export interface MsgGrantSDKType {
   granter: string;
   grantee: string;
-  grant: GrantSDKType;
+  grant: GrantSDKType | undefined;
 }
 /** MsgExecResponse defines the Msg/MsgExecResponse response type. */
 export interface MsgExecResponse {

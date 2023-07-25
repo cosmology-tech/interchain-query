@@ -13,11 +13,11 @@ import { isSet, DeepPartial } from "../../../../helpers";
 /** GenesisState defines the ibc module's genesis state. */
 export interface GenesisState {
   /** ICS002 - Clients genesis state */
-  clientGenesis: GenesisState1;
+  clientGenesis: GenesisState1 | undefined;
   /** ICS003 - Connections genesis state */
-  connectionGenesis: GenesisState2;
+  connectionGenesis: GenesisState2 | undefined;
   /** ICS004 - Channel genesis state */
-  channelGenesis: GenesisState3;
+  channelGenesis: GenesisState3 | undefined;
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.types.v1.GenesisState";
@@ -26,11 +26,11 @@ export interface GenesisStateProtoMsg {
 /** GenesisState defines the ibc module's genesis state. */
 export interface GenesisStateAmino {
   /** ICS002 - Clients genesis state */
-  client_genesis?: GenesisState1Amino;
+  client_genesis?: GenesisState1Amino | undefined;
   /** ICS003 - Connections genesis state */
-  connection_genesis?: GenesisState2Amino;
+  connection_genesis?: GenesisState2Amino | undefined;
   /** ICS004 - Channel genesis state */
-  channel_genesis?: GenesisState3Amino;
+  channel_genesis?: GenesisState3Amino | undefined;
 }
 export interface GenesisStateAminoMsg {
   type: "cosmos-sdk/GenesisState";
@@ -38,9 +38,9 @@ export interface GenesisStateAminoMsg {
 }
 /** GenesisState defines the ibc module's genesis state. */
 export interface GenesisStateSDKType {
-  client_genesis: GenesisState1SDKType;
-  connection_genesis: GenesisState2SDKType;
-  channel_genesis: GenesisState3SDKType;
+  client_genesis: GenesisState1SDKType | undefined;
+  connection_genesis: GenesisState2SDKType | undefined;
+  channel_genesis: GenesisState3SDKType | undefined;
 }
 function createBaseGenesisState(): GenesisState {
   return {

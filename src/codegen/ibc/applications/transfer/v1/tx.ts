@@ -13,7 +13,7 @@ export interface MsgTransfer {
   /** the channel by which the packet will be sent */
   sourceChannel: string;
   /** the tokens to be transferred */
-  token: Coin;
+  token: Coin | undefined;
   /** the sender address */
   sender: string;
   /** the recipient address on the destination chain */
@@ -22,7 +22,7 @@ export interface MsgTransfer {
    * Timeout height relative to the current block height.
    * The timeout is disabled when set to 0.
    */
-  timeoutHeight: Height;
+  timeoutHeight: Height | undefined;
   /**
    * Timeout timestamp in absolute nanoseconds since unix epoch.
    * The timeout is disabled when set to 0.
@@ -46,7 +46,7 @@ export interface MsgTransferAmino {
   /** the channel by which the packet will be sent */
   source_channel: string;
   /** the tokens to be transferred */
-  token?: CoinAmino;
+  token?: CoinAmino | undefined;
   /** the sender address */
   sender: string;
   /** the recipient address on the destination chain */
@@ -55,7 +55,7 @@ export interface MsgTransferAmino {
    * Timeout height relative to the current block height.
    * The timeout is disabled when set to 0.
    */
-  timeout_height?: HeightAmino;
+  timeout_height?: HeightAmino | undefined;
   /**
    * Timeout timestamp in absolute nanoseconds since unix epoch.
    * The timeout is disabled when set to 0.
@@ -76,10 +76,10 @@ export interface MsgTransferAminoMsg {
 export interface MsgTransferSDKType {
   source_port: string;
   source_channel: string;
-  token: CoinSDKType;
+  token: CoinSDKType | undefined;
   sender: string;
   receiver: string;
-  timeout_height: HeightSDKType;
+  timeout_height: HeightSDKType | undefined;
   timeout_timestamp: bigint;
   memo: string;
 }
@@ -114,7 +114,7 @@ export interface MsgUpdateParams {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params: Params;
+  params: Params | undefined;
 }
 export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.applications.transfer.v1.MsgUpdateParams";
@@ -129,7 +129,7 @@ export interface MsgUpdateParamsAmino {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface MsgUpdateParamsAminoMsg {
   type: "cosmos-sdk/MsgUpdateParams";
@@ -138,7 +138,7 @@ export interface MsgUpdateParamsAminoMsg {
 /** MsgUpdateParams is the Msg/UpdateParams request type. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a

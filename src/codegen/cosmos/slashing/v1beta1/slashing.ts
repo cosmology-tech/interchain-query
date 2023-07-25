@@ -17,7 +17,7 @@ export interface ValidatorSigningInfo {
    */
   indexOffset: bigint;
   /** Timestamp until which the validator is jailed due to liveness downtime. */
-  jailedUntil: Date;
+  jailedUntil: Date | undefined;
   /**
    * Whether or not a validator has been tombstoned (killed out of validator set). It is set
    * once the validator commits an equivocation or for any other configured misbehiavor.
@@ -48,7 +48,7 @@ export interface ValidatorSigningInfoAmino {
    */
   index_offset: string;
   /** Timestamp until which the validator is jailed due to liveness downtime. */
-  jailed_until?: Date;
+  jailed_until?: Date | undefined;
   /**
    * Whether or not a validator has been tombstoned (killed out of validator set). It is set
    * once the validator commits an equivocation or for any other configured misbehiavor.
@@ -72,7 +72,7 @@ export interface ValidatorSigningInfoSDKType {
   address: string;
   start_height: bigint;
   index_offset: bigint;
-  jailed_until: Date;
+  jailed_until: Date | undefined;
   tombstoned: boolean;
   missed_blocks_counter: bigint;
 }
@@ -80,7 +80,7 @@ export interface ValidatorSigningInfoSDKType {
 export interface Params {
   signedBlocksWindow: bigint;
   minSignedPerWindow: Uint8Array;
-  downtimeJailDuration: Duration;
+  downtimeJailDuration: Duration | undefined;
   slashFractionDoubleSign: Uint8Array;
   slashFractionDowntime: Uint8Array;
 }
@@ -92,7 +92,7 @@ export interface ParamsProtoMsg {
 export interface ParamsAmino {
   signed_blocks_window: string;
   min_signed_per_window: Uint8Array;
-  downtime_jail_duration?: DurationAmino;
+  downtime_jail_duration?: DurationAmino | undefined;
   slash_fraction_double_sign: Uint8Array;
   slash_fraction_downtime: Uint8Array;
 }
@@ -104,7 +104,7 @@ export interface ParamsAminoMsg {
 export interface ParamsSDKType {
   signed_blocks_window: bigint;
   min_signed_per_window: Uint8Array;
-  downtime_jail_duration: DurationSDKType;
+  downtime_jail_duration: DurationSDKType | undefined;
   slash_fraction_double_sign: Uint8Array;
   slash_fraction_downtime: Uint8Array;
 }

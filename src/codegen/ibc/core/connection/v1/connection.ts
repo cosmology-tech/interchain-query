@@ -73,7 +73,7 @@ export interface ConnectionEnd {
   /** current state of the connection end. */
   state: State;
   /** counterparty chain associated with this connection. */
-  counterparty: Counterparty;
+  counterparty: Counterparty | undefined;
   /**
    * delay period that must pass before a consensus state can be used for
    * packet-verification NOTE: delay period logic is only implemented by some
@@ -102,7 +102,7 @@ export interface ConnectionEndAmino {
   /** current state of the connection end. */
   state: State;
   /** counterparty chain associated with this connection. */
-  counterparty?: CounterpartyAmino;
+  counterparty?: CounterpartyAmino | undefined;
   /**
    * delay period that must pass before a consensus state can be used for
    * packet-verification NOTE: delay period logic is only implemented by some
@@ -124,7 +124,7 @@ export interface ConnectionEndSDKType {
   client_id: string;
   versions: VersionSDKType[];
   state: State;
-  counterparty: CounterpartySDKType;
+  counterparty: CounterpartySDKType | undefined;
   delay_period: bigint;
 }
 /**
@@ -144,7 +144,7 @@ export interface IdentifiedConnection {
   /** current state of the connection end. */
   state: State;
   /** counterparty chain associated with this connection. */
-  counterparty: Counterparty;
+  counterparty: Counterparty | undefined;
   /** delay period associated with this connection. */
   delayPeriod: bigint;
 }
@@ -169,7 +169,7 @@ export interface IdentifiedConnectionAmino {
   /** current state of the connection end. */
   state: State;
   /** counterparty chain associated with this connection. */
-  counterparty?: CounterpartyAmino;
+  counterparty?: CounterpartyAmino | undefined;
   /** delay period associated with this connection. */
   delay_period: string;
 }
@@ -186,7 +186,7 @@ export interface IdentifiedConnectionSDKType {
   client_id: string;
   versions: VersionSDKType[];
   state: State;
-  counterparty: CounterpartySDKType;
+  counterparty: CounterpartySDKType | undefined;
   delay_period: bigint;
 }
 /** Counterparty defines the counterparty chain associated with a connection end. */
@@ -202,7 +202,7 @@ export interface Counterparty {
    */
   connectionId: string;
   /** commitment merkle prefix of the counterparty chain. */
-  prefix: MerklePrefix;
+  prefix: MerklePrefix | undefined;
 }
 export interface CounterpartyProtoMsg {
   typeUrl: "/ibc.core.connection.v1.Counterparty";
@@ -221,7 +221,7 @@ export interface CounterpartyAmino {
    */
   connection_id: string;
   /** commitment merkle prefix of the counterparty chain. */
-  prefix?: MerklePrefixAmino;
+  prefix?: MerklePrefixAmino | undefined;
 }
 export interface CounterpartyAminoMsg {
   type: "cosmos-sdk/Counterparty";
@@ -231,7 +231,7 @@ export interface CounterpartyAminoMsg {
 export interface CounterpartySDKType {
   client_id: string;
   connection_id: string;
-  prefix: MerklePrefixSDKType;
+  prefix: MerklePrefixSDKType | undefined;
 }
 /** ClientPaths define all the connection paths for a client state. */
 export interface ClientPaths {

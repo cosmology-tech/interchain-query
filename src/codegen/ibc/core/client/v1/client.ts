@@ -10,7 +10,7 @@ export interface IdentifiedClientState {
   /** client identifier */
   clientId: string;
   /** client state */
-  clientState: Any;
+  clientState: Any | undefined;
 }
 export interface IdentifiedClientStateProtoMsg {
   typeUrl: "/ibc.core.client.v1.IdentifiedClientState";
@@ -24,7 +24,7 @@ export interface IdentifiedClientStateAmino {
   /** client identifier */
   client_id: string;
   /** client state */
-  client_state?: AnyAmino;
+  client_state?: AnyAmino | undefined;
 }
 export interface IdentifiedClientStateAminoMsg {
   type: "cosmos-sdk/IdentifiedClientState";
@@ -36,7 +36,7 @@ export interface IdentifiedClientStateAminoMsg {
  */
 export interface IdentifiedClientStateSDKType {
   client_id: string;
-  client_state: AnySDKType;
+  client_state: AnySDKType | undefined;
 }
 /**
  * ConsensusStateWithHeight defines a consensus state with an additional height
@@ -44,9 +44,9 @@ export interface IdentifiedClientStateSDKType {
  */
 export interface ConsensusStateWithHeight {
   /** consensus state height */
-  height: Height;
+  height: Height | undefined;
   /** consensus state */
-  consensusState: Any;
+  consensusState: Any | undefined;
 }
 export interface ConsensusStateWithHeightProtoMsg {
   typeUrl: "/ibc.core.client.v1.ConsensusStateWithHeight";
@@ -58,9 +58,9 @@ export interface ConsensusStateWithHeightProtoMsg {
  */
 export interface ConsensusStateWithHeightAmino {
   /** consensus state height */
-  height?: HeightAmino;
+  height?: HeightAmino | undefined;
   /** consensus state */
-  consensus_state?: AnyAmino;
+  consensus_state?: AnyAmino | undefined;
 }
 export interface ConsensusStateWithHeightAminoMsg {
   type: "cosmos-sdk/ConsensusStateWithHeight";
@@ -71,8 +71,8 @@ export interface ConsensusStateWithHeightAminoMsg {
  * field.
  */
 export interface ConsensusStateWithHeightSDKType {
-  height: HeightSDKType;
-  consensus_state: AnySDKType;
+  height: HeightSDKType | undefined;
+  consensus_state: AnySDKType | undefined;
 }
 /**
  * ClientConsensusStates defines all the stored consensus states for a given
@@ -175,7 +175,7 @@ export interface ClientUpdateProposalSDKType {
 export interface UpgradeProposal {
   title: string;
   description: string;
-  plan: Plan;
+  plan: Plan | undefined;
   /**
    * An UpgradedClientState must be provided to perform an IBC breaking upgrade.
    * This will make the chain commit to the correct upgraded (self) client state
@@ -184,7 +184,7 @@ export interface UpgradeProposal {
    * of the chain. This will allow IBC connections to persist smoothly across
    * planned chain upgrades
    */
-  upgradedClientState: Any;
+  upgradedClientState: Any | undefined;
 }
 export interface UpgradeProposalProtoMsg {
   typeUrl: "/ibc.core.client.v1.UpgradeProposal";
@@ -197,7 +197,7 @@ export interface UpgradeProposalProtoMsg {
 export interface UpgradeProposalAmino {
   title: string;
   description: string;
-  plan?: PlanAmino;
+  plan?: PlanAmino | undefined;
   /**
    * An UpgradedClientState must be provided to perform an IBC breaking upgrade.
    * This will make the chain commit to the correct upgraded (self) client state
@@ -206,7 +206,7 @@ export interface UpgradeProposalAmino {
    * of the chain. This will allow IBC connections to persist smoothly across
    * planned chain upgrades
    */
-  upgraded_client_state?: AnyAmino;
+  upgraded_client_state?: AnyAmino | undefined;
 }
 export interface UpgradeProposalAminoMsg {
   type: "cosmos-sdk/UpgradeProposal";
@@ -219,8 +219,8 @@ export interface UpgradeProposalAminoMsg {
 export interface UpgradeProposalSDKType {
   title: string;
   description: string;
-  plan: PlanSDKType;
-  upgraded_client_state: AnySDKType;
+  plan: PlanSDKType | undefined;
+  upgraded_client_state: AnySDKType | undefined;
 }
 /**
  * Height is a monotonically increasing data type

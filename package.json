@@ -1,6 +1,6 @@
 {
   "name": "interchain-query",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Cosmos RPC with React Query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/interchain-query#readme",

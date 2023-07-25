@@ -149,7 +149,7 @@ export interface ForwardRelayerAddress {
   /** the forward relayer address */
   address: string;
   /** unique packet identifer comprised of the channel ID, port ID and sequence */
-  packetId: PacketId;
+  packetId: PacketId | undefined;
 }
 export interface ForwardRelayerAddressProtoMsg {
   typeUrl: "/ibc.applications.fee.v1.ForwardRelayerAddress";
@@ -160,7 +160,7 @@ export interface ForwardRelayerAddressAmino {
   /** the forward relayer address */
   address: string;
   /** unique packet identifer comprised of the channel ID, port ID and sequence */
-  packet_id?: PacketIdAmino;
+  packet_id?: PacketIdAmino | undefined;
 }
 export interface ForwardRelayerAddressAminoMsg {
   type: "cosmos-sdk/ForwardRelayerAddress";
@@ -169,7 +169,7 @@ export interface ForwardRelayerAddressAminoMsg {
 /** ForwardRelayerAddress contains the forward relayer address and PacketId used for async acknowledgements */
 export interface ForwardRelayerAddressSDKType {
   address: string;
-  packet_id: PacketIdSDKType;
+  packet_id: PacketIdSDKType | undefined;
 }
 function createBaseGenesisState(): GenesisState {
   return {

@@ -9,8 +9,8 @@ import { isSet, DeepPartial, bytesFromBase64, base64FromBytes } from "../../../.
  */
 export interface MsgConnectionOpenInit {
   clientId: string;
-  counterparty: Counterparty;
-  version: Version;
+  counterparty: Counterparty | undefined;
+  version: Version | undefined;
   delayPeriod: bigint;
   signer: string;
 }
@@ -24,8 +24,8 @@ export interface MsgConnectionOpenInitProtoMsg {
  */
 export interface MsgConnectionOpenInitAmino {
   client_id: string;
-  counterparty?: CounterpartyAmino;
-  version?: VersionAmino;
+  counterparty?: CounterpartyAmino | undefined;
+  version?: VersionAmino | undefined;
   delay_period: string;
   signer: string;
 }
@@ -39,8 +39,8 @@ export interface MsgConnectionOpenInitAminoMsg {
  */
 export interface MsgConnectionOpenInitSDKType {
   client_id: string;
-  counterparty: CounterpartySDKType;
-  version: VersionSDKType;
+  counterparty: CounterpartySDKType | undefined;
+  version: VersionSDKType | undefined;
   delay_period: bigint;
   signer: string;
 }
@@ -76,11 +76,11 @@ export interface MsgConnectionOpenTry {
   /** Deprecated: this field is unused. Crossing hellos are no longer supported in core IBC. */
   /** @deprecated */
   previousConnectionId: string;
-  clientState: Any;
-  counterparty: Counterparty;
+  clientState: Any | undefined;
+  counterparty: Counterparty | undefined;
   delayPeriod: bigint;
   counterpartyVersions: Version[];
-  proofHeight: Height;
+  proofHeight: Height | undefined;
   /**
    * proof of the initialization the connection on Chain A: `UNITIALIZED ->
    * INIT`
@@ -90,7 +90,7 @@ export interface MsgConnectionOpenTry {
   proofClient: Uint8Array;
   /** proof of client consensus state */
   proofConsensus: Uint8Array;
-  consensusHeight: Height;
+  consensusHeight: Height | undefined;
   signer: string;
   /** optional proof data for host state machines that are unable to introspect their own consensus state */
   hostConsensusStateProof: Uint8Array;
@@ -108,11 +108,11 @@ export interface MsgConnectionOpenTryAmino {
   /** Deprecated: this field is unused. Crossing hellos are no longer supported in core IBC. */
   /** @deprecated */
   previous_connection_id: string;
-  client_state?: AnyAmino;
-  counterparty?: CounterpartyAmino;
+  client_state?: AnyAmino | undefined;
+  counterparty?: CounterpartyAmino | undefined;
   delay_period: string;
   counterparty_versions: VersionAmino[];
-  proof_height?: HeightAmino;
+  proof_height?: HeightAmino | undefined;
   /**
    * proof of the initialization the connection on Chain A: `UNITIALIZED ->
    * INIT`
@@ -122,7 +122,7 @@ export interface MsgConnectionOpenTryAmino {
   proof_client: Uint8Array;
   /** proof of client consensus state */
   proof_consensus: Uint8Array;
-  consensus_height?: HeightAmino;
+  consensus_height?: HeightAmino | undefined;
   signer: string;
   /** optional proof data for host state machines that are unable to introspect their own consensus state */
   host_consensus_state_proof: Uint8Array;
@@ -139,15 +139,15 @@ export interface MsgConnectionOpenTrySDKType {
   client_id: string;
   /** @deprecated */
   previous_connection_id: string;
-  client_state: AnySDKType;
-  counterparty: CounterpartySDKType;
+  client_state: AnySDKType | undefined;
+  counterparty: CounterpartySDKType | undefined;
   delay_period: bigint;
   counterparty_versions: VersionSDKType[];
-  proof_height: HeightSDKType;
+  proof_height: HeightSDKType | undefined;
   proof_init: Uint8Array;
   proof_client: Uint8Array;
   proof_consensus: Uint8Array;
-  consensus_height: HeightSDKType;
+  consensus_height: HeightSDKType | undefined;
   signer: string;
   host_consensus_state_proof: Uint8Array;
 }
@@ -172,9 +172,9 @@ export interface MsgConnectionOpenTryResponseSDKType {}
 export interface MsgConnectionOpenAck {
   connectionId: string;
   counterpartyConnectionId: string;
-  version: Version;
-  clientState: Any;
-  proofHeight: Height;
+  version: Version | undefined;
+  clientState: Any | undefined;
+  proofHeight: Height | undefined;
   /**
    * proof of the initialization the connection on Chain B: `UNITIALIZED ->
    * TRYOPEN`
@@ -184,7 +184,7 @@ export interface MsgConnectionOpenAck {
   proofClient: Uint8Array;
   /** proof of client consensus state */
   proofConsensus: Uint8Array;
-  consensusHeight: Height;
+  consensusHeight: Height | undefined;
   signer: string;
   /** optional proof data for host state machines that are unable to introspect their own consensus state */
   hostConsensusStateProof: Uint8Array;
@@ -200,9 +200,9 @@ export interface MsgConnectionOpenAckProtoMsg {
 export interface MsgConnectionOpenAckAmino {
   connection_id: string;
   counterparty_connection_id: string;
-  version?: VersionAmino;
-  client_state?: AnyAmino;
-  proof_height?: HeightAmino;
+  version?: VersionAmino | undefined;
+  client_state?: AnyAmino | undefined;
+  proof_height?: HeightAmino | undefined;
   /**
    * proof of the initialization the connection on Chain B: `UNITIALIZED ->
    * TRYOPEN`
@@ -212,7 +212,7 @@ export interface MsgConnectionOpenAckAmino {
   proof_client: Uint8Array;
   /** proof of client consensus state */
   proof_consensus: Uint8Array;
-  consensus_height?: HeightAmino;
+  consensus_height?: HeightAmino | undefined;
   signer: string;
   /** optional proof data for host state machines that are unable to introspect their own consensus state */
   host_consensus_state_proof: Uint8Array;
@@ -228,13 +228,13 @@ export interface MsgConnectionOpenAckAminoMsg {
 export interface MsgConnectionOpenAckSDKType {
   connection_id: string;
   counterparty_connection_id: string;
-  version: VersionSDKType;
-  client_state: AnySDKType;
-  proof_height: HeightSDKType;
+  version: VersionSDKType | undefined;
+  client_state: AnySDKType | undefined;
+  proof_height: HeightSDKType | undefined;
   proof_try: Uint8Array;
   proof_client: Uint8Array;
   proof_consensus: Uint8Array;
-  consensus_height: HeightSDKType;
+  consensus_height: HeightSDKType | undefined;
   signer: string;
   host_consensus_state_proof: Uint8Array;
 }
@@ -260,7 +260,7 @@ export interface MsgConnectionOpenConfirm {
   connectionId: string;
   /** proof for the change of the connection state on Chain A: `INIT -> OPEN` */
   proofAck: Uint8Array;
-  proofHeight: Height;
+  proofHeight: Height | undefined;
   signer: string;
 }
 export interface MsgConnectionOpenConfirmProtoMsg {
@@ -275,7 +275,7 @@ export interface MsgConnectionOpenConfirmAmino {
   connection_id: string;
   /** proof for the change of the connection state on Chain A: `INIT -> OPEN` */
   proof_ack: Uint8Array;
-  proof_height?: HeightAmino;
+  proof_height?: HeightAmino | undefined;
   signer: string;
 }
 export interface MsgConnectionOpenConfirmAminoMsg {
@@ -289,7 +289,7 @@ export interface MsgConnectionOpenConfirmAminoMsg {
 export interface MsgConnectionOpenConfirmSDKType {
   connection_id: string;
   proof_ack: Uint8Array;
-  proof_height: HeightSDKType;
+  proof_height: HeightSDKType | undefined;
   signer: string;
 }
 /**
@@ -324,7 +324,7 @@ export interface MsgUpdateParams {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params: Params;
+  params: Params | undefined;
 }
 export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.core.connection.v1.MsgUpdateParams";
@@ -339,7 +339,7 @@ export interface MsgUpdateParamsAmino {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface MsgUpdateParamsAminoMsg {
   type: "cosmos-sdk/MsgUpdateParams";
@@ -348,7 +348,7 @@ export interface MsgUpdateParamsAminoMsg {
 /** MsgUpdateParams defines the sdk.Msg type to update the connection parameters. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /** MsgUpdateParamsResponse defines the MsgUpdateParams response type. */
 export interface MsgUpdateParamsResponse {}

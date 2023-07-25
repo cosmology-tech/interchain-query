@@ -4,7 +4,7 @@ import { isSet, DeepPartial } from "../../../../helpers";
 /** ClientState defines the 09-localhost client state */
 export interface ClientState {
   /** the latest block height */
-  latestHeight: Height;
+  latestHeight: Height | undefined;
 }
 export interface ClientStateProtoMsg {
   typeUrl: "/ibc.lightclients.localhost.v2.ClientState";
@@ -13,7 +13,7 @@ export interface ClientStateProtoMsg {
 /** ClientState defines the 09-localhost client state */
 export interface ClientStateAmino {
   /** the latest block height */
-  latest_height?: HeightAmino;
+  latest_height?: HeightAmino | undefined;
 }
 export interface ClientStateAminoMsg {
   type: "cosmos-sdk/ClientState";
@@ -21,7 +21,7 @@ export interface ClientStateAminoMsg {
 }
 /** ClientState defines the 09-localhost client state */
 export interface ClientStateSDKType {
-  latest_height: HeightSDKType;
+  latest_height: HeightSDKType | undefined;
 }
 function createBaseClientState(): ClientState {
   return {

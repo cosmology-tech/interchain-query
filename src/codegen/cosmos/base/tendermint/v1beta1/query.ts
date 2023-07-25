@@ -9,7 +9,7 @@ import { isSet, DeepPartial } from "../../../../helpers";
 export interface GetValidatorSetByHeightRequest {
   height: bigint;
   /** pagination defines an pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface GetValidatorSetByHeightRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetValidatorSetByHeightRequest";
@@ -19,7 +19,7 @@ export interface GetValidatorSetByHeightRequestProtoMsg {
 export interface GetValidatorSetByHeightRequestAmino {
   height: string;
   /** pagination defines an pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface GetValidatorSetByHeightRequestAminoMsg {
   type: "cosmos-sdk/GetValidatorSetByHeightRequest";
@@ -28,14 +28,14 @@ export interface GetValidatorSetByHeightRequestAminoMsg {
 /** GetValidatorSetByHeightRequest is the request type for the Query/GetValidatorSetByHeight RPC method. */
 export interface GetValidatorSetByHeightRequestSDKType {
   height: bigint;
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /** GetValidatorSetByHeightResponse is the response type for the Query/GetValidatorSetByHeight RPC method. */
 export interface GetValidatorSetByHeightResponse {
   blockHeight: bigint;
   validators: Validator[];
   /** pagination defines an pagination for the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface GetValidatorSetByHeightResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetValidatorSetByHeightResponse";
@@ -46,7 +46,7 @@ export interface GetValidatorSetByHeightResponseAmino {
   block_height: string;
   validators: ValidatorAmino[];
   /** pagination defines an pagination for the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface GetValidatorSetByHeightResponseAminoMsg {
   type: "cosmos-sdk/GetValidatorSetByHeightResponse";
@@ -56,12 +56,12 @@ export interface GetValidatorSetByHeightResponseAminoMsg {
 export interface GetValidatorSetByHeightResponseSDKType {
   block_height: bigint;
   validators: ValidatorSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 /** GetLatestValidatorSetRequest is the request type for the Query/GetValidatorSetByHeight RPC method. */
 export interface GetLatestValidatorSetRequest {
   /** pagination defines an pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface GetLatestValidatorSetRequestProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetLatestValidatorSetRequest";
@@ -70,7 +70,7 @@ export interface GetLatestValidatorSetRequestProtoMsg {
 /** GetLatestValidatorSetRequest is the request type for the Query/GetValidatorSetByHeight RPC method. */
 export interface GetLatestValidatorSetRequestAmino {
   /** pagination defines an pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface GetLatestValidatorSetRequestAminoMsg {
   type: "cosmos-sdk/GetLatestValidatorSetRequest";
@@ -78,14 +78,14 @@ export interface GetLatestValidatorSetRequestAminoMsg {
 }
 /** GetLatestValidatorSetRequest is the request type for the Query/GetValidatorSetByHeight RPC method. */
 export interface GetLatestValidatorSetRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /** GetLatestValidatorSetResponse is the response type for the Query/GetValidatorSetByHeight RPC method. */
 export interface GetLatestValidatorSetResponse {
   blockHeight: bigint;
   validators: Validator[];
   /** pagination defines an pagination for the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface GetLatestValidatorSetResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetLatestValidatorSetResponse";
@@ -96,7 +96,7 @@ export interface GetLatestValidatorSetResponseAmino {
   block_height: string;
   validators: ValidatorAmino[];
   /** pagination defines an pagination for the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface GetLatestValidatorSetResponseAminoMsg {
   type: "cosmos-sdk/GetLatestValidatorSetResponse";
@@ -106,12 +106,12 @@ export interface GetLatestValidatorSetResponseAminoMsg {
 export interface GetLatestValidatorSetResponseSDKType {
   block_height: bigint;
   validators: ValidatorSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 /** Validator is the type for the validator-set. */
 export interface Validator {
   address: string;
-  pubKey: Any;
+  pubKey: Any | undefined;
   votingPower: bigint;
   proposerPriority: bigint;
 }
@@ -122,7 +122,7 @@ export interface ValidatorProtoMsg {
 /** Validator is the type for the validator-set. */
 export interface ValidatorAmino {
   address: string;
-  pub_key?: AnyAmino;
+  pub_key?: AnyAmino | undefined;
   voting_power: string;
   proposer_priority: string;
 }
@@ -133,7 +133,7 @@ export interface ValidatorAminoMsg {
 /** Validator is the type for the validator-set. */
 export interface ValidatorSDKType {
   address: string;
-  pub_key: AnySDKType;
+  pub_key: AnySDKType | undefined;
   voting_power: bigint;
   proposer_priority: bigint;
 }
@@ -159,8 +159,8 @@ export interface GetBlockByHeightRequestSDKType {
 }
 /** GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight RPC method. */
 export interface GetBlockByHeightResponse {
-  blockId: BlockID;
-  block: Block;
+  blockId: BlockID | undefined;
+  block: Block | undefined;
 }
 export interface GetBlockByHeightResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetBlockByHeightResponse";
@@ -168,8 +168,8 @@ export interface GetBlockByHeightResponseProtoMsg {
 }
 /** GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight RPC method. */
 export interface GetBlockByHeightResponseAmino {
-  block_id?: BlockIDAmino;
-  block?: BlockAmino;
+  block_id?: BlockIDAmino | undefined;
+  block?: BlockAmino | undefined;
 }
 export interface GetBlockByHeightResponseAminoMsg {
   type: "cosmos-sdk/GetBlockByHeightResponse";
@@ -177,8 +177,8 @@ export interface GetBlockByHeightResponseAminoMsg {
 }
 /** GetBlockByHeightResponse is the response type for the Query/GetBlockByHeight RPC method. */
 export interface GetBlockByHeightResponseSDKType {
-  block_id: BlockIDSDKType;
-  block: BlockSDKType;
+  block_id: BlockIDSDKType | undefined;
+  block: BlockSDKType | undefined;
 }
 /** GetLatestBlockRequest is the request type for the Query/GetLatestBlock RPC method. */
 export interface GetLatestBlockRequest {}
@@ -196,8 +196,8 @@ export interface GetLatestBlockRequestAminoMsg {
 export interface GetLatestBlockRequestSDKType {}
 /** GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC method. */
 export interface GetLatestBlockResponse {
-  blockId: BlockID;
-  block: Block;
+  blockId: BlockID | undefined;
+  block: Block | undefined;
 }
 export interface GetLatestBlockResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetLatestBlockResponse";
@@ -205,8 +205,8 @@ export interface GetLatestBlockResponseProtoMsg {
 }
 /** GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC method. */
 export interface GetLatestBlockResponseAmino {
-  block_id?: BlockIDAmino;
-  block?: BlockAmino;
+  block_id?: BlockIDAmino | undefined;
+  block?: BlockAmino | undefined;
 }
 export interface GetLatestBlockResponseAminoMsg {
   type: "cosmos-sdk/GetLatestBlockResponse";
@@ -214,8 +214,8 @@ export interface GetLatestBlockResponseAminoMsg {
 }
 /** GetLatestBlockResponse is the response type for the Query/GetLatestBlock RPC method. */
 export interface GetLatestBlockResponseSDKType {
-  block_id: BlockIDSDKType;
-  block: BlockSDKType;
+  block_id: BlockIDSDKType | undefined;
+  block: BlockSDKType | undefined;
 }
 /** GetSyncingRequest is the request type for the Query/GetSyncing RPC method. */
 export interface GetSyncingRequest {}
@@ -267,8 +267,8 @@ export interface GetNodeInfoRequestAminoMsg {
 export interface GetNodeInfoRequestSDKType {}
 /** GetNodeInfoResponse is the request type for the Query/GetNodeInfo RPC method. */
 export interface GetNodeInfoResponse {
-  defaultNodeInfo: DefaultNodeInfo;
-  applicationVersion: VersionInfo;
+  defaultNodeInfo: DefaultNodeInfo | undefined;
+  applicationVersion: VersionInfo | undefined;
 }
 export interface GetNodeInfoResponseProtoMsg {
   typeUrl: "/cosmos.base.tendermint.v1beta1.GetNodeInfoResponse";
@@ -276,8 +276,8 @@ export interface GetNodeInfoResponseProtoMsg {
 }
 /** GetNodeInfoResponse is the request type for the Query/GetNodeInfo RPC method. */
 export interface GetNodeInfoResponseAmino {
-  default_node_info?: DefaultNodeInfoAmino;
-  application_version?: VersionInfoAmino;
+  default_node_info?: DefaultNodeInfoAmino | undefined;
+  application_version?: VersionInfoAmino | undefined;
 }
 export interface GetNodeInfoResponseAminoMsg {
   type: "cosmos-sdk/GetNodeInfoResponse";
@@ -285,8 +285,8 @@ export interface GetNodeInfoResponseAminoMsg {
 }
 /** GetNodeInfoResponse is the request type for the Query/GetNodeInfo RPC method. */
 export interface GetNodeInfoResponseSDKType {
-  default_node_info: DefaultNodeInfoSDKType;
-  application_version: VersionInfoSDKType;
+  default_node_info: DefaultNodeInfoSDKType | undefined;
+  application_version: VersionInfoSDKType | undefined;
 }
 /** VersionInfo is the type for the GetNodeInfoResponse message. */
 export interface VersionInfo {

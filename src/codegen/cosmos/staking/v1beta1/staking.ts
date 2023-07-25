@@ -65,7 +65,7 @@ export function bondStatusToJSON(object: BondStatus): string {
  * (`n` is set by the staking module's `historical_entries` parameter).
  */
 export interface HistoricalInfo {
-  header: Header;
+  header: Header | undefined;
   valset: Validator[];
 }
 export interface HistoricalInfoProtoMsg {
@@ -79,7 +79,7 @@ export interface HistoricalInfoProtoMsg {
  * (`n` is set by the staking module's `historical_entries` parameter).
  */
 export interface HistoricalInfoAmino {
-  header?: HeaderAmino;
+  header?: HeaderAmino | undefined;
   valset: ValidatorAmino[];
 }
 export interface HistoricalInfoAminoMsg {
@@ -93,7 +93,7 @@ export interface HistoricalInfoAminoMsg {
  * (`n` is set by the staking module's `historical_entries` parameter).
  */
 export interface HistoricalInfoSDKType {
-  header: HeaderSDKType;
+  header: HeaderSDKType | undefined;
   valset: ValidatorSDKType[];
 }
 /**
@@ -140,9 +140,9 @@ export interface CommissionRatesSDKType {
 /** Commission defines commission parameters for a given validator. */
 export interface Commission {
   /** commission_rates defines the initial commission rates to be used for creating a validator. */
-  commissionRates: CommissionRates;
+  commissionRates: CommissionRates | undefined;
   /** update_time is the last time the commission rate was changed. */
-  updateTime: Date;
+  updateTime: Date | undefined;
 }
 export interface CommissionProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.Commission";
@@ -151,9 +151,9 @@ export interface CommissionProtoMsg {
 /** Commission defines commission parameters for a given validator. */
 export interface CommissionAmino {
   /** commission_rates defines the initial commission rates to be used for creating a validator. */
-  commission_rates?: CommissionRatesAmino;
+  commission_rates?: CommissionRatesAmino | undefined;
   /** update_time is the last time the commission rate was changed. */
-  update_time?: Date;
+  update_time?: Date | undefined;
 }
 export interface CommissionAminoMsg {
   type: "cosmos-sdk/Commission";
@@ -161,8 +161,8 @@ export interface CommissionAminoMsg {
 }
 /** Commission defines commission parameters for a given validator. */
 export interface CommissionSDKType {
-  commission_rates: CommissionRatesSDKType;
-  update_time: Date;
+  commission_rates: CommissionRatesSDKType | undefined;
+  update_time: Date | undefined;
 }
 /** Description defines a validator description. */
 export interface Description {
@@ -220,7 +220,7 @@ export interface Validator {
   /** operator_address defines the address of the validator's operator; bech encoded in JSON. */
   operatorAddress: string;
   /** consensus_pubkey is the consensus public key of the validator, as a Protobuf Any. */
-  consensusPubkey: Any;
+  consensusPubkey: Any | undefined;
   /** jailed defined whether the validator has been jailed from bonded status or not. */
   jailed: boolean;
   /** status is the validator status (bonded/unbonding/unbonded). */
@@ -230,13 +230,13 @@ export interface Validator {
   /** delegator_shares defines total shares issued to a validator's delegators. */
   delegatorShares: string;
   /** description defines the description terms for the validator. */
-  description: Description;
+  description: Description | undefined;
   /** unbonding_height defines, if unbonding, the height at which this validator has begun unbonding. */
   unbondingHeight: bigint;
   /** unbonding_time defines, if unbonding, the min time for the validator to complete unbonding. */
-  unbondingTime: Date;
+  unbondingTime: Date | undefined;
   /** commission defines the commission parameters. */
-  commission: Commission;
+  commission: Commission | undefined;
   /** min_self_delegation is the validator's self declared minimum self delegation. */
   minSelfDelegation: string;
 }
@@ -258,7 +258,7 @@ export interface ValidatorAmino {
   /** operator_address defines the address of the validator's operator; bech encoded in JSON. */
   operator_address: string;
   /** consensus_pubkey is the consensus public key of the validator, as a Protobuf Any. */
-  consensus_pubkey?: AnyAmino;
+  consensus_pubkey?: AnyAmino | undefined;
   /** jailed defined whether the validator has been jailed from bonded status or not. */
   jailed: boolean;
   /** status is the validator status (bonded/unbonding/unbonded). */
@@ -268,13 +268,13 @@ export interface ValidatorAmino {
   /** delegator_shares defines total shares issued to a validator's delegators. */
   delegator_shares: string;
   /** description defines the description terms for the validator. */
-  description?: DescriptionAmino;
+  description?: DescriptionAmino | undefined;
   /** unbonding_height defines, if unbonding, the height at which this validator has begun unbonding. */
   unbonding_height: string;
   /** unbonding_time defines, if unbonding, the min time for the validator to complete unbonding. */
-  unbonding_time?: Date;
+  unbonding_time?: Date | undefined;
   /** commission defines the commission parameters. */
-  commission?: CommissionAmino;
+  commission?: CommissionAmino | undefined;
   /** min_self_delegation is the validator's self declared minimum self delegation. */
   min_self_delegation: string;
 }
@@ -294,15 +294,15 @@ export interface ValidatorAminoMsg {
  */
 export interface ValidatorSDKType {
   operator_address: string;
-  consensus_pubkey: AnySDKType;
+  consensus_pubkey: AnySDKType | undefined;
   jailed: boolean;
   status: BondStatus;
   tokens: string;
   delegator_shares: string;
-  description: DescriptionSDKType;
+  description: DescriptionSDKType | undefined;
   unbonding_height: bigint;
-  unbonding_time: Date;
-  commission: CommissionSDKType;
+  unbonding_time: Date | undefined;
+  commission: CommissionSDKType | undefined;
   min_self_delegation: string;
 }
 /** ValAddresses defines a repeated set of validator addresses. */
@@ -531,7 +531,7 @@ export interface UnbondingDelegationEntry {
   /** creation_height is the height which the unbonding took place. */
   creationHeight: bigint;
   /** completion_time is the unix time for unbonding completion. */
-  completionTime: Date;
+  completionTime: Date | undefined;
   /** initial_balance defines the tokens initially scheduled to receive at completion. */
   initialBalance: string;
   /** balance defines the tokens to receive at completion. */
@@ -546,7 +546,7 @@ export interface UnbondingDelegationEntryAmino {
   /** creation_height is the height which the unbonding took place. */
   creation_height: string;
   /** completion_time is the unix time for unbonding completion. */
-  completion_time?: Date;
+  completion_time?: Date | undefined;
   /** initial_balance defines the tokens initially scheduled to receive at completion. */
   initial_balance: string;
   /** balance defines the tokens to receive at completion. */
@@ -559,7 +559,7 @@ export interface UnbondingDelegationEntryAminoMsg {
 /** UnbondingDelegationEntry defines an unbonding object with relevant metadata. */
 export interface UnbondingDelegationEntrySDKType {
   creation_height: bigint;
-  completion_time: Date;
+  completion_time: Date | undefined;
   initial_balance: string;
   balance: string;
 }
@@ -568,7 +568,7 @@ export interface RedelegationEntry {
   /** creation_height  defines the height which the redelegation took place. */
   creationHeight: bigint;
   /** completion_time defines the unix time for redelegation completion. */
-  completionTime: Date;
+  completionTime: Date | undefined;
   /** initial_balance defines the initial balance when redelegation started. */
   initialBalance: string;
   /** shares_dst is the amount of destination-validator shares created by redelegation. */
@@ -583,7 +583,7 @@ export interface RedelegationEntryAmino {
   /** creation_height  defines the height which the redelegation took place. */
   creation_height: string;
   /** completion_time defines the unix time for redelegation completion. */
-  completion_time?: Date;
+  completion_time?: Date | undefined;
   /** initial_balance defines the initial balance when redelegation started. */
   initial_balance: string;
   /** shares_dst is the amount of destination-validator shares created by redelegation. */
@@ -596,7 +596,7 @@ export interface RedelegationEntryAminoMsg {
 /** RedelegationEntry defines a redelegation object with relevant metadata. */
 export interface RedelegationEntrySDKType {
   creation_height: bigint;
-  completion_time: Date;
+  completion_time: Date | undefined;
   initial_balance: string;
   shares_dst: string;
 }
@@ -649,7 +649,7 @@ export interface RedelegationSDKType {
 /** Params defines the parameters for the staking module. */
 export interface Params {
   /** unbonding_time is the time duration of unbonding. */
-  unbondingTime: Duration;
+  unbondingTime: Duration | undefined;
   /** max_validators is the maximum number of validators. */
   maxValidators: number;
   /** max_entries is the max entries for either unbonding delegation or redelegation (per pair/trio). */
@@ -670,7 +670,7 @@ export interface ParamsProtoMsg {
 /** Params defines the parameters for the staking module. */
 export interface ParamsAmino {
   /** unbonding_time is the time duration of unbonding. */
-  unbonding_time?: DurationAmino;
+  unbonding_time?: DurationAmino | undefined;
   /** max_validators is the maximum number of validators. */
   max_validators: number;
   /** max_entries is the max entries for either unbonding delegation or redelegation (per pair/trio). */
@@ -690,7 +690,7 @@ export interface ParamsAminoMsg {
 }
 /** Params defines the parameters for the staking module. */
 export interface ParamsSDKType {
-  unbonding_time: DurationSDKType;
+  unbonding_time: DurationSDKType | undefined;
   max_validators: number;
   max_entries: number;
   historical_entries: number;
@@ -703,8 +703,8 @@ export interface ParamsSDKType {
  * balance in addition to shares which is more suitable for client responses.
  */
 export interface DelegationResponse {
-  delegation: Delegation;
-  balance: Coin;
+  delegation: Delegation | undefined;
+  balance: Coin | undefined;
 }
 export interface DelegationResponseProtoMsg {
   typeUrl: "/cosmos.staking.v1beta1.DelegationResponse";
@@ -715,8 +715,8 @@ export interface DelegationResponseProtoMsg {
  * balance in addition to shares which is more suitable for client responses.
  */
 export interface DelegationResponseAmino {
-  delegation?: DelegationAmino;
-  balance?: CoinAmino;
+  delegation?: DelegationAmino | undefined;
+  balance?: CoinAmino | undefined;
 }
 export interface DelegationResponseAminoMsg {
   type: "cosmos-sdk/DelegationResponse";
@@ -727,8 +727,8 @@ export interface DelegationResponseAminoMsg {
  * balance in addition to shares which is more suitable for client responses.
  */
 export interface DelegationResponseSDKType {
-  delegation: DelegationSDKType;
-  balance: CoinSDKType;
+  delegation: DelegationSDKType | undefined;
+  balance: CoinSDKType | undefined;
 }
 /**
  * RedelegationEntryResponse is equivalent to a RedelegationEntry except that it
@@ -736,7 +736,7 @@ export interface DelegationResponseSDKType {
  * responses.
  */
 export interface RedelegationEntryResponse {
-  redelegationEntry: RedelegationEntry;
+  redelegationEntry: RedelegationEntry | undefined;
   balance: string;
 }
 export interface RedelegationEntryResponseProtoMsg {
@@ -749,7 +749,7 @@ export interface RedelegationEntryResponseProtoMsg {
  * responses.
  */
 export interface RedelegationEntryResponseAmino {
-  redelegation_entry?: RedelegationEntryAmino;
+  redelegation_entry?: RedelegationEntryAmino | undefined;
   balance: string;
 }
 export interface RedelegationEntryResponseAminoMsg {
@@ -762,7 +762,7 @@ export interface RedelegationEntryResponseAminoMsg {
  * responses.
  */
 export interface RedelegationEntryResponseSDKType {
-  redelegation_entry: RedelegationEntrySDKType;
+  redelegation_entry: RedelegationEntrySDKType | undefined;
   balance: string;
 }
 /**
@@ -771,7 +771,7 @@ export interface RedelegationEntryResponseSDKType {
  * responses.
  */
 export interface RedelegationResponse {
-  redelegation: Redelegation;
+  redelegation: Redelegation | undefined;
   entries: RedelegationEntryResponse[];
 }
 export interface RedelegationResponseProtoMsg {
@@ -784,7 +784,7 @@ export interface RedelegationResponseProtoMsg {
  * responses.
  */
 export interface RedelegationResponseAmino {
-  redelegation?: RedelegationAmino;
+  redelegation?: RedelegationAmino | undefined;
   entries: RedelegationEntryResponseAmino[];
 }
 export interface RedelegationResponseAminoMsg {
@@ -797,7 +797,7 @@ export interface RedelegationResponseAminoMsg {
  * responses.
  */
 export interface RedelegationResponseSDKType {
-  redelegation: RedelegationSDKType;
+  redelegation: RedelegationSDKType | undefined;
   entries: RedelegationEntryResponseSDKType[];
 }
 /**

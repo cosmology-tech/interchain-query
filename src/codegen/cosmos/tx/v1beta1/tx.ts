@@ -7,12 +7,12 @@ import { isSet, bytesFromBase64, base64FromBytes, DeepPartial } from "../../../h
 /** Tx is the standard type used for broadcasting transactions. */
 export interface Tx {
   /** body is the processable content of the transaction */
-  body: TxBody;
+  body: TxBody | undefined;
   /**
    * auth_info is the authorization related content of the transaction,
    * specifically signers, signer modes and fee
    */
-  authInfo: AuthInfo;
+  authInfo: AuthInfo | undefined;
   /**
    * signatures is a list of signatures that matches the length and order of
    * AuthInfo's signer_infos to allow connecting signature meta information like
@@ -27,12 +27,12 @@ export interface TxProtoMsg {
 /** Tx is the standard type used for broadcasting transactions. */
 export interface TxAmino {
   /** body is the processable content of the transaction */
-  body?: TxBodyAmino;
+  body?: TxBodyAmino | undefined;
   /**
    * auth_info is the authorization related content of the transaction,
    * specifically signers, signer modes and fee
    */
-  auth_info?: AuthInfoAmino;
+  auth_info?: AuthInfoAmino | undefined;
   /**
    * signatures is a list of signatures that matches the length and order of
    * AuthInfo's signer_infos to allow connecting signature meta information like
@@ -46,8 +46,8 @@ export interface TxAminoMsg {
 }
 /** Tx is the standard type used for broadcasting transactions. */
 export interface TxSDKType {
-  body: TxBodySDKType;
-  auth_info: AuthInfoSDKType;
+  body: TxBodySDKType | undefined;
+  auth_info: AuthInfoSDKType | undefined;
   signatures: Uint8Array[];
 }
 /**
@@ -283,7 +283,7 @@ export interface AuthInfo {
    * based on the cost of evaluating the body and doing signature verification
    * of the signers. This can be estimated via simulation.
    */
-  fee: Fee;
+  fee: Fee | undefined;
 }
 export interface AuthInfoProtoMsg {
   typeUrl: "/cosmos.tx.v1beta1.AuthInfo";
@@ -307,7 +307,7 @@ export interface AuthInfoAmino {
    * based on the cost of evaluating the body and doing signature verification
    * of the signers. This can be estimated via simulation.
    */
-  fee?: FeeAmino;
+  fee?: FeeAmino | undefined;
 }
 export interface AuthInfoAminoMsg {
   type: "cosmos-sdk/AuthInfo";
@@ -319,7 +319,7 @@ export interface AuthInfoAminoMsg {
  */
 export interface AuthInfoSDKType {
   signer_infos: SignerInfoSDKType[];
-  fee: FeeSDKType;
+  fee: FeeSDKType | undefined;
 }
 /**
  * SignerInfo describes the public key and signing mode of a single top-level
@@ -331,12 +331,12 @@ export interface SignerInfo {
    * that already exist in state. If unset, the verifier can use the required \
    * signer address for this position and lookup the public key.
    */
-  publicKey: Any;
+  publicKey: Any | undefined;
   /**
    * mode_info describes the signing mode of the signer and is a nested
    * structure to support nested multisig pubkey's
    */
-  modeInfo: ModeInfo;
+  modeInfo: ModeInfo | undefined;
   /**
    * sequence is the sequence of the account, which describes the
    * number of committed transactions signed by a given address. It is used to
@@ -358,12 +358,12 @@ export interface SignerInfoAmino {
    * that already exist in state. If unset, the verifier can use the required \
    * signer address for this position and lookup the public key.
    */
-  public_key?: AnyAmino;
+  public_key?: AnyAmino | undefined;
   /**
    * mode_info describes the signing mode of the signer and is a nested
    * structure to support nested multisig pubkey's
    */
-  mode_info?: ModeInfoAmino;
+  mode_info?: ModeInfoAmino | undefined;
   /**
    * sequence is the sequence of the account, which describes the
    * number of committed transactions signed by a given address. It is used to
@@ -380,16 +380,16 @@ export interface SignerInfoAminoMsg {
  * signer.
  */
 export interface SignerInfoSDKType {
-  public_key: AnySDKType;
-  mode_info: ModeInfoSDKType;
+  public_key: AnySDKType | undefined;
+  mode_info: ModeInfoSDKType | undefined;
   sequence: bigint;
 }
 /** ModeInfo describes the signing mode of a single or nested multisig signer. */
 export interface ModeInfo {
   /** single represents a single signer */
-  single?: ModeInfo_Single;
+  single?: ModeInfo_Single | undefined;
   /** multi represents a nested multisig signer */
-  multi?: ModeInfo_Multi;
+  multi?: ModeInfo_Multi | undefined;
 }
 export interface ModeInfoProtoMsg {
   typeUrl: "/cosmos.tx.v1beta1.ModeInfo";
@@ -398,9 +398,9 @@ export interface ModeInfoProtoMsg {
 /** ModeInfo describes the signing mode of a single or nested multisig signer. */
 export interface ModeInfoAmino {
   /** single represents a single signer */
-  single?: ModeInfo_SingleAmino;
+  single?: ModeInfo_SingleAmino | undefined;
   /** multi represents a nested multisig signer */
-  multi?: ModeInfo_MultiAmino;
+  multi?: ModeInfo_MultiAmino | undefined;
 }
 export interface ModeInfoAminoMsg {
   type: "cosmos-sdk/ModeInfo";
@@ -408,8 +408,8 @@ export interface ModeInfoAminoMsg {
 }
 /** ModeInfo describes the signing mode of a single or nested multisig signer. */
 export interface ModeInfoSDKType {
-  single?: ModeInfo_SingleSDKType;
-  multi?: ModeInfo_MultiSDKType;
+  single?: ModeInfo_SingleSDKType | undefined;
+  multi?: ModeInfo_MultiSDKType | undefined;
 }
 /**
  * Single is the mode info for a single signer. It is structured as a message
@@ -448,7 +448,7 @@ export interface ModeInfo_SingleSDKType {
 /** Multi is the mode info for a multisig public key */
 export interface ModeInfo_Multi {
   /** bitarray specifies which keys within the multisig are signing */
-  bitarray: CompactBitArray;
+  bitarray: CompactBitArray | undefined;
   /**
    * mode_infos is the corresponding modes of the signers of the multisig
    * which could include nested multisig public keys
@@ -462,7 +462,7 @@ export interface ModeInfo_MultiProtoMsg {
 /** Multi is the mode info for a multisig public key */
 export interface ModeInfo_MultiAmino {
   /** bitarray specifies which keys within the multisig are signing */
-  bitarray?: CompactBitArrayAmino;
+  bitarray?: CompactBitArrayAmino | undefined;
   /**
    * mode_infos is the corresponding modes of the signers of the multisig
    * which could include nested multisig public keys
@@ -475,7 +475,7 @@ export interface ModeInfo_MultiAminoMsg {
 }
 /** Multi is the mode info for a multisig public key */
 export interface ModeInfo_MultiSDKType {
-  bitarray: CompactBitArraySDKType;
+  bitarray: CompactBitArraySDKType | undefined;
   mode_infos: ModeInfoSDKType[];
 }
 /**

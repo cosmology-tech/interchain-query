@@ -177,7 +177,7 @@ export function lengthOpToJSON(object: LengthOp): string {
 export interface ExistenceProof {
   key: Uint8Array;
   value: Uint8Array;
-  leaf: LeafOp;
+  leaf: LeafOp | undefined;
   path: InnerOp[];
 }
 export interface ExistenceProofProtoMsg {
@@ -208,7 +208,7 @@ export interface ExistenceProofProtoMsg {
 export interface ExistenceProofAmino {
   key: Uint8Array;
   value: Uint8Array;
-  leaf?: LeafOpAmino;
+  leaf?: LeafOpAmino | undefined;
   path: InnerOpAmino[];
 }
 export interface ExistenceProofAminoMsg {
@@ -239,7 +239,7 @@ export interface ExistenceProofAminoMsg {
 export interface ExistenceProofSDKType {
   key: Uint8Array;
   value: Uint8Array;
-  leaf: LeafOpSDKType;
+  leaf: LeafOpSDKType | undefined;
   path: InnerOpSDKType[];
 }
 /**
@@ -250,8 +250,8 @@ export interface ExistenceProofSDKType {
 export interface NonExistenceProof {
   /** TODO: remove this as unnecessary??? we prove a range */
   key: Uint8Array;
-  left: ExistenceProof;
-  right: ExistenceProof;
+  left: ExistenceProof | undefined;
+  right: ExistenceProof | undefined;
 }
 export interface NonExistenceProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.NonExistenceProof";
@@ -265,8 +265,8 @@ export interface NonExistenceProofProtoMsg {
 export interface NonExistenceProofAmino {
   /** TODO: remove this as unnecessary??? we prove a range */
   key: Uint8Array;
-  left?: ExistenceProofAmino;
-  right?: ExistenceProofAmino;
+  left?: ExistenceProofAmino | undefined;
+  right?: ExistenceProofAmino | undefined;
 }
 export interface NonExistenceProofAminoMsg {
   type: "cosmos-sdk/NonExistenceProof";
@@ -279,15 +279,15 @@ export interface NonExistenceProofAminoMsg {
  */
 export interface NonExistenceProofSDKType {
   key: Uint8Array;
-  left: ExistenceProofSDKType;
-  right: ExistenceProofSDKType;
+  left: ExistenceProofSDKType | undefined;
+  right: ExistenceProofSDKType | undefined;
 }
 /** CommitmentProof is either an ExistenceProof or a NonExistenceProof, or a Batch of such messages */
 export interface CommitmentProof {
-  exist?: ExistenceProof;
-  nonexist?: NonExistenceProof;
-  batch?: BatchProof;
-  compressed?: CompressedBatchProof;
+  exist?: ExistenceProof | undefined;
+  nonexist?: NonExistenceProof | undefined;
+  batch?: BatchProof | undefined;
+  compressed?: CompressedBatchProof | undefined;
 }
 export interface CommitmentProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CommitmentProof";
@@ -295,10 +295,10 @@ export interface CommitmentProofProtoMsg {
 }
 /** CommitmentProof is either an ExistenceProof or a NonExistenceProof, or a Batch of such messages */
 export interface CommitmentProofAmino {
-  exist?: ExistenceProofAmino;
-  nonexist?: NonExistenceProofAmino;
-  batch?: BatchProofAmino;
-  compressed?: CompressedBatchProofAmino;
+  exist?: ExistenceProofAmino | undefined;
+  nonexist?: NonExistenceProofAmino | undefined;
+  batch?: BatchProofAmino | undefined;
+  compressed?: CompressedBatchProofAmino | undefined;
 }
 export interface CommitmentProofAminoMsg {
   type: "cosmos-sdk/CommitmentProof";
@@ -306,10 +306,10 @@ export interface CommitmentProofAminoMsg {
 }
 /** CommitmentProof is either an ExistenceProof or a NonExistenceProof, or a Batch of such messages */
 export interface CommitmentProofSDKType {
-  exist?: ExistenceProofSDKType;
-  nonexist?: NonExistenceProofSDKType;
-  batch?: BatchProofSDKType;
-  compressed?: CompressedBatchProofSDKType;
+  exist?: ExistenceProofSDKType | undefined;
+  nonexist?: NonExistenceProofSDKType | undefined;
+  batch?: BatchProofSDKType | undefined;
+  compressed?: CompressedBatchProofSDKType | undefined;
 }
 /**
  * LeafOp represents the raw key-value data we wish to prove, and
@@ -487,8 +487,8 @@ export interface ProofSpec {
    * any field in the ExistenceProof must be the same as in this spec.
    * except Prefix, which is just the first bytes of prefix (spec can be longer)
    */
-  leafSpec: LeafOp;
-  innerSpec: InnerSpec;
+  leafSpec: LeafOp | undefined;
+  innerSpec: InnerSpec | undefined;
   /** max_depth (if > 0) is the maximum number of InnerOps allowed (mainly for fixed-depth tries) */
   maxDepth: number;
   /** min_depth (if > 0) is the minimum number of InnerOps allowed (mainly for fixed-depth tries) */
@@ -521,8 +521,8 @@ export interface ProofSpecAmino {
    * any field in the ExistenceProof must be the same as in this spec.
    * except Prefix, which is just the first bytes of prefix (spec can be longer)
    */
-  leaf_spec?: LeafOpAmino;
-  inner_spec?: InnerSpecAmino;
+  leaf_spec?: LeafOpAmino | undefined;
+  inner_spec?: InnerSpecAmino | undefined;
   /** max_depth (if > 0) is the maximum number of InnerOps allowed (mainly for fixed-depth tries) */
   max_depth: number;
   /** min_depth (if > 0) is the minimum number of InnerOps allowed (mainly for fixed-depth tries) */
@@ -551,8 +551,8 @@ export interface ProofSpecAminoMsg {
  * tree format server uses. But not in code, rather a configuration object.
  */
 export interface ProofSpecSDKType {
-  leaf_spec: LeafOpSDKType;
-  inner_spec: InnerSpecSDKType;
+  leaf_spec: LeafOpSDKType | undefined;
+  inner_spec: InnerSpecSDKType | undefined;
   max_depth: number;
   min_depth: number;
   prehash_key_before_comparison: boolean;
@@ -655,8 +655,8 @@ export interface BatchProofSDKType {
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 export interface BatchEntry {
-  exist?: ExistenceProof;
-  nonexist?: NonExistenceProof;
+  exist?: ExistenceProof | undefined;
+  nonexist?: NonExistenceProof | undefined;
 }
 export interface BatchEntryProtoMsg {
   typeUrl: "/cosmos.ics23.v1.BatchEntry";
@@ -664,8 +664,8 @@ export interface BatchEntryProtoMsg {
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 export interface BatchEntryAmino {
-  exist?: ExistenceProofAmino;
-  nonexist?: NonExistenceProofAmino;
+  exist?: ExistenceProofAmino | undefined;
+  nonexist?: NonExistenceProofAmino | undefined;
 }
 export interface BatchEntryAminoMsg {
   type: "cosmos-sdk/BatchEntry";
@@ -673,8 +673,8 @@ export interface BatchEntryAminoMsg {
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 export interface BatchEntrySDKType {
-  exist?: ExistenceProofSDKType;
-  nonexist?: NonExistenceProofSDKType;
+  exist?: ExistenceProofSDKType | undefined;
+  nonexist?: NonExistenceProofSDKType | undefined;
 }
 export interface CompressedBatchProof {
   entries: CompressedBatchEntry[];
@@ -698,8 +698,8 @@ export interface CompressedBatchProofSDKType {
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 export interface CompressedBatchEntry {
-  exist?: CompressedExistenceProof;
-  nonexist?: CompressedNonExistenceProof;
+  exist?: CompressedExistenceProof | undefined;
+  nonexist?: CompressedNonExistenceProof | undefined;
 }
 export interface CompressedBatchEntryProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CompressedBatchEntry";
@@ -707,8 +707,8 @@ export interface CompressedBatchEntryProtoMsg {
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 export interface CompressedBatchEntryAmino {
-  exist?: CompressedExistenceProofAmino;
-  nonexist?: CompressedNonExistenceProofAmino;
+  exist?: CompressedExistenceProofAmino | undefined;
+  nonexist?: CompressedNonExistenceProofAmino | undefined;
 }
 export interface CompressedBatchEntryAminoMsg {
   type: "cosmos-sdk/CompressedBatchEntry";
@@ -716,13 +716,13 @@ export interface CompressedBatchEntryAminoMsg {
 }
 /** Use BatchEntry not CommitmentProof, to avoid recursion */
 export interface CompressedBatchEntrySDKType {
-  exist?: CompressedExistenceProofSDKType;
-  nonexist?: CompressedNonExistenceProofSDKType;
+  exist?: CompressedExistenceProofSDKType | undefined;
+  nonexist?: CompressedNonExistenceProofSDKType | undefined;
 }
 export interface CompressedExistenceProof {
   key: Uint8Array;
   value: Uint8Array;
-  leaf: LeafOp;
+  leaf: LeafOp | undefined;
   /** these are indexes into the lookup_inners table in CompressedBatchProof */
   path: number[];
 }
@@ -733,7 +733,7 @@ export interface CompressedExistenceProofProtoMsg {
 export interface CompressedExistenceProofAmino {
   key: Uint8Array;
   value: Uint8Array;
-  leaf?: LeafOpAmino;
+  leaf?: LeafOpAmino | undefined;
   /** these are indexes into the lookup_inners table in CompressedBatchProof */
   path: number[];
 }
@@ -744,14 +744,14 @@ export interface CompressedExistenceProofAminoMsg {
 export interface CompressedExistenceProofSDKType {
   key: Uint8Array;
   value: Uint8Array;
-  leaf: LeafOpSDKType;
+  leaf: LeafOpSDKType | undefined;
   path: number[];
 }
 export interface CompressedNonExistenceProof {
   /** TODO: remove this as unnecessary??? we prove a range */
   key: Uint8Array;
-  left: CompressedExistenceProof;
-  right: CompressedExistenceProof;
+  left: CompressedExistenceProof | undefined;
+  right: CompressedExistenceProof | undefined;
 }
 export interface CompressedNonExistenceProofProtoMsg {
   typeUrl: "/cosmos.ics23.v1.CompressedNonExistenceProof";
@@ -760,8 +760,8 @@ export interface CompressedNonExistenceProofProtoMsg {
 export interface CompressedNonExistenceProofAmino {
   /** TODO: remove this as unnecessary??? we prove a range */
   key: Uint8Array;
-  left?: CompressedExistenceProofAmino;
-  right?: CompressedExistenceProofAmino;
+  left?: CompressedExistenceProofAmino | undefined;
+  right?: CompressedExistenceProofAmino | undefined;
 }
 export interface CompressedNonExistenceProofAminoMsg {
   type: "cosmos-sdk/CompressedNonExistenceProof";
@@ -769,8 +769,8 @@ export interface CompressedNonExistenceProofAminoMsg {
 }
 export interface CompressedNonExistenceProofSDKType {
   key: Uint8Array;
-  left: CompressedExistenceProofSDKType;
-  right: CompressedExistenceProofSDKType;
+  left: CompressedExistenceProofSDKType | undefined;
+  right: CompressedExistenceProofSDKType | undefined;
 }
 function createBaseExistenceProof(): ExistenceProof {
   return {

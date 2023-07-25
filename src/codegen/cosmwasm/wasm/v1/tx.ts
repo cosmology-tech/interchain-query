@@ -13,7 +13,7 @@ export interface MsgStoreCode {
    * InstantiatePermission access control to apply on contract creation,
    * optional
    */
-  instantiatePermission: AccessConfig;
+  instantiatePermission: AccessConfig | undefined;
 }
 export interface MsgStoreCodeProtoMsg {
   typeUrl: "/cosmwasm.wasm.v1.MsgStoreCode";
@@ -29,7 +29,7 @@ export interface MsgStoreCodeAmino {
    * InstantiatePermission access control to apply on contract creation,
    * optional
    */
-  instantiate_permission?: AccessConfigAmino;
+  instantiate_permission?: AccessConfigAmino | undefined;
 }
 export interface MsgStoreCodeAminoMsg {
   type: "wasm/MsgStoreCode";
@@ -39,7 +39,7 @@ export interface MsgStoreCodeAminoMsg {
 export interface MsgStoreCodeSDKType {
   sender: string;
   wasm_byte_code: Uint8Array;
-  instantiate_permission: AccessConfigSDKType;
+  instantiate_permission: AccessConfigSDKType | undefined;
 }
 /** MsgStoreCodeResponse returns store result data. */
 export interface MsgStoreCodeResponse {
@@ -468,7 +468,7 @@ export interface MsgUpdateInstantiateConfig {
   /** CodeID references the stored WASM code */
   codeId: bigint;
   /** NewInstantiatePermission is the new access control */
-  newInstantiatePermission: AccessConfig;
+  newInstantiatePermission: AccessConfig | undefined;
 }
 export interface MsgUpdateInstantiateConfigProtoMsg {
   typeUrl: "/cosmwasm.wasm.v1.MsgUpdateInstantiateConfig";
@@ -481,7 +481,7 @@ export interface MsgUpdateInstantiateConfigAmino {
   /** CodeID references the stored WASM code */
   code_id: string;
   /** NewInstantiatePermission is the new access control */
-  new_instantiate_permission?: AccessConfigAmino;
+  new_instantiate_permission?: AccessConfigAmino | undefined;
 }
 export interface MsgUpdateInstantiateConfigAminoMsg {
   type: "wasm/MsgUpdateInstantiateConfig";
@@ -491,7 +491,7 @@ export interface MsgUpdateInstantiateConfigAminoMsg {
 export interface MsgUpdateInstantiateConfigSDKType {
   sender: string;
   code_id: bigint;
-  new_instantiate_permission: AccessConfigSDKType;
+  new_instantiate_permission: AccessConfigSDKType | undefined;
 }
 /** MsgUpdateInstantiateConfigResponse returns empty data */
 export interface MsgUpdateInstantiateConfigResponse {}
@@ -520,7 +520,7 @@ export interface MsgUpdateParams {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params: Params;
+  params: Params | undefined;
 }
 export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/cosmwasm.wasm.v1.MsgUpdateParams";
@@ -539,7 +539,7 @@ export interface MsgUpdateParamsAmino {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface MsgUpdateParamsAminoMsg {
   type: "wasm/MsgUpdateParams";
@@ -552,7 +552,7 @@ export interface MsgUpdateParamsAminoMsg {
  */
 export interface MsgUpdateParamsSDKType {
   authority: string;
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /**
  * MsgUpdateParamsResponse defines the response structure for executing a
@@ -812,7 +812,7 @@ export interface MsgStoreAndInstantiateContract {
   /** WASMByteCode can be raw or gzip compressed */
   wasmByteCode: Uint8Array;
   /** InstantiatePermission to apply on contract creation, optional */
-  instantiatePermission: AccessConfig;
+  instantiatePermission: AccessConfig | undefined;
   /**
    * UnpinCode code on upload, optional. As default the uploaded contract is
    * pinned to cache.
@@ -858,7 +858,7 @@ export interface MsgStoreAndInstantiateContractAmino {
   /** WASMByteCode can be raw or gzip compressed */
   wasm_byte_code: string;
   /** InstantiatePermission to apply on contract creation, optional */
-  instantiate_permission?: AccessConfigAmino;
+  instantiate_permission?: AccessConfigAmino | undefined;
   /**
    * UnpinCode code on upload, optional. As default the uploaded contract is
    * pinned to cache.
@@ -901,7 +901,7 @@ export interface MsgStoreAndInstantiateContractAminoMsg {
 export interface MsgStoreAndInstantiateContractSDKType {
   authority: string;
   wasm_byte_code: Uint8Array;
-  instantiate_permission: AccessConfigSDKType;
+  instantiate_permission: AccessConfigSDKType | undefined;
   unpin_code: boolean;
   admin: string;
   label: string;

@@ -20,7 +20,7 @@ export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
-  params: Params;
+  params: Params | undefined;
 }
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.QueryParamsResponse";
@@ -29,7 +29,7 @@ export interface QueryParamsResponseProtoMsg {
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseAmino {
   /** params defines the parameters of the module. */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
   type: "cosmos-sdk/QueryParamsResponse";
@@ -37,7 +37,7 @@ export interface QueryParamsResponseAminoMsg {
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /**
  * QueryValidatorOutstandingRewardsRequest is the request type for the
@@ -75,7 +75,7 @@ export interface QueryValidatorOutstandingRewardsRequestSDKType {
  * Query/ValidatorOutstandingRewards RPC method.
  */
 export interface QueryValidatorOutstandingRewardsResponse {
-  rewards: ValidatorOutstandingRewards;
+  rewards: ValidatorOutstandingRewards | undefined;
 }
 export interface QueryValidatorOutstandingRewardsResponseProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.QueryValidatorOutstandingRewardsResponse";
@@ -86,7 +86,7 @@ export interface QueryValidatorOutstandingRewardsResponseProtoMsg {
  * Query/ValidatorOutstandingRewards RPC method.
  */
 export interface QueryValidatorOutstandingRewardsResponseAmino {
-  rewards?: ValidatorOutstandingRewardsAmino;
+  rewards?: ValidatorOutstandingRewardsAmino | undefined;
 }
 export interface QueryValidatorOutstandingRewardsResponseAminoMsg {
   type: "cosmos-sdk/QueryValidatorOutstandingRewardsResponse";
@@ -97,7 +97,7 @@ export interface QueryValidatorOutstandingRewardsResponseAminoMsg {
  * Query/ValidatorOutstandingRewards RPC method.
  */
 export interface QueryValidatorOutstandingRewardsResponseSDKType {
-  rewards: ValidatorOutstandingRewardsSDKType;
+  rewards: ValidatorOutstandingRewardsSDKType | undefined;
 }
 /**
  * QueryValidatorCommissionRequest is the request type for the
@@ -136,7 +136,7 @@ export interface QueryValidatorCommissionRequestSDKType {
  */
 export interface QueryValidatorCommissionResponse {
   /** commission defines the commision the validator received. */
-  commission: ValidatorAccumulatedCommission;
+  commission: ValidatorAccumulatedCommission | undefined;
 }
 export interface QueryValidatorCommissionResponseProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.QueryValidatorCommissionResponse";
@@ -148,7 +148,7 @@ export interface QueryValidatorCommissionResponseProtoMsg {
  */
 export interface QueryValidatorCommissionResponseAmino {
   /** commission defines the commision the validator received. */
-  commission?: ValidatorAccumulatedCommissionAmino;
+  commission?: ValidatorAccumulatedCommissionAmino | undefined;
 }
 export interface QueryValidatorCommissionResponseAminoMsg {
   type: "cosmos-sdk/QueryValidatorCommissionResponse";
@@ -159,7 +159,7 @@ export interface QueryValidatorCommissionResponseAminoMsg {
  * Query/ValidatorCommission RPC method
  */
 export interface QueryValidatorCommissionResponseSDKType {
-  commission: ValidatorAccumulatedCommissionSDKType;
+  commission: ValidatorAccumulatedCommissionSDKType | undefined;
 }
 /**
  * QueryValidatorSlashesRequest is the request type for the
@@ -173,7 +173,7 @@ export interface QueryValidatorSlashesRequest {
   /** starting_height defines the optional ending height to query the slashes. */
   endingHeight: bigint;
   /** pagination defines an optional pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryValidatorSlashesRequestProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.QueryValidatorSlashesRequest";
@@ -191,7 +191,7 @@ export interface QueryValidatorSlashesRequestAmino {
   /** starting_height defines the optional ending height to query the slashes. */
   ending_height: string;
   /** pagination defines an optional pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryValidatorSlashesRequestAminoMsg {
   type: "cosmos-sdk/QueryValidatorSlashesRequest";
@@ -205,7 +205,7 @@ export interface QueryValidatorSlashesRequestSDKType {
   validator_address: string;
   starting_height: bigint;
   ending_height: bigint;
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /**
  * QueryValidatorSlashesResponse is the response type for the
@@ -215,7 +215,7 @@ export interface QueryValidatorSlashesResponse {
   /** slashes defines the slashes the validator received. */
   slashes: ValidatorSlashEvent[];
   /** pagination defines the pagination in the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryValidatorSlashesResponseProtoMsg {
   typeUrl: "/cosmos.distribution.v1beta1.QueryValidatorSlashesResponse";
@@ -229,7 +229,7 @@ export interface QueryValidatorSlashesResponseAmino {
   /** slashes defines the slashes the validator received. */
   slashes: ValidatorSlashEventAmino[];
   /** pagination defines the pagination in the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryValidatorSlashesResponseAminoMsg {
   type: "cosmos-sdk/QueryValidatorSlashesResponse";
@@ -241,7 +241,7 @@ export interface QueryValidatorSlashesResponseAminoMsg {
  */
 export interface QueryValidatorSlashesResponseSDKType {
   slashes: ValidatorSlashEventSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 /**
  * QueryDelegationRewardsRequest is the request type for the

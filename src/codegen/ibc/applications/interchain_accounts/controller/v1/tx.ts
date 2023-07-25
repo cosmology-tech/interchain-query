@@ -55,7 +55,7 @@ export interface MsgRegisterInterchainAccountResponseSDKType {
 export interface MsgSendTx {
   owner: string;
   connectionId: string;
-  packetData: InterchainAccountPacketData;
+  packetData: InterchainAccountPacketData | undefined;
   /**
    * Relative timeout timestamp provided will be added to the current block time during transaction execution.
    * The timeout timestamp must be non-zero.
@@ -70,7 +70,7 @@ export interface MsgSendTxProtoMsg {
 export interface MsgSendTxAmino {
   owner: string;
   connection_id: string;
-  packet_data?: InterchainAccountPacketDataAmino;
+  packet_data?: InterchainAccountPacketDataAmino | undefined;
   /**
    * Relative timeout timestamp provided will be added to the current block time during transaction execution.
    * The timeout timestamp must be non-zero.
@@ -85,7 +85,7 @@ export interface MsgSendTxAminoMsg {
 export interface MsgSendTxSDKType {
   owner: string;
   connection_id: string;
-  packet_data: InterchainAccountPacketDataSDKType;
+  packet_data: InterchainAccountPacketDataSDKType | undefined;
   relative_timeout: bigint;
 }
 /** MsgSendTxResponse defines the response for MsgSendTx */
@@ -117,7 +117,7 @@ export interface MsgUpdateParams {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params: Params;
+  params: Params | undefined;
 }
 export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.MsgUpdateParams";
@@ -132,7 +132,7 @@ export interface MsgUpdateParamsAmino {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface MsgUpdateParamsAminoMsg {
   type: "cosmos-sdk/MsgUpdateParams";
@@ -141,7 +141,7 @@ export interface MsgUpdateParamsAminoMsg {
 /** MsgUpdateParams defines the payload for Msg/UpdateParams */
 export interface MsgUpdateParamsSDKType {
   authority: string;
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /** MsgUpdateParamsResponse defines the response for Msg/UpdateParams */
 export interface MsgUpdateParamsResponse {}

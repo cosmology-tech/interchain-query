@@ -61,7 +61,7 @@ export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
-  params: Params;
+  params: Params | undefined;
 }
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.controller.v1.QueryParamsResponse";
@@ -70,7 +70,7 @@ export interface QueryParamsResponseProtoMsg {
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseAmino {
   /** params defines the parameters of the module. */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
   type: "cosmos-sdk/QueryParamsResponse";
@@ -78,7 +78,7 @@ export interface QueryParamsResponseAminoMsg {
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 function createBaseQueryInterchainAccountRequest(): QueryInterchainAccountRequest {
   return {

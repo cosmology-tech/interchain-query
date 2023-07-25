@@ -3,7 +3,7 @@ import { BinaryReader, BinaryWriter } from "../../../../binary";
 import { isSet, DeepPartial } from "../../../../helpers";
 /** An InterchainAccount is defined as a BaseAccount & the address of the account owner on the controller chain */
 export interface InterchainAccount {
-  baseAccount: BaseAccount;
+  baseAccount: BaseAccount | undefined;
   accountOwner: string;
 }
 export interface InterchainAccountProtoMsg {
@@ -12,7 +12,7 @@ export interface InterchainAccountProtoMsg {
 }
 /** An InterchainAccount is defined as a BaseAccount & the address of the account owner on the controller chain */
 export interface InterchainAccountAmino {
-  base_account?: BaseAccountAmino;
+  base_account?: BaseAccountAmino | undefined;
   account_owner: string;
 }
 export interface InterchainAccountAminoMsg {
@@ -21,7 +21,7 @@ export interface InterchainAccountAminoMsg {
 }
 /** An InterchainAccount is defined as a BaseAccount & the address of the account owner on the controller chain */
 export interface InterchainAccountSDKType {
-  base_account: BaseAccountSDKType;
+  base_account: BaseAccountSDKType | undefined;
   account_owner: string;
 }
 function createBaseInterchainAccount(): InterchainAccount {

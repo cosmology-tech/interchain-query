@@ -66,7 +66,7 @@ export interface ModuleConfig {
    * config is the config object for the module. Module config messages should
    * define a ModuleDescriptor using the cosmos.app.v1alpha1.is_module extension.
    */
-  config: Any;
+  config: Any | undefined;
 }
 export interface ModuleConfigProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.ModuleConfig";
@@ -91,7 +91,7 @@ export interface ModuleConfigAmino {
    * config is the config object for the module. Module config messages should
    * define a ModuleDescriptor using the cosmos.app.v1alpha1.is_module extension.
    */
-  config?: AnyAmino;
+  config?: AnyAmino | undefined;
 }
 export interface ModuleConfigAminoMsg {
   type: "cosmos-sdk/ModuleConfig";
@@ -100,7 +100,7 @@ export interface ModuleConfigAminoMsg {
 /** ModuleConfig is a module configuration for an app. */
 export interface ModuleConfigSDKType {
   name: string;
-  config: AnySDKType;
+  config: AnySDKType | undefined;
 }
 function createBaseConfig(): Config {
   return {

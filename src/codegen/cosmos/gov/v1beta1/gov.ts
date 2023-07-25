@@ -244,14 +244,14 @@ export interface DepositSDKType {
 /** Proposal defines the core field members of a governance proposal. */
 export interface Proposal {
   proposalId: bigint;
-  content: Any;
+  content: Any | undefined;
   status: ProposalStatus;
-  finalTallyResult: TallyResult;
-  submitTime: Date;
-  depositEndTime: Date;
+  finalTallyResult: TallyResult | undefined;
+  submitTime: Date | undefined;
+  depositEndTime: Date | undefined;
   totalDeposit: Coin[];
-  votingStartTime: Date;
-  votingEndTime: Date;
+  votingStartTime: Date | undefined;
+  votingEndTime: Date | undefined;
   isExpedited: boolean;
 }
 export interface ProposalProtoMsg {
@@ -261,14 +261,14 @@ export interface ProposalProtoMsg {
 /** Proposal defines the core field members of a governance proposal. */
 export interface ProposalAmino {
   proposal_id: string;
-  content?: AnyAmino;
+  content?: AnyAmino | undefined;
   status: ProposalStatus;
-  final_tally_result?: TallyResultAmino;
-  submit_time?: Date;
-  deposit_end_time?: Date;
+  final_tally_result?: TallyResultAmino | undefined;
+  submit_time?: Date | undefined;
+  deposit_end_time?: Date | undefined;
   total_deposit: CoinAmino[];
-  voting_start_time?: Date;
-  voting_end_time?: Date;
+  voting_start_time?: Date | undefined;
+  voting_end_time?: Date | undefined;
   is_expedited: boolean;
 }
 export interface ProposalAminoMsg {
@@ -278,14 +278,14 @@ export interface ProposalAminoMsg {
 /** Proposal defines the core field members of a governance proposal. */
 export interface ProposalSDKType {
   proposal_id: bigint;
-  content: AnySDKType;
+  content: AnySDKType | undefined;
   status: ProposalStatus;
-  final_tally_result: TallyResultSDKType;
-  submit_time: Date;
-  deposit_end_time: Date;
+  final_tally_result: TallyResultSDKType | undefined;
+  submit_time: Date | undefined;
+  deposit_end_time: Date | undefined;
   total_deposit: CoinSDKType[];
-  voting_start_time: Date;
-  voting_end_time: Date;
+  voting_start_time: Date | undefined;
+  voting_end_time: Date | undefined;
   is_expedited: boolean;
 }
 /** TallyResult defines a standard tally for a governance proposal. */
@@ -378,7 +378,7 @@ export interface DepositParams {
    * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
    *  months.
    */
-  maxDepositPeriod: Duration;
+  maxDepositPeriod: Duration | undefined;
   /** Minimum expedited deposit for a proposal to enter voting period. */
   minExpeditedDeposit: Coin[];
   /** The ratio representing the proportion of the deposit value that must be paid at proposal submission. */
@@ -396,7 +396,7 @@ export interface DepositParamsAmino {
    * Maximum period for Atom holders to deposit on a proposal. Initial value: 2
    *  months.
    */
-  max_deposit_period?: DurationAmino;
+  max_deposit_period?: DurationAmino | undefined;
   /** Minimum expedited deposit for a proposal to enter voting period. */
   min_expedited_deposit: CoinAmino[];
   /** The ratio representing the proportion of the deposit value that must be paid at proposal submission. */
@@ -409,18 +409,18 @@ export interface DepositParamsAminoMsg {
 /** DepositParams defines the params for deposits on governance proposals. */
 export interface DepositParamsSDKType {
   min_deposit: CoinSDKType[];
-  max_deposit_period: DurationSDKType;
+  max_deposit_period: DurationSDKType | undefined;
   min_expedited_deposit: CoinSDKType[];
   min_initial_deposit_ratio: string;
 }
 /** VotingParams defines the params for voting on governance proposals. */
 export interface VotingParams {
   /** voting_period defines the length of the voting period. */
-  votingPeriod: Duration;
+  votingPeriod: Duration | undefined;
   /** proposal_voting_periods defines custom voting periods for proposal types. */
   proposalVotingPeriods: ProposalVotingPeriod[];
   /** Length of the expedited voting period. */
-  expeditedVotingPeriod: Duration;
+  expeditedVotingPeriod: Duration | undefined;
 }
 export interface VotingParamsProtoMsg {
   typeUrl: "/cosmos.gov.v1beta1.VotingParams";
@@ -429,11 +429,11 @@ export interface VotingParamsProtoMsg {
 /** VotingParams defines the params for voting on governance proposals. */
 export interface VotingParamsAmino {
   /** voting_period defines the length of the voting period. */
-  voting_period?: DurationAmino;
+  voting_period?: DurationAmino | undefined;
   /** proposal_voting_periods defines custom voting periods for proposal types. */
   proposal_voting_periods: ProposalVotingPeriodAmino[];
   /** Length of the expedited voting period. */
-  expedited_voting_period?: DurationAmino;
+  expedited_voting_period?: DurationAmino | undefined;
 }
 export interface VotingParamsAminoMsg {
   type: "cosmos-sdk/VotingParams";
@@ -441,9 +441,9 @@ export interface VotingParamsAminoMsg {
 }
 /** VotingParams defines the params for voting on governance proposals. */
 export interface VotingParamsSDKType {
-  voting_period: DurationSDKType;
+  voting_period: DurationSDKType | undefined;
   proposal_voting_periods: ProposalVotingPeriodSDKType[];
-  expedited_voting_period: DurationSDKType;
+  expedited_voting_period: DurationSDKType | undefined;
 }
 /** TallyParams defines the params for tallying votes on governance proposals. */
 export interface TallyParams {
@@ -506,7 +506,7 @@ export interface TallyParamsSDKType {
 export interface ProposalVotingPeriod {
   /** e.g. "cosmos.params.v1beta1.ParameterChangeProposal" */
   proposalType: string;
-  votingPeriod: Duration;
+  votingPeriod: Duration | undefined;
 }
 export interface ProposalVotingPeriodProtoMsg {
   typeUrl: "/cosmos.gov.v1beta1.ProposalVotingPeriod";
@@ -519,7 +519,7 @@ export interface ProposalVotingPeriodProtoMsg {
 export interface ProposalVotingPeriodAmino {
   /** e.g. "cosmos.params.v1beta1.ParameterChangeProposal" */
   proposal_type: string;
-  voting_period?: DurationAmino;
+  voting_period?: DurationAmino | undefined;
 }
 export interface ProposalVotingPeriodAminoMsg {
   type: "cosmos-sdk/ProposalVotingPeriod";
@@ -531,7 +531,7 @@ export interface ProposalVotingPeriodAminoMsg {
  */
 export interface ProposalVotingPeriodSDKType {
   proposal_type: string;
-  voting_period: DurationSDKType;
+  voting_period: DurationSDKType | undefined;
 }
 function createBaseWeightedVoteOption(): WeightedVoteOption {
   return {

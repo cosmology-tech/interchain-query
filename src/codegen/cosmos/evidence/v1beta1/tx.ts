@@ -7,7 +7,7 @@ import { isSet, DeepPartial, bytesFromBase64, base64FromBytes } from "../../../h
  */
 export interface MsgSubmitEvidence {
   submitter: string;
-  evidence: Any;
+  evidence: Any | undefined;
 }
 export interface MsgSubmitEvidenceProtoMsg {
   typeUrl: "/cosmos.evidence.v1beta1.MsgSubmitEvidence";
@@ -19,7 +19,7 @@ export interface MsgSubmitEvidenceProtoMsg {
  */
 export interface MsgSubmitEvidenceAmino {
   submitter: string;
-  evidence?: AnyAmino;
+  evidence?: AnyAmino | undefined;
 }
 export interface MsgSubmitEvidenceAminoMsg {
   type: "cosmos-sdk/MsgSubmitEvidence";
@@ -31,7 +31,7 @@ export interface MsgSubmitEvidenceAminoMsg {
  */
 export interface MsgSubmitEvidenceSDKType {
   submitter: string;
-  evidence: AnySDKType;
+  evidence: AnySDKType | undefined;
 }
 /** MsgSubmitEvidenceResponse defines the Msg/SubmitEvidence response type. */
 export interface MsgSubmitEvidenceResponse {

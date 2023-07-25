@@ -6,7 +6,7 @@ export interface Snapshot {
   format: number;
   chunks: number;
   hash: Uint8Array;
-  metadata: Metadata;
+  metadata: Metadata | undefined;
 }
 export interface SnapshotProtoMsg {
   typeUrl: "/cosmos.base.snapshots.v1beta1.Snapshot";
@@ -18,7 +18,7 @@ export interface SnapshotAmino {
   format: number;
   chunks: number;
   hash: Uint8Array;
-  metadata?: MetadataAmino;
+  metadata?: MetadataAmino | undefined;
 }
 export interface SnapshotAminoMsg {
   type: "cosmos-sdk/Snapshot";
@@ -30,7 +30,7 @@ export interface SnapshotSDKType {
   format: number;
   chunks: number;
   hash: Uint8Array;
-  metadata: MetadataSDKType;
+  metadata: MetadataSDKType | undefined;
 }
 /** Metadata contains SDK-specific snapshot metadata. */
 export interface Metadata {
@@ -56,11 +56,11 @@ export interface MetadataSDKType {
 }
 /** SnapshotItem is an item contained in a rootmulti.Store snapshot. */
 export interface SnapshotItem {
-  store?: SnapshotStoreItem;
-  iavl?: SnapshotIAVLItem;
-  extension?: SnapshotExtensionMeta;
-  extensionPayload?: SnapshotExtensionPayload;
-  appVersion?: SnapshotAppVersion;
+  store?: SnapshotStoreItem | undefined;
+  iavl?: SnapshotIAVLItem | undefined;
+  extension?: SnapshotExtensionMeta | undefined;
+  extensionPayload?: SnapshotExtensionPayload | undefined;
+  appVersion?: SnapshotAppVersion | undefined;
 }
 export interface SnapshotItemProtoMsg {
   typeUrl: "/cosmos.base.snapshots.v1beta1.SnapshotItem";
@@ -68,11 +68,11 @@ export interface SnapshotItemProtoMsg {
 }
 /** SnapshotItem is an item contained in a rootmulti.Store snapshot. */
 export interface SnapshotItemAmino {
-  store?: SnapshotStoreItemAmino;
-  iavl?: SnapshotIAVLItemAmino;
-  extension?: SnapshotExtensionMetaAmino;
-  extension_payload?: SnapshotExtensionPayloadAmino;
-  app_version?: SnapshotAppVersionAmino;
+  store?: SnapshotStoreItemAmino | undefined;
+  iavl?: SnapshotIAVLItemAmino | undefined;
+  extension?: SnapshotExtensionMetaAmino | undefined;
+  extension_payload?: SnapshotExtensionPayloadAmino | undefined;
+  app_version?: SnapshotAppVersionAmino | undefined;
 }
 export interface SnapshotItemAminoMsg {
   type: "cosmos-sdk/SnapshotItem";
@@ -80,11 +80,11 @@ export interface SnapshotItemAminoMsg {
 }
 /** SnapshotItem is an item contained in a rootmulti.Store snapshot. */
 export interface SnapshotItemSDKType {
-  store?: SnapshotStoreItemSDKType;
-  iavl?: SnapshotIAVLItemSDKType;
-  extension?: SnapshotExtensionMetaSDKType;
-  extension_payload?: SnapshotExtensionPayloadSDKType;
-  app_version?: SnapshotAppVersionSDKType;
+  store?: SnapshotStoreItemSDKType | undefined;
+  iavl?: SnapshotIAVLItemSDKType | undefined;
+  extension?: SnapshotExtensionMetaSDKType | undefined;
+  extension_payload?: SnapshotExtensionPayloadSDKType | undefined;
+  app_version?: SnapshotAppVersionSDKType | undefined;
 }
 /** SnapshotStoreItem contains metadata about a snapshotted store. */
 export interface SnapshotStoreItem {

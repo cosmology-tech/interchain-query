@@ -4,9 +4,9 @@ import { isSet, DeepPartial } from "../../../helpers";
 /** GenesisState defines the mint module's genesis state. */
 export interface GenesisState {
   /** minter is a space for holding current inflation information. */
-  minter: Minter;
+  minter: Minter | undefined;
   /** params defines all the paramaters of the module. */
-  params: Params;
+  params: Params | undefined;
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/cosmos.mint.v1beta1.GenesisState";
@@ -15,9 +15,9 @@ export interface GenesisStateProtoMsg {
 /** GenesisState defines the mint module's genesis state. */
 export interface GenesisStateAmino {
   /** minter is a space for holding current inflation information. */
-  minter?: MinterAmino;
+  minter?: MinterAmino | undefined;
   /** params defines all the paramaters of the module. */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface GenesisStateAminoMsg {
   type: "cosmos-sdk/GenesisState";
@@ -25,8 +25,8 @@ export interface GenesisStateAminoMsg {
 }
 /** GenesisState defines the mint module's genesis state. */
 export interface GenesisStateSDKType {
-  minter: MinterSDKType;
-  params: ParamsSDKType;
+  minter: MinterSDKType | undefined;
+  params: ParamsSDKType | undefined;
 }
 function createBaseGenesisState(): GenesisState {
   return {

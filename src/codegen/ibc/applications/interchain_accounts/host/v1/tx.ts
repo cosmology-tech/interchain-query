@@ -10,7 +10,7 @@ export interface MsgUpdateParams {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params: Params;
+  params: Params | undefined;
 }
 export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.host.v1.MsgUpdateParams";
@@ -25,7 +25,7 @@ export interface MsgUpdateParamsAmino {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface MsgUpdateParamsAminoMsg {
   type: "cosmos-sdk/MsgUpdateParams";
@@ -34,7 +34,7 @@ export interface MsgUpdateParamsAminoMsg {
 /** MsgUpdateParams defines the payload for Msg/UpdateParams */
 export interface MsgUpdateParamsSDKType {
   authority: string;
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /** MsgUpdateParamsResponse defines the response for Msg/UpdateParams */
 export interface MsgUpdateParamsResponse {}

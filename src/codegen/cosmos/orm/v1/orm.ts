@@ -3,7 +3,7 @@ import { isSet, DeepPartial } from "../../../helpers";
 /** TableDescriptor describes an ORM table. */
 export interface TableDescriptor {
   /** primary_key defines the primary key for the table. */
-  primaryKey: PrimaryKeyDescriptor;
+  primaryKey: PrimaryKeyDescriptor | undefined;
   /** index defines one or more secondary indexes. */
   index: SecondaryIndexDescriptor[];
   /**
@@ -20,7 +20,7 @@ export interface TableDescriptorProtoMsg {
 /** TableDescriptor describes an ORM table. */
 export interface TableDescriptorAmino {
   /** primary_key defines the primary key for the table. */
-  primary_key?: PrimaryKeyDescriptorAmino;
+  primary_key?: PrimaryKeyDescriptorAmino | undefined;
   /** index defines one or more secondary indexes. */
   index: SecondaryIndexDescriptorAmino[];
   /**
@@ -36,7 +36,7 @@ export interface TableDescriptorAminoMsg {
 }
 /** TableDescriptor describes an ORM table. */
 export interface TableDescriptorSDKType {
-  primary_key: PrimaryKeyDescriptorSDKType;
+  primary_key: PrimaryKeyDescriptorSDKType | undefined;
   index: SecondaryIndexDescriptorSDKType[];
   id: number;
 }

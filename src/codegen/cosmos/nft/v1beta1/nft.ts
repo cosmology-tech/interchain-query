@@ -16,7 +16,7 @@ export interface Class {
   /** uri_hash is a hash of the document pointed by uri. Optional */
   uriHash: string;
   /** data is the app specific metadata of the NFT class. Optional */
-  data: Any;
+  data: Any | undefined;
 }
 export interface ClassProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.Class";
@@ -37,7 +37,7 @@ export interface ClassAmino {
   /** uri_hash is a hash of the document pointed by uri. Optional */
   uri_hash: string;
   /** data is the app specific metadata of the NFT class. Optional */
-  data?: AnyAmino;
+  data?: AnyAmino | undefined;
 }
 export interface ClassAminoMsg {
   type: "cosmos-sdk/Class";
@@ -51,7 +51,7 @@ export interface ClassSDKType {
   description: string;
   uri: string;
   uri_hash: string;
-  data: AnySDKType;
+  data: AnySDKType | undefined;
 }
 /** NFT defines the NFT. */
 export interface NFT {
@@ -64,7 +64,7 @@ export interface NFT {
   /** uri_hash is a hash of the document pointed by uri */
   uriHash: string;
   /** data is an app specific data of the NFT. Optional */
-  data: Any;
+  data: Any | undefined;
 }
 export interface NFTProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.NFT";
@@ -81,7 +81,7 @@ export interface NFTAmino {
   /** uri_hash is a hash of the document pointed by uri */
   uri_hash: string;
   /** data is an app specific data of the NFT. Optional */
-  data?: AnyAmino;
+  data?: AnyAmino | undefined;
 }
 export interface NFTAminoMsg {
   type: "cosmos-sdk/NFT";
@@ -93,7 +93,7 @@ export interface NFTSDKType {
   id: string;
   uri: string;
   uri_hash: string;
-  data: AnySDKType;
+  data: AnySDKType | undefined;
 }
 function createBaseClass(): Class {
   return {

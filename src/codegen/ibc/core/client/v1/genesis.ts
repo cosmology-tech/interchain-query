@@ -9,7 +9,7 @@ export interface GenesisState {
   clientsConsensus: ClientConsensusStates[];
   /** metadata from each client */
   clientsMetadata: IdentifiedGenesisMetadata[];
-  params: Params;
+  params: Params | undefined;
   /**
    * Deprecated: create_localhost has been deprecated.
    * The localhost client is automatically created at genesis.
@@ -31,7 +31,7 @@ export interface GenesisStateAmino {
   clients_consensus: ClientConsensusStatesAmino[];
   /** metadata from each client */
   clients_metadata: IdentifiedGenesisMetadataAmino[];
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
   /**
    * Deprecated: create_localhost has been deprecated.
    * The localhost client is automatically created at genesis.
@@ -50,7 +50,7 @@ export interface GenesisStateSDKType {
   clients: IdentifiedClientStateSDKType[];
   clients_consensus: ClientConsensusStatesSDKType[];
   clients_metadata: IdentifiedGenesisMetadataSDKType[];
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
   /** @deprecated */
   create_localhost: boolean;
   next_client_sequence: bigint;

@@ -18,7 +18,7 @@ export interface QueryConfigRequestSDKType {}
 /** QueryConfigRequest is the Query/Config response type. */
 export interface QueryConfigResponse {
   /** config is the current app config. */
-  config: Config;
+  config: Config | undefined;
 }
 export interface QueryConfigResponseProtoMsg {
   typeUrl: "/cosmos.app.v1alpha1.QueryConfigResponse";
@@ -27,7 +27,7 @@ export interface QueryConfigResponseProtoMsg {
 /** QueryConfigRequest is the Query/Config response type. */
 export interface QueryConfigResponseAmino {
   /** config is the current app config. */
-  config?: ConfigAmino;
+  config?: ConfigAmino | undefined;
 }
 export interface QueryConfigResponseAminoMsg {
   type: "cosmos-sdk/QueryConfigResponse";
@@ -35,7 +35,7 @@ export interface QueryConfigResponseAminoMsg {
 }
 /** QueryConfigRequest is the Query/Config response type. */
 export interface QueryConfigResponseSDKType {
-  config: ConfigSDKType;
+  config: ConfigSDKType | undefined;
 }
 function createBaseQueryConfigRequest(): QueryConfigRequest {
   return {};

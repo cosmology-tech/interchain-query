@@ -72,9 +72,9 @@ telescope({
         toProto: true
       },
       includePackageVar: false,
-      fieldDefaultIsOptional: false,
+      fieldDefaultIsOptional: true,
       useOptionalNullable: true,
-      allowUndefinedTypes: false
+      allowUndefinedTypes: true
     },
     reactQuery: {
       enabled: true

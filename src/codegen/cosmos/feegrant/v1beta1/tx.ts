@@ -11,7 +11,7 @@ export interface MsgGrantAllowance {
   /** grantee is the address of the user being granted an allowance of another user's funds. */
   grantee: string;
   /** allowance can be any of basic and filtered fee allowance. */
-  allowance: Any;
+  allowance: Any | undefined;
 }
 export interface MsgGrantAllowanceProtoMsg {
   typeUrl: "/cosmos.feegrant.v1beta1.MsgGrantAllowance";
@@ -27,7 +27,7 @@ export interface MsgGrantAllowanceAmino {
   /** grantee is the address of the user being granted an allowance of another user's funds. */
   grantee: string;
   /** allowance can be any of basic and filtered fee allowance. */
-  allowance?: AnyAmino;
+  allowance?: AnyAmino | undefined;
 }
 export interface MsgGrantAllowanceAminoMsg {
   type: "cosmos-sdk/MsgGrantAllowance";
@@ -40,7 +40,7 @@ export interface MsgGrantAllowanceAminoMsg {
 export interface MsgGrantAllowanceSDKType {
   granter: string;
   grantee: string;
-  allowance: AnySDKType;
+  allowance: AnySDKType | undefined;
 }
 /** MsgGrantAllowanceResponse defines the Msg/GrantAllowanceResponse response type. */
 export interface MsgGrantAllowanceResponse {}

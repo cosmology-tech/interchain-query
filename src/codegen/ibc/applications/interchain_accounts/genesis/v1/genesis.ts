@@ -9,8 +9,8 @@ import { BinaryReader, BinaryWriter } from "../../../../../binary";
 import { isSet, DeepPartial } from "../../../../../helpers";
 /** GenesisState defines the interchain accounts genesis state */
 export interface GenesisState {
-  controllerGenesisState: ControllerGenesisState;
-  hostGenesisState: HostGenesisState;
+  controllerGenesisState: ControllerGenesisState | undefined;
+  hostGenesisState: HostGenesisState | undefined;
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.genesis.v1.GenesisState";
@@ -18,8 +18,8 @@ export interface GenesisStateProtoMsg {
 }
 /** GenesisState defines the interchain accounts genesis state */
 export interface GenesisStateAmino {
-  controller_genesis_state?: ControllerGenesisStateAmino;
-  host_genesis_state?: HostGenesisStateAmino;
+  controller_genesis_state?: ControllerGenesisStateAmino | undefined;
+  host_genesis_state?: HostGenesisStateAmino | undefined;
 }
 export interface GenesisStateAminoMsg {
   type: "cosmos-sdk/GenesisState";
@@ -27,15 +27,15 @@ export interface GenesisStateAminoMsg {
 }
 /** GenesisState defines the interchain accounts genesis state */
 export interface GenesisStateSDKType {
-  controller_genesis_state: ControllerGenesisStateSDKType;
-  host_genesis_state: HostGenesisStateSDKType;
+  controller_genesis_state: ControllerGenesisStateSDKType | undefined;
+  host_genesis_state: HostGenesisStateSDKType | undefined;
 }
 /** ControllerGenesisState defines the interchain accounts controller genesis state */
 export interface ControllerGenesisState {
   activeChannels: ActiveChannel[];
   interchainAccounts: RegisteredInterchainAccount[];
   ports: string[];
-  params: Params1;
+  params: Params1 | undefined;
 }
 export interface ControllerGenesisStateProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.genesis.v1.ControllerGenesisState";
@@ -46,7 +46,7 @@ export interface ControllerGenesisStateAmino {
   active_channels: ActiveChannelAmino[];
   interchain_accounts: RegisteredInterchainAccountAmino[];
   ports: string[];
-  params?: Params1Amino;
+  params?: Params1Amino | undefined;
 }
 export interface ControllerGenesisStateAminoMsg {
   type: "cosmos-sdk/ControllerGenesisState";
@@ -57,14 +57,14 @@ export interface ControllerGenesisStateSDKType {
   active_channels: ActiveChannelSDKType[];
   interchain_accounts: RegisteredInterchainAccountSDKType[];
   ports: string[];
-  params: Params1SDKType;
+  params: Params1SDKType | undefined;
 }
 /** HostGenesisState defines the interchain accounts host genesis state */
 export interface HostGenesisState {
   activeChannels: ActiveChannel[];
   interchainAccounts: RegisteredInterchainAccount[];
   port: string;
-  params: Params2;
+  params: Params2 | undefined;
 }
 export interface HostGenesisStateProtoMsg {
   typeUrl: "/ibc.applications.interchain_accounts.genesis.v1.HostGenesisState";
@@ -75,7 +75,7 @@ export interface HostGenesisStateAmino {
   active_channels: ActiveChannelAmino[];
   interchain_accounts: RegisteredInterchainAccountAmino[];
   port: string;
-  params?: Params2Amino;
+  params?: Params2Amino | undefined;
 }
 export interface HostGenesisStateAminoMsg {
   type: "cosmos-sdk/HostGenesisState";
@@ -86,7 +86,7 @@ export interface HostGenesisStateSDKType {
   active_channels: ActiveChannelSDKType[];
   interchain_accounts: RegisteredInterchainAccountSDKType[];
   port: string;
-  params: Params2SDKType;
+  params: Params2SDKType | undefined;
 }
 /**
  * ActiveChannel contains a connection ID, port ID and associated active channel ID, as well as a boolean flag to

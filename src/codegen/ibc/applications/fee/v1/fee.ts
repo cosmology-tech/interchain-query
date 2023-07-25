@@ -37,7 +37,7 @@ export interface FeeSDKType {
 /** PacketFee contains ICS29 relayer fees, refund address and optional list of permitted relayers */
 export interface PacketFee {
   /** fee encapsulates the recv, ack and timeout fees associated with an IBC packet */
-  fee: Fee;
+  fee: Fee | undefined;
   /** the refund address for unspent fees */
   refundAddress: string;
   /** optional list of relayers permitted to receive fees */
@@ -50,7 +50,7 @@ export interface PacketFeeProtoMsg {
 /** PacketFee contains ICS29 relayer fees, refund address and optional list of permitted relayers */
 export interface PacketFeeAmino {
   /** fee encapsulates the recv, ack and timeout fees associated with an IBC packet */
-  fee?: FeeAmino;
+  fee?: FeeAmino | undefined;
   /** the refund address for unspent fees */
   refund_address: string;
   /** optional list of relayers permitted to receive fees */
@@ -62,7 +62,7 @@ export interface PacketFeeAminoMsg {
 }
 /** PacketFee contains ICS29 relayer fees, refund address and optional list of permitted relayers */
 export interface PacketFeeSDKType {
-  fee: FeeSDKType;
+  fee: FeeSDKType | undefined;
   refund_address: string;
   relayers: string[];
 }
@@ -91,7 +91,7 @@ export interface PacketFeesSDKType {
 /** IdentifiedPacketFees contains a list of type PacketFee and associated PacketId */
 export interface IdentifiedPacketFees {
   /** unique packet identifier comprised of the channel ID, port ID and sequence */
-  packetId: PacketId;
+  packetId: PacketId | undefined;
   /** list of packet fees */
   packetFees: PacketFee[];
 }
@@ -102,7 +102,7 @@ export interface IdentifiedPacketFeesProtoMsg {
 /** IdentifiedPacketFees contains a list of type PacketFee and associated PacketId */
 export interface IdentifiedPacketFeesAmino {
   /** unique packet identifier comprised of the channel ID, port ID and sequence */
-  packet_id?: PacketIdAmino;
+  packet_id?: PacketIdAmino | undefined;
   /** list of packet fees */
   packet_fees: PacketFeeAmino[];
 }
@@ -112,7 +112,7 @@ export interface IdentifiedPacketFeesAminoMsg {
 }
 /** IdentifiedPacketFees contains a list of type PacketFee and associated PacketId */
 export interface IdentifiedPacketFeesSDKType {
-  packet_id: PacketIdSDKType;
+  packet_id: PacketIdSDKType | undefined;
   packet_fees: PacketFeeSDKType[];
 }
 function createBaseFee(): Fee {

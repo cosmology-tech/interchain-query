@@ -132,7 +132,7 @@ export interface QuerySupplyResponseSDKType {
 export interface QueryNFTsRequest {
   classId: string;
   owner: string;
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryNFTsRequestProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.QueryNFTsRequest";
@@ -142,7 +142,7 @@ export interface QueryNFTsRequestProtoMsg {
 export interface QueryNFTsRequestAmino {
   class_id: string;
   owner: string;
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryNFTsRequestAminoMsg {
   type: "cosmos-sdk/QueryNFTsRequest";
@@ -152,12 +152,12 @@ export interface QueryNFTsRequestAminoMsg {
 export interface QueryNFTsRequestSDKType {
   class_id: string;
   owner: string;
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /** QueryNFTsResponse is the response type for the Query/NFTs RPC methods */
 export interface QueryNFTsResponse {
   nfts: NFT[];
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryNFTsResponseProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.QueryNFTsResponse";
@@ -166,7 +166,7 @@ export interface QueryNFTsResponseProtoMsg {
 /** QueryNFTsResponse is the response type for the Query/NFTs RPC methods */
 export interface QueryNFTsResponseAmino {
   nfts: NFTAmino[];
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryNFTsResponseAminoMsg {
   type: "cosmos-sdk/QueryNFTsResponse";
@@ -175,7 +175,7 @@ export interface QueryNFTsResponseAminoMsg {
 /** QueryNFTsResponse is the response type for the Query/NFTs RPC methods */
 export interface QueryNFTsResponseSDKType {
   nfts: NFTSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 /** QueryNFTRequest is the request type for the Query/NFT RPC method */
 export interface QueryNFTRequest {
@@ -202,7 +202,7 @@ export interface QueryNFTRequestSDKType {
 }
 /** QueryNFTResponse is the response type for the Query/NFT RPC method */
 export interface QueryNFTResponse {
-  nft: NFT;
+  nft: NFT | undefined;
 }
 export interface QueryNFTResponseProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.QueryNFTResponse";
@@ -210,7 +210,7 @@ export interface QueryNFTResponseProtoMsg {
 }
 /** QueryNFTResponse is the response type for the Query/NFT RPC method */
 export interface QueryNFTResponseAmino {
-  nft?: NFTAmino;
+  nft?: NFTAmino | undefined;
 }
 export interface QueryNFTResponseAminoMsg {
   type: "cosmos-sdk/QueryNFTResponse";
@@ -218,7 +218,7 @@ export interface QueryNFTResponseAminoMsg {
 }
 /** QueryNFTResponse is the response type for the Query/NFT RPC method */
 export interface QueryNFTResponseSDKType {
-  nft: NFTSDKType;
+  nft: NFTSDKType | undefined;
 }
 /** QueryClassRequest is the request type for the Query/Class RPC method */
 export interface QueryClassRequest {
@@ -242,7 +242,7 @@ export interface QueryClassRequestSDKType {
 }
 /** QueryClassResponse is the response type for the Query/Class RPC method */
 export interface QueryClassResponse {
-  class: Class;
+  class: Class | undefined;
 }
 export interface QueryClassResponseProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.QueryClassResponse";
@@ -250,7 +250,7 @@ export interface QueryClassResponseProtoMsg {
 }
 /** QueryClassResponse is the response type for the Query/Class RPC method */
 export interface QueryClassResponseAmino {
-  class?: ClassAmino;
+  class?: ClassAmino | undefined;
 }
 export interface QueryClassResponseAminoMsg {
   type: "cosmos-sdk/QueryClassResponse";
@@ -258,12 +258,12 @@ export interface QueryClassResponseAminoMsg {
 }
 /** QueryClassResponse is the response type for the Query/Class RPC method */
 export interface QueryClassResponseSDKType {
-  class: ClassSDKType;
+  class: ClassSDKType | undefined;
 }
 /** QueryClassesRequest is the request type for the Query/Classes RPC method */
 export interface QueryClassesRequest {
   /** pagination defines an optional pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryClassesRequestProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.QueryClassesRequest";
@@ -272,7 +272,7 @@ export interface QueryClassesRequestProtoMsg {
 /** QueryClassesRequest is the request type for the Query/Classes RPC method */
 export interface QueryClassesRequestAmino {
   /** pagination defines an optional pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryClassesRequestAminoMsg {
   type: "cosmos-sdk/QueryClassesRequest";
@@ -280,12 +280,12 @@ export interface QueryClassesRequestAminoMsg {
 }
 /** QueryClassesRequest is the request type for the Query/Classes RPC method */
 export interface QueryClassesRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /** QueryClassesResponse is the response type for the Query/Classes RPC method */
 export interface QueryClassesResponse {
   classes: Class[];
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryClassesResponseProtoMsg {
   typeUrl: "/cosmos.nft.v1beta1.QueryClassesResponse";
@@ -294,7 +294,7 @@ export interface QueryClassesResponseProtoMsg {
 /** QueryClassesResponse is the response type for the Query/Classes RPC method */
 export interface QueryClassesResponseAmino {
   classes: ClassAmino[];
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryClassesResponseAminoMsg {
   type: "cosmos-sdk/QueryClassesResponse";
@@ -303,7 +303,7 @@ export interface QueryClassesResponseAminoMsg {
 /** QueryClassesResponse is the response type for the Query/Classes RPC method */
 export interface QueryClassesResponseSDKType {
   classes: ClassSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 function createBaseQueryBalanceRequest(): QueryBalanceRequest {
   return {

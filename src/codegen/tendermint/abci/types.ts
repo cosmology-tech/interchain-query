@@ -238,66 +238,66 @@ export function misbehaviorTypeToJSON(object: MisbehaviorType): string {
   }
 }
 export interface Request {
-  echo?: RequestEcho;
-  flush?: RequestFlush;
-  info?: RequestInfo;
-  initChain?: RequestInitChain;
-  query?: RequestQuery;
-  beginBlock?: RequestBeginBlock;
-  checkTx?: RequestCheckTx;
-  deliverTx?: RequestDeliverTx;
-  endBlock?: RequestEndBlock;
-  commit?: RequestCommit;
-  listSnapshots?: RequestListSnapshots;
-  offerSnapshot?: RequestOfferSnapshot;
-  loadSnapshotChunk?: RequestLoadSnapshotChunk;
-  applySnapshotChunk?: RequestApplySnapshotChunk;
-  prepareProposal?: RequestPrepareProposal;
-  processProposal?: RequestProcessProposal;
+  echo?: RequestEcho | undefined;
+  flush?: RequestFlush | undefined;
+  info?: RequestInfo | undefined;
+  initChain?: RequestInitChain | undefined;
+  query?: RequestQuery | undefined;
+  beginBlock?: RequestBeginBlock | undefined;
+  checkTx?: RequestCheckTx | undefined;
+  deliverTx?: RequestDeliverTx | undefined;
+  endBlock?: RequestEndBlock | undefined;
+  commit?: RequestCommit | undefined;
+  listSnapshots?: RequestListSnapshots | undefined;
+  offerSnapshot?: RequestOfferSnapshot | undefined;
+  loadSnapshotChunk?: RequestLoadSnapshotChunk | undefined;
+  applySnapshotChunk?: RequestApplySnapshotChunk | undefined;
+  prepareProposal?: RequestPrepareProposal | undefined;
+  processProposal?: RequestProcessProposal | undefined;
 }
 export interface RequestProtoMsg {
   typeUrl: "/tendermint.abci.Request";
   value: Uint8Array;
 }
 export interface RequestAmino {
-  echo?: RequestEchoAmino;
-  flush?: RequestFlushAmino;
-  info?: RequestInfoAmino;
-  init_chain?: RequestInitChainAmino;
-  query?: RequestQueryAmino;
-  begin_block?: RequestBeginBlockAmino;
-  check_tx?: RequestCheckTxAmino;
-  deliver_tx?: RequestDeliverTxAmino;
-  end_block?: RequestEndBlockAmino;
-  commit?: RequestCommitAmino;
-  list_snapshots?: RequestListSnapshotsAmino;
-  offer_snapshot?: RequestOfferSnapshotAmino;
-  load_snapshot_chunk?: RequestLoadSnapshotChunkAmino;
-  apply_snapshot_chunk?: RequestApplySnapshotChunkAmino;
-  prepare_proposal?: RequestPrepareProposalAmino;
-  process_proposal?: RequestProcessProposalAmino;
+  echo?: RequestEchoAmino | undefined;
+  flush?: RequestFlushAmino | undefined;
+  info?: RequestInfoAmino | undefined;
+  init_chain?: RequestInitChainAmino | undefined;
+  query?: RequestQueryAmino | undefined;
+  begin_block?: RequestBeginBlockAmino | undefined;
+  check_tx?: RequestCheckTxAmino | undefined;
+  deliver_tx?: RequestDeliverTxAmino | undefined;
+  end_block?: RequestEndBlockAmino | undefined;
+  commit?: RequestCommitAmino | undefined;
+  list_snapshots?: RequestListSnapshotsAmino | undefined;
+  offer_snapshot?: RequestOfferSnapshotAmino | undefined;
+  load_snapshot_chunk?: RequestLoadSnapshotChunkAmino | undefined;
+  apply_snapshot_chunk?: RequestApplySnapshotChunkAmino | undefined;
+  prepare_proposal?: RequestPrepareProposalAmino | undefined;
+  process_proposal?: RequestProcessProposalAmino | undefined;
 }
 export interface RequestAminoMsg {
   type: "/tendermint.abci.Request";
   value: RequestAmino;
 }
 export interface RequestSDKType {
-  echo?: RequestEchoSDKType;
-  flush?: RequestFlushSDKType;
-  info?: RequestInfoSDKType;
-  init_chain?: RequestInitChainSDKType;
-  query?: RequestQuerySDKType;
-  begin_block?: RequestBeginBlockSDKType;
-  check_tx?: RequestCheckTxSDKType;
-  deliver_tx?: RequestDeliverTxSDKType;
-  end_block?: RequestEndBlockSDKType;
-  commit?: RequestCommitSDKType;
-  list_snapshots?: RequestListSnapshotsSDKType;
-  offer_snapshot?: RequestOfferSnapshotSDKType;
-  load_snapshot_chunk?: RequestLoadSnapshotChunkSDKType;
-  apply_snapshot_chunk?: RequestApplySnapshotChunkSDKType;
-  prepare_proposal?: RequestPrepareProposalSDKType;
-  process_proposal?: RequestProcessProposalSDKType;
+  echo?: RequestEchoSDKType | undefined;
+  flush?: RequestFlushSDKType | undefined;
+  info?: RequestInfoSDKType | undefined;
+  init_chain?: RequestInitChainSDKType | undefined;
+  query?: RequestQuerySDKType | undefined;
+  begin_block?: RequestBeginBlockSDKType | undefined;
+  check_tx?: RequestCheckTxSDKType | undefined;
+  deliver_tx?: RequestDeliverTxSDKType | undefined;
+  end_block?: RequestEndBlockSDKType | undefined;
+  commit?: RequestCommitSDKType | undefined;
+  list_snapshots?: RequestListSnapshotsSDKType | undefined;
+  offer_snapshot?: RequestOfferSnapshotSDKType | undefined;
+  load_snapshot_chunk?: RequestLoadSnapshotChunkSDKType | undefined;
+  apply_snapshot_chunk?: RequestApplySnapshotChunkSDKType | undefined;
+  prepare_proposal?: RequestPrepareProposalSDKType | undefined;
+  process_proposal?: RequestProcessProposalSDKType | undefined;
 }
 export interface RequestEcho {
   message: string;
@@ -354,9 +354,9 @@ export interface RequestInfoSDKType {
   abci_version: string;
 }
 export interface RequestInitChain {
-  time: Date;
+  time: Date | undefined;
   chainId: string;
-  consensusParams: ConsensusParams;
+  consensusParams: ConsensusParams | undefined;
   validators: ValidatorUpdate[];
   appStateBytes: Uint8Array;
   initialHeight: bigint;
@@ -366,9 +366,9 @@ export interface RequestInitChainProtoMsg {
   value: Uint8Array;
 }
 export interface RequestInitChainAmino {
-  time?: Date;
+  time?: Date | undefined;
   chain_id: string;
-  consensus_params?: ConsensusParamsAmino;
+  consensus_params?: ConsensusParamsAmino | undefined;
   validators: ValidatorUpdateAmino[];
   app_state_bytes: Uint8Array;
   initial_height: string;
@@ -378,9 +378,9 @@ export interface RequestInitChainAminoMsg {
   value: RequestInitChainAmino;
 }
 export interface RequestInitChainSDKType {
-  time: Date;
+  time: Date | undefined;
   chain_id: string;
-  consensus_params: ConsensusParamsSDKType;
+  consensus_params: ConsensusParamsSDKType | undefined;
   validators: ValidatorUpdateSDKType[];
   app_state_bytes: Uint8Array;
   initial_height: bigint;
@@ -413,8 +413,8 @@ export interface RequestQuerySDKType {
 }
 export interface RequestBeginBlock {
   hash: Uint8Array;
-  header: Header;
-  lastCommitInfo: CommitInfo;
+  header: Header | undefined;
+  lastCommitInfo: CommitInfo | undefined;
   byzantineValidators: Misbehavior[];
 }
 export interface RequestBeginBlockProtoMsg {
@@ -423,8 +423,8 @@ export interface RequestBeginBlockProtoMsg {
 }
 export interface RequestBeginBlockAmino {
   hash: Uint8Array;
-  header?: HeaderAmino;
-  last_commit_info?: CommitInfoAmino;
+  header?: HeaderAmino | undefined;
+  last_commit_info?: CommitInfoAmino | undefined;
   byzantine_validators: MisbehaviorAmino[];
 }
 export interface RequestBeginBlockAminoMsg {
@@ -433,8 +433,8 @@ export interface RequestBeginBlockAminoMsg {
 }
 export interface RequestBeginBlockSDKType {
   hash: Uint8Array;
-  header: HeaderSDKType;
-  last_commit_info: CommitInfoSDKType;
+  header: HeaderSDKType | undefined;
+  last_commit_info: CommitInfoSDKType | undefined;
   byzantine_validators: MisbehaviorSDKType[];
 }
 export interface RequestCheckTx {
@@ -519,7 +519,7 @@ export interface RequestListSnapshotsSDKType {}
 /** offers a snapshot to the application */
 export interface RequestOfferSnapshot {
   /** snapshot offered by peers */
-  snapshot: Snapshot;
+  snapshot: Snapshot | undefined;
   /** light client-verified app hash for snapshot height */
   appHash: Uint8Array;
 }
@@ -530,7 +530,7 @@ export interface RequestOfferSnapshotProtoMsg {
 /** offers a snapshot to the application */
 export interface RequestOfferSnapshotAmino {
   /** snapshot offered by peers */
-  snapshot?: SnapshotAmino;
+  snapshot?: SnapshotAmino | undefined;
   /** light client-verified app hash for snapshot height */
   app_hash: Uint8Array;
 }
@@ -540,7 +540,7 @@ export interface RequestOfferSnapshotAminoMsg {
 }
 /** offers a snapshot to the application */
 export interface RequestOfferSnapshotSDKType {
-  snapshot: SnapshotSDKType;
+  snapshot: SnapshotSDKType | undefined;
   app_hash: Uint8Array;
 }
 /** loads a snapshot chunk */
@@ -603,10 +603,10 @@ export interface RequestPrepareProposal {
    * sent to the app for possible modifications.
    */
   txs: Uint8Array[];
-  localLastCommit: ExtendedCommitInfo;
+  localLastCommit: ExtendedCommitInfo | undefined;
   misbehavior: Misbehavior[];
   height: bigint;
-  time: Date;
+  time: Date | undefined;
   nextValidatorsHash: Uint8Array;
   /** address of the public key of the validator proposing the block. */
   proposerAddress: Uint8Array;
@@ -623,10 +623,10 @@ export interface RequestPrepareProposalAmino {
    * sent to the app for possible modifications.
    */
   txs: Uint8Array[];
-  local_last_commit?: ExtendedCommitInfoAmino;
+  local_last_commit?: ExtendedCommitInfoAmino | undefined;
   misbehavior: MisbehaviorAmino[];
   height: string;
-  time?: Date;
+  time?: Date | undefined;
   next_validators_hash: Uint8Array;
   /** address of the public key of the validator proposing the block. */
   proposer_address: Uint8Array;
@@ -638,21 +638,21 @@ export interface RequestPrepareProposalAminoMsg {
 export interface RequestPrepareProposalSDKType {
   max_tx_bytes: bigint;
   txs: Uint8Array[];
-  local_last_commit: ExtendedCommitInfoSDKType;
+  local_last_commit: ExtendedCommitInfoSDKType | undefined;
   misbehavior: MisbehaviorSDKType[];
   height: bigint;
-  time: Date;
+  time: Date | undefined;
   next_validators_hash: Uint8Array;
   proposer_address: Uint8Array;
 }
 export interface RequestProcessProposal {
   txs: Uint8Array[];
-  proposedLastCommit: CommitInfo;
+  proposedLastCommit: CommitInfo | undefined;
   misbehavior: Misbehavior[];
   /** hash is the merkle root hash of the fields of the proposed block. */
   hash: Uint8Array;
   height: bigint;
-  time: Date;
+  time: Date | undefined;
   nextValidatorsHash: Uint8Array;
   /** address of the public key of the original proposer of the block. */
   proposerAddress: Uint8Array;
@@ -663,12 +663,12 @@ export interface RequestProcessProposalProtoMsg {
 }
 export interface RequestProcessProposalAmino {
   txs: Uint8Array[];
-  proposed_last_commit?: CommitInfoAmino;
+  proposed_last_commit?: CommitInfoAmino | undefined;
   misbehavior: MisbehaviorAmino[];
   /** hash is the merkle root hash of the fields of the proposed block. */
   hash: Uint8Array;
   height: string;
-  time?: Date;
+  time?: Date | undefined;
   next_validators_hash: Uint8Array;
   /** address of the public key of the original proposer of the block. */
   proposer_address: Uint8Array;
@@ -679,78 +679,78 @@ export interface RequestProcessProposalAminoMsg {
 }
 export interface RequestProcessProposalSDKType {
   txs: Uint8Array[];
-  proposed_last_commit: CommitInfoSDKType;
+  proposed_last_commit: CommitInfoSDKType | undefined;
   misbehavior: MisbehaviorSDKType[];
   hash: Uint8Array;
   height: bigint;
-  time: Date;
+  time: Date | undefined;
   next_validators_hash: Uint8Array;
   proposer_address: Uint8Array;
 }
 export interface Response {
-  exception?: ResponseException;
-  echo?: ResponseEcho;
-  flush?: ResponseFlush;
-  info?: ResponseInfo;
-  initChain?: ResponseInitChain;
-  query?: ResponseQuery;
-  beginBlock?: ResponseBeginBlock;
-  checkTx?: ResponseCheckTx;
-  deliverTx?: ResponseDeliverTx;
-  endBlock?: ResponseEndBlock;
-  commit?: ResponseCommit;
-  listSnapshots?: ResponseListSnapshots;
-  offerSnapshot?: ResponseOfferSnapshot;
-  loadSnapshotChunk?: ResponseLoadSnapshotChunk;
-  applySnapshotChunk?: ResponseApplySnapshotChunk;
-  prepareProposal?: ResponsePrepareProposal;
-  processProposal?: ResponseProcessProposal;
+  exception?: ResponseException | undefined;
+  echo?: ResponseEcho | undefined;
+  flush?: ResponseFlush | undefined;
+  info?: ResponseInfo | undefined;
+  initChain?: ResponseInitChain | undefined;
+  query?: ResponseQuery | undefined;
+  beginBlock?: ResponseBeginBlock | undefined;
+  checkTx?: ResponseCheckTx | undefined;
+  deliverTx?: ResponseDeliverTx | undefined;
+  endBlock?: ResponseEndBlock | undefined;
+  commit?: ResponseCommit | undefined;
+  listSnapshots?: ResponseListSnapshots | undefined;
+  offerSnapshot?: ResponseOfferSnapshot | undefined;
+  loadSnapshotChunk?: ResponseLoadSnapshotChunk | undefined;
+  applySnapshotChunk?: ResponseApplySnapshotChunk | undefined;
+  prepareProposal?: ResponsePrepareProposal | undefined;
+  processProposal?: ResponseProcessProposal | undefined;
 }
 export interface ResponseProtoMsg {
   typeUrl: "/tendermint.abci.Response";
   value: Uint8Array;
 }
 export interface ResponseAmino {
-  exception?: ResponseExceptionAmino;
-  echo?: ResponseEchoAmino;
-  flush?: ResponseFlushAmino;
-  info?: ResponseInfoAmino;
-  init_chain?: ResponseInitChainAmino;
-  query?: ResponseQueryAmino;
-  begin_block?: ResponseBeginBlockAmino;
-  check_tx?: ResponseCheckTxAmino;
-  deliver_tx?: ResponseDeliverTxAmino;
-  end_block?: ResponseEndBlockAmino;
-  commit?: ResponseCommitAmino;
-  list_snapshots?: ResponseListSnapshotsAmino;
-  offer_snapshot?: ResponseOfferSnapshotAmino;
-  load_snapshot_chunk?: ResponseLoadSnapshotChunkAmino;
-  apply_snapshot_chunk?: ResponseApplySnapshotChunkAmino;
-  prepare_proposal?: ResponsePrepareProposalAmino;
-  process_proposal?: ResponseProcessProposalAmino;
+  exception?: ResponseExceptionAmino | undefined;
+  echo?: ResponseEchoAmino | undefined;
+  flush?: ResponseFlushAmino | undefined;
+  info?: ResponseInfoAmino | undefined;
+  init_chain?: ResponseInitChainAmino | undefined;
+  query?: ResponseQueryAmino | undefined;
+  begin_block?: ResponseBeginBlockAmino | undefined;
+  check_tx?: ResponseCheckTxAmino | undefined;
+  deliver_tx?: ResponseDeliverTxAmino | undefined;
+  end_block?: ResponseEndBlockAmino | undefined;
+  commit?: ResponseCommitAmino | undefined;
+  list_snapshots?: ResponseListSnapshotsAmino | undefined;
+  offer_snapshot?: ResponseOfferSnapshotAmino | undefined;
+  load_snapshot_chunk?: ResponseLoadSnapshotChunkAmino | undefined;
+  apply_snapshot_chunk?: ResponseApplySnapshotChunkAmino | undefined;
+  prepare_proposal?: ResponsePrepareProposalAmino | undefined;
+  process_proposal?: ResponseProcessProposalAmino | undefined;
 }
 export interface ResponseAminoMsg {
   type: "/tendermint.abci.Response";
   value: ResponseAmino;
 }
 export interface ResponseSDKType {
-  exception?: ResponseExceptionSDKType;
-  echo?: ResponseEchoSDKType;
-  flush?: ResponseFlushSDKType;
-  info?: ResponseInfoSDKType;
-  init_chain?: ResponseInitChainSDKType;
-  query?: ResponseQuerySDKType;
-  begin_block?: ResponseBeginBlockSDKType;
-  check_tx?: ResponseCheckTxSDKType;
-  deliver_tx?: ResponseDeliverTxSDKType;
-  end_block?: ResponseEndBlockSDKType;
-  commit?: ResponseCommitSDKType;
-  list_snapshots?: ResponseListSnapshotsSDKType;
-  offer_snapshot?: ResponseOfferSnapshotSDKType;
-  load_snapshot_chunk?: ResponseLoadSnapshotChunkSDKType;
-  apply_snapshot_chunk?: ResponseApplySnapshotChunkSDKType;
-  prepare_proposal?: ResponsePrepareProposalSDKType;
-  process_proposal?: ResponseProcessProposalSDKType;
+  exception?: ResponseExceptionSDKType | undefined;
+  echo?: ResponseEchoSDKType | undefined;
+  flush?: ResponseFlushSDKType | undefined;
+  info?: ResponseInfoSDKType | undefined;
+  init_chain?: ResponseInitChainSDKType | undefined;
+  query?: ResponseQuerySDKType | undefined;
+  begin_block?: ResponseBeginBlockSDKType | undefined;
+  check_tx?: ResponseCheckTxSDKType | undefined;
+  deliver_tx?: ResponseDeliverTxSDKType | undefined;
+  end_block?: ResponseEndBlockSDKType | undefined;
+  commit?: ResponseCommitSDKType | undefined;
+  list_snapshots?: ResponseListSnapshotsSDKType | undefined;
+  offer_snapshot?: ResponseOfferSnapshotSDKType | undefined;
+  load_snapshot_chunk?: ResponseLoadSnapshotChunkSDKType | undefined;
+  apply_snapshot_chunk?: ResponseApplySnapshotChunkSDKType | undefined;
+  prepare_proposal?: ResponsePrepareProposalSDKType | undefined;
+  process_proposal?: ResponseProcessProposalSDKType | undefined;
 }
 /** nondeterministic */
 export interface ResponseException {
@@ -830,7 +830,7 @@ export interface ResponseInfoSDKType {
   last_block_app_hash: Uint8Array;
 }
 export interface ResponseInitChain {
-  consensusParams: ConsensusParams;
+  consensusParams: ConsensusParams | undefined;
   validators: ValidatorUpdate[];
   appHash: Uint8Array;
 }
@@ -839,7 +839,7 @@ export interface ResponseInitChainProtoMsg {
   value: Uint8Array;
 }
 export interface ResponseInitChainAmino {
-  consensus_params?: ConsensusParamsAmino;
+  consensus_params?: ConsensusParamsAmino | undefined;
   validators: ValidatorUpdateAmino[];
   app_hash: Uint8Array;
 }
@@ -848,7 +848,7 @@ export interface ResponseInitChainAminoMsg {
   value: ResponseInitChainAmino;
 }
 export interface ResponseInitChainSDKType {
-  consensus_params: ConsensusParamsSDKType;
+  consensus_params: ConsensusParamsSDKType | undefined;
   validators: ValidatorUpdateSDKType[];
   app_hash: Uint8Array;
 }
@@ -861,7 +861,7 @@ export interface ResponseQuery {
   index: bigint;
   key: Uint8Array;
   value: Uint8Array;
-  proofOps: ProofOps;
+  proofOps: ProofOps | undefined;
   height: bigint;
   codespace: string;
 }
@@ -878,7 +878,7 @@ export interface ResponseQueryAmino {
   index: string;
   key: Uint8Array;
   value: Uint8Array;
-  proof_ops?: ProofOpsAmino;
+  proof_ops?: ProofOpsAmino | undefined;
   height: string;
   codespace: string;
 }
@@ -893,7 +893,7 @@ export interface ResponseQuerySDKType {
   index: bigint;
   key: Uint8Array;
   value: Uint8Array;
-  proof_ops: ProofOpsSDKType;
+  proof_ops: ProofOpsSDKType | undefined;
   height: bigint;
   codespace: string;
 }
@@ -1017,7 +1017,7 @@ export interface ResponseDeliverTxSDKType {
 }
 export interface ResponseEndBlock {
   validatorUpdates: ValidatorUpdate[];
-  consensusParamUpdates: ConsensusParams;
+  consensusParamUpdates: ConsensusParams | undefined;
   events: Event[];
 }
 export interface ResponseEndBlockProtoMsg {
@@ -1026,7 +1026,7 @@ export interface ResponseEndBlockProtoMsg {
 }
 export interface ResponseEndBlockAmino {
   validator_updates: ValidatorUpdateAmino[];
-  consensus_param_updates?: ConsensusParamsAmino;
+  consensus_param_updates?: ConsensusParamsAmino | undefined;
   events: EventAmino[];
 }
 export interface ResponseEndBlockAminoMsg {
@@ -1035,7 +1035,7 @@ export interface ResponseEndBlockAminoMsg {
 }
 export interface ResponseEndBlockSDKType {
   validator_updates: ValidatorUpdateSDKType[];
-  consensus_param_updates: ConsensusParamsSDKType;
+  consensus_param_updates: ConsensusParamsSDKType | undefined;
   events: EventSDKType[];
 }
 export interface ResponseCommit {
@@ -1294,7 +1294,7 @@ export interface TxResult {
   height: bigint;
   index: number;
   tx: Uint8Array;
-  result: ResponseDeliverTx;
+  result: ResponseDeliverTx | undefined;
 }
 export interface TxResultProtoMsg {
   typeUrl: "/tendermint.abci.TxResult";
@@ -1309,7 +1309,7 @@ export interface TxResultAmino {
   height: string;
   index: number;
   tx: Uint8Array;
-  result?: ResponseDeliverTxAmino;
+  result?: ResponseDeliverTxAmino | undefined;
 }
 export interface TxResultAminoMsg {
   type: "/tendermint.abci.TxResult";
@@ -1324,7 +1324,7 @@ export interface TxResultSDKType {
   height: bigint;
   index: number;
   tx: Uint8Array;
-  result: ResponseDeliverTxSDKType;
+  result: ResponseDeliverTxSDKType | undefined;
 }
 /** Validator */
 export interface Validator {
@@ -1361,7 +1361,7 @@ export interface ValidatorSDKType {
 }
 /** ValidatorUpdate */
 export interface ValidatorUpdate {
-  pubKey: PublicKey;
+  pubKey: PublicKey | undefined;
   power: bigint;
 }
 export interface ValidatorUpdateProtoMsg {
@@ -1370,7 +1370,7 @@ export interface ValidatorUpdateProtoMsg {
 }
 /** ValidatorUpdate */
 export interface ValidatorUpdateAmino {
-  pub_key?: PublicKeyAmino;
+  pub_key?: PublicKeyAmino | undefined;
   power: string;
 }
 export interface ValidatorUpdateAminoMsg {
@@ -1379,12 +1379,12 @@ export interface ValidatorUpdateAminoMsg {
 }
 /** ValidatorUpdate */
 export interface ValidatorUpdateSDKType {
-  pub_key: PublicKeySDKType;
+  pub_key: PublicKeySDKType | undefined;
   power: bigint;
 }
 /** VoteInfo */
 export interface VoteInfo {
-  validator: Validator;
+  validator: Validator | undefined;
   signedLastBlock: boolean;
 }
 export interface VoteInfoProtoMsg {
@@ -1393,7 +1393,7 @@ export interface VoteInfoProtoMsg {
 }
 /** VoteInfo */
 export interface VoteInfoAmino {
-  validator?: ValidatorAmino;
+  validator?: ValidatorAmino | undefined;
   signed_last_block: boolean;
 }
 export interface VoteInfoAminoMsg {
@@ -1402,11 +1402,11 @@ export interface VoteInfoAminoMsg {
 }
 /** VoteInfo */
 export interface VoteInfoSDKType {
-  validator: ValidatorSDKType;
+  validator: ValidatorSDKType | undefined;
   signed_last_block: boolean;
 }
 export interface ExtendedVoteInfo {
-  validator: Validator;
+  validator: Validator | undefined;
   signedLastBlock: boolean;
   /** Reserved for future use */
   voteExtension: Uint8Array;
@@ -1416,7 +1416,7 @@ export interface ExtendedVoteInfoProtoMsg {
   value: Uint8Array;
 }
 export interface ExtendedVoteInfoAmino {
-  validator?: ValidatorAmino;
+  validator?: ValidatorAmino | undefined;
   signed_last_block: boolean;
   /** Reserved for future use */
   vote_extension: Uint8Array;
@@ -1426,18 +1426,18 @@ export interface ExtendedVoteInfoAminoMsg {
   value: ExtendedVoteInfoAmino;
 }
 export interface ExtendedVoteInfoSDKType {
-  validator: ValidatorSDKType;
+  validator: ValidatorSDKType | undefined;
   signed_last_block: boolean;
   vote_extension: Uint8Array;
 }
 export interface Misbehavior {
   type: MisbehaviorType;
   /** The offending validator */
-  validator: Validator;
+  validator: Validator | undefined;
   /** The height when the offense occurred */
   height: bigint;
   /** The corresponding time where the offense occurred */
-  time: Date;
+  time: Date | undefined;
   /**
    * Total voting power of the validator set in case the ABCI application does
    * not store historical validators.
@@ -1452,11 +1452,11 @@ export interface MisbehaviorProtoMsg {
 export interface MisbehaviorAmino {
   type: MisbehaviorType;
   /** The offending validator */
-  validator?: ValidatorAmino;
+  validator?: ValidatorAmino | undefined;
   /** The height when the offense occurred */
   height: string;
   /** The corresponding time where the offense occurred */
-  time?: Date;
+  time?: Date | undefined;
   /**
    * Total voting power of the validator set in case the ABCI application does
    * not store historical validators.
@@ -1470,9 +1470,9 @@ export interface MisbehaviorAminoMsg {
 }
 export interface MisbehaviorSDKType {
   type: MisbehaviorType;
-  validator: ValidatorSDKType;
+  validator: ValidatorSDKType | undefined;
   height: bigint;
-  time: Date;
+  time: Date | undefined;
   total_voting_power: bigint;
 }
 export interface Snapshot {

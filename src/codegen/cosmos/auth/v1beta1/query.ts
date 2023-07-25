@@ -10,7 +10,7 @@ import { isSet, DeepPartial } from "../../../helpers";
  */
 export interface QueryAccountsRequest {
   /** pagination defines an optional pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryAccountsRequestProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountsRequest";
@@ -23,7 +23,7 @@ export interface QueryAccountsRequestProtoMsg {
  */
 export interface QueryAccountsRequestAmino {
   /** pagination defines an optional pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryAccountsRequestAminoMsg {
   type: "cosmos-sdk/QueryAccountsRequest";
@@ -35,7 +35,7 @@ export interface QueryAccountsRequestAminoMsg {
  * Since: cosmos-sdk 0.43
  */
 export interface QueryAccountsRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /**
  * QueryAccountsResponse is the response type for the Query/Accounts RPC method.
@@ -46,7 +46,7 @@ export interface QueryAccountsResponse {
   /** accounts are the existing accounts */
   accounts: Any[];
   /** pagination defines the pagination in the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryAccountsResponseProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountsResponse";
@@ -61,7 +61,7 @@ export interface QueryAccountsResponseAmino {
   /** accounts are the existing accounts */
   accounts: AnyAmino[];
   /** pagination defines the pagination in the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryAccountsResponseAminoMsg {
   type: "cosmos-sdk/QueryAccountsResponse";
@@ -74,7 +74,7 @@ export interface QueryAccountsResponseAminoMsg {
  */
 export interface QueryAccountsResponseSDKType {
   accounts: AnySDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 /** QueryAccountRequest is the request type for the Query/Account RPC method. */
 export interface QueryAccountRequest {
@@ -101,7 +101,7 @@ export interface QueryAccountRequestSDKType {
 /** QueryAccountResponse is the response type for the Query/Account RPC method. */
 export interface QueryAccountResponse {
   /** account defines the account of the corresponding address. */
-  account: Any;
+  account: Any | undefined;
 }
 export interface QueryAccountResponseProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryAccountResponse";
@@ -110,7 +110,7 @@ export interface QueryAccountResponseProtoMsg {
 /** QueryAccountResponse is the response type for the Query/Account RPC method. */
 export interface QueryAccountResponseAmino {
   /** account defines the account of the corresponding address. */
-  account?: AnyAmino;
+  account?: AnyAmino | undefined;
 }
 export interface QueryAccountResponseAminoMsg {
   type: "cosmos-sdk/QueryAccountResponse";
@@ -118,7 +118,7 @@ export interface QueryAccountResponseAminoMsg {
 }
 /** QueryAccountResponse is the response type for the Query/Account RPC method. */
 export interface QueryAccountResponseSDKType {
-  account: AnySDKType;
+  account: AnySDKType | undefined;
 }
 /** QueryParamsRequest is the request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {}
@@ -137,7 +137,7 @@ export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** params defines the parameters of the module. */
-  params: Params;
+  params: Params | undefined;
 }
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.auth.v1beta1.QueryParamsResponse";
@@ -146,7 +146,7 @@ export interface QueryParamsResponseProtoMsg {
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseAmino {
   /** params defines the parameters of the module. */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
   type: "cosmos-sdk/QueryParamsResponse";
@@ -154,7 +154,7 @@ export interface QueryParamsResponseAminoMsg {
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /** QueryModuleAccountsRequest is the request type for the Query/ModuleAccounts RPC method. */
 export interface QueryModuleAccountsRequest {}

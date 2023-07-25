@@ -18,7 +18,7 @@ export interface QueryParamsRequestAminoMsg {
 export interface QueryParamsRequestSDKType {}
 /** QueryParamsResponse is the response type for the Query/Params RPC method */
 export interface QueryParamsResponse {
-  params: Params;
+  params: Params | undefined;
 }
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.QueryParamsResponse";
@@ -26,7 +26,7 @@ export interface QueryParamsResponseProtoMsg {
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method */
 export interface QueryParamsResponseAmino {
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
   type: "cosmos-sdk/QueryParamsResponse";
@@ -34,7 +34,7 @@ export interface QueryParamsResponseAminoMsg {
 }
 /** QueryParamsResponse is the response type for the Query/Params RPC method */
 export interface QueryParamsResponseSDKType {
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /**
  * QuerySigningInfoRequest is the request type for the Query/SigningInfo RPC
@@ -73,7 +73,7 @@ export interface QuerySigningInfoRequestSDKType {
  */
 export interface QuerySigningInfoResponse {
   /** val_signing_info is the signing info of requested val cons address */
-  valSigningInfo: ValidatorSigningInfo;
+  valSigningInfo: ValidatorSigningInfo | undefined;
 }
 export interface QuerySigningInfoResponseProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.QuerySigningInfoResponse";
@@ -85,7 +85,7 @@ export interface QuerySigningInfoResponseProtoMsg {
  */
 export interface QuerySigningInfoResponseAmino {
   /** val_signing_info is the signing info of requested val cons address */
-  val_signing_info?: ValidatorSigningInfoAmino;
+  val_signing_info?: ValidatorSigningInfoAmino | undefined;
 }
 export interface QuerySigningInfoResponseAminoMsg {
   type: "cosmos-sdk/QuerySigningInfoResponse";
@@ -96,14 +96,14 @@ export interface QuerySigningInfoResponseAminoMsg {
  * method
  */
 export interface QuerySigningInfoResponseSDKType {
-  val_signing_info: ValidatorSigningInfoSDKType;
+  val_signing_info: ValidatorSigningInfoSDKType | undefined;
 }
 /**
  * QuerySigningInfosRequest is the request type for the Query/SigningInfos RPC
  * method
  */
 export interface QuerySigningInfosRequest {
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QuerySigningInfosRequestProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.QuerySigningInfosRequest";
@@ -114,7 +114,7 @@ export interface QuerySigningInfosRequestProtoMsg {
  * method
  */
 export interface QuerySigningInfosRequestAmino {
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QuerySigningInfosRequestAminoMsg {
   type: "cosmos-sdk/QuerySigningInfosRequest";
@@ -125,7 +125,7 @@ export interface QuerySigningInfosRequestAminoMsg {
  * method
  */
 export interface QuerySigningInfosRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /**
  * QuerySigningInfosResponse is the response type for the Query/SigningInfos RPC
@@ -134,7 +134,7 @@ export interface QuerySigningInfosRequestSDKType {
 export interface QuerySigningInfosResponse {
   /** info is the signing info of all validators */
   info: ValidatorSigningInfo[];
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QuerySigningInfosResponseProtoMsg {
   typeUrl: "/cosmos.slashing.v1beta1.QuerySigningInfosResponse";
@@ -147,7 +147,7 @@ export interface QuerySigningInfosResponseProtoMsg {
 export interface QuerySigningInfosResponseAmino {
   /** info is the signing info of all validators */
   info: ValidatorSigningInfoAmino[];
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QuerySigningInfosResponseAminoMsg {
   type: "cosmos-sdk/QuerySigningInfosResponse";
@@ -159,7 +159,7 @@ export interface QuerySigningInfosResponseAminoMsg {
  */
 export interface QuerySigningInfosResponseSDKType {
   info: ValidatorSigningInfoSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};

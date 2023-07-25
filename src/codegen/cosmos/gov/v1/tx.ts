@@ -69,7 +69,7 @@ export interface MsgSubmitProposalResponseSDKType {
  */
 export interface MsgExecLegacyContent {
   /** content is the proposal's content. */
-  content: Any;
+  content: Any | undefined;
   /** authority must be the gov module address. */
   authority: string;
 }
@@ -83,7 +83,7 @@ export interface MsgExecLegacyContentProtoMsg {
  */
 export interface MsgExecLegacyContentAmino {
   /** content is the proposal's content. */
-  content?: AnyAmino;
+  content?: AnyAmino | undefined;
   /** authority must be the gov module address. */
   authority: string;
 }
@@ -96,7 +96,7 @@ export interface MsgExecLegacyContentAminoMsg {
  * This ensures backwards compatibility with v1beta1.MsgSubmitProposal.
  */
 export interface MsgExecLegacyContentSDKType {
-  content: AnySDKType;
+  content: AnySDKType | undefined;
   authority: string;
 }
 /** MsgExecLegacyContentResponse defines the Msg/ExecLegacyContent response type. */

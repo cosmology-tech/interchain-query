@@ -31,7 +31,7 @@ export interface QueryParamsRequestSDKType {
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponse {
   /** param defines the queried parameter. */
-  param: ParamChange;
+  param: ParamChange | undefined;
 }
 export interface QueryParamsResponseProtoMsg {
   typeUrl: "/cosmos.params.v1beta1.QueryParamsResponse";
@@ -40,7 +40,7 @@ export interface QueryParamsResponseProtoMsg {
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseAmino {
   /** param defines the queried parameter. */
-  param?: ParamChangeAmino;
+  param?: ParamChangeAmino | undefined;
 }
 export interface QueryParamsResponseAminoMsg {
   type: "cosmos-sdk/QueryParamsResponse";
@@ -48,7 +48,7 @@ export interface QueryParamsResponseAminoMsg {
 }
 /** QueryParamsResponse is response type for the Query/Params RPC method. */
 export interface QueryParamsResponseSDKType {
-  param: ParamChangeSDKType;
+  param: ParamChangeSDKType | undefined;
 }
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {

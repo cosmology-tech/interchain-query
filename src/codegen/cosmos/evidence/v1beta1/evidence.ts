@@ -7,7 +7,7 @@ import { toTimestamp, fromTimestamp, isSet, DeepPartial } from "../../../helpers
  */
 export interface Equivocation {
   height: bigint;
-  time: Date;
+  time: Date | undefined;
   power: bigint;
   consensusAddress: string;
 }
@@ -21,7 +21,7 @@ export interface EquivocationProtoMsg {
  */
 export interface EquivocationAmino {
   height: string;
-  time?: Date;
+  time?: Date | undefined;
   power: string;
   consensus_address: string;
 }
@@ -35,7 +35,7 @@ export interface EquivocationAminoMsg {
  */
 export interface EquivocationSDKType {
   height: bigint;
-  time: Date;
+  time: Date | undefined;
   power: bigint;
   consensus_address: string;
 }

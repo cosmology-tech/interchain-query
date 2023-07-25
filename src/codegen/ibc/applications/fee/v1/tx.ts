@@ -111,7 +111,7 @@ export interface MsgRegisterCounterpartyPayeeResponseSDKType {}
  */
 export interface MsgPayPacketFee {
   /** fee encapsulates the recv, ack and timeout fees associated with an IBC packet */
-  fee: Fee;
+  fee: Fee | undefined;
   /** the source port unique identifier */
   sourcePortId: string;
   /** the source channel unique identifer */
@@ -132,7 +132,7 @@ export interface MsgPayPacketFeeProtoMsg {
  */
 export interface MsgPayPacketFeeAmino {
   /** fee encapsulates the recv, ack and timeout fees associated with an IBC packet */
-  fee?: FeeAmino;
+  fee?: FeeAmino | undefined;
   /** the source port unique identifier */
   source_port_id: string;
   /** the source channel unique identifer */
@@ -152,7 +152,7 @@ export interface MsgPayPacketFeeAminoMsg {
  * paid for
  */
 export interface MsgPayPacketFeeSDKType {
-  fee: FeeSDKType;
+  fee: FeeSDKType | undefined;
   source_port_id: string;
   source_channel_id: string;
   signer: string;
@@ -178,9 +178,9 @@ export interface MsgPayPacketFeeResponseSDKType {}
  */
 export interface MsgPayPacketFeeAsync {
   /** unique packet identifier comprised of the channel ID, port ID and sequence */
-  packetId: PacketId;
+  packetId: PacketId | undefined;
   /** the packet fee associated with a particular IBC packet */
-  packetFee: PacketFee;
+  packetFee: PacketFee | undefined;
 }
 export interface MsgPayPacketFeeAsyncProtoMsg {
   typeUrl: "/ibc.applications.fee.v1.MsgPayPacketFeeAsync";
@@ -192,9 +192,9 @@ export interface MsgPayPacketFeeAsyncProtoMsg {
  */
 export interface MsgPayPacketFeeAsyncAmino {
   /** unique packet identifier comprised of the channel ID, port ID and sequence */
-  packet_id?: PacketIdAmino;
+  packet_id?: PacketIdAmino | undefined;
   /** the packet fee associated with a particular IBC packet */
-  packet_fee?: PacketFeeAmino;
+  packet_fee?: PacketFeeAmino | undefined;
 }
 export interface MsgPayPacketFeeAsyncAminoMsg {
   type: "cosmos-sdk/MsgPayPacketFeeAsync";
@@ -205,8 +205,8 @@ export interface MsgPayPacketFeeAsyncAminoMsg {
  * This Msg can be used to pay for a packet at a specified sequence (instead of the next sequence send)
  */
 export interface MsgPayPacketFeeAsyncSDKType {
-  packet_id: PacketIdSDKType;
-  packet_fee: PacketFeeSDKType;
+  packet_id: PacketIdSDKType | undefined;
+  packet_fee: PacketFeeSDKType | undefined;
 }
 /** MsgPayPacketFeeAsyncResponse defines the response type for the PayPacketFeeAsync rpc */
 export interface MsgPayPacketFeeAsyncResponse {}

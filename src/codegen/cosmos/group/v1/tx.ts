@@ -252,7 +252,7 @@ export interface MsgCreateGroupPolicy {
   /** metadata is any arbitrary metadata attached to the group policy. */
   metadata: string;
   /** decision_policy specifies the group policy's decision policy. */
-  decisionPolicy: Any;
+  decisionPolicy: Any | undefined;
 }
 export interface MsgCreateGroupPolicyProtoMsg {
   typeUrl: "/cosmos.group.v1.MsgCreateGroupPolicy";
@@ -267,7 +267,7 @@ export interface MsgCreateGroupPolicyAmino {
   /** metadata is any arbitrary metadata attached to the group policy. */
   metadata: string;
   /** decision_policy specifies the group policy's decision policy. */
-  decision_policy?: AnyAmino;
+  decision_policy?: AnyAmino | undefined;
 }
 export interface MsgCreateGroupPolicyAminoMsg {
   type: "cosmos-sdk/MsgCreateGroupPolicy";
@@ -278,7 +278,7 @@ export interface MsgCreateGroupPolicySDKType {
   admin: string;
   group_id: bigint;
   metadata: string;
-  decision_policy: AnySDKType;
+  decision_policy: AnySDKType | undefined;
 }
 /** MsgCreateGroupPolicyResponse is the Msg/CreateGroupPolicy response type. */
 export interface MsgCreateGroupPolicyResponse {
@@ -347,7 +347,7 @@ export interface MsgCreateGroupWithPolicy {
   /** group_policy_as_admin is a boolean field, if set to true, the group policy account address will be used as group and group policy admin. */
   groupPolicyAsAdmin: boolean;
   /** decision_policy specifies the group policy's decision policy. */
-  decisionPolicy: Any;
+  decisionPolicy: Any | undefined;
 }
 export interface MsgCreateGroupWithPolicyProtoMsg {
   typeUrl: "/cosmos.group.v1.MsgCreateGroupWithPolicy";
@@ -366,7 +366,7 @@ export interface MsgCreateGroupWithPolicyAmino {
   /** group_policy_as_admin is a boolean field, if set to true, the group policy account address will be used as group and group policy admin. */
   group_policy_as_admin: boolean;
   /** decision_policy specifies the group policy's decision policy. */
-  decision_policy?: AnyAmino;
+  decision_policy?: AnyAmino | undefined;
 }
 export interface MsgCreateGroupWithPolicyAminoMsg {
   type: "cosmos-sdk/MsgCreateGroupWithPolicy";
@@ -379,7 +379,7 @@ export interface MsgCreateGroupWithPolicySDKType {
   group_metadata: string;
   group_policy_metadata: string;
   group_policy_as_admin: boolean;
-  decision_policy: AnySDKType;
+  decision_policy: AnySDKType | undefined;
 }
 /** MsgCreateGroupWithPolicyResponse is the Msg/CreateGroupWithPolicy response type. */
 export interface MsgCreateGroupWithPolicyResponse {
@@ -429,7 +429,7 @@ export interface MsgUpdateGroupPolicyDecisionPolicy {
   /** address is the account address of group policy. */
   address: string;
   /** decision_policy is the updated group policy's decision policy. */
-  decisionPolicy: Any;
+  decisionPolicy: Any | undefined;
 }
 export interface MsgUpdateGroupPolicyDecisionPolicyProtoMsg {
   typeUrl: "/cosmos.group.v1.MsgUpdateGroupPolicyDecisionPolicy";
@@ -442,7 +442,7 @@ export interface MsgUpdateGroupPolicyDecisionPolicyAmino {
   /** address is the account address of group policy. */
   address: string;
   /** decision_policy is the updated group policy's decision policy. */
-  decision_policy?: AnyAmino;
+  decision_policy?: AnyAmino | undefined;
 }
 export interface MsgUpdateGroupPolicyDecisionPolicyAminoMsg {
   type: "cosmos-sdk/MsgUpdateGroupPolicyDecisionPolicy";
@@ -452,7 +452,7 @@ export interface MsgUpdateGroupPolicyDecisionPolicyAminoMsg {
 export interface MsgUpdateGroupPolicyDecisionPolicySDKType {
   admin: string;
   address: string;
-  decision_policy: AnySDKType;
+  decision_policy: AnySDKType | undefined;
 }
 /** MsgUpdateGroupPolicyDecisionPolicyResponse is the Msg/UpdateGroupPolicyDecisionPolicy response type. */
 export interface MsgUpdateGroupPolicyDecisionPolicyResponse {}

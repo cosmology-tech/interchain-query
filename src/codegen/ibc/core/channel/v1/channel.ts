@@ -122,7 +122,7 @@ export interface Channel {
   /** whether the channel is ordered or unordered */
   ordering: Order;
   /** counterparty channel end */
-  counterparty: Counterparty;
+  counterparty: Counterparty | undefined;
   /**
    * list of connection identifiers, in order, along which packets sent on
    * this channel will travel
@@ -146,7 +146,7 @@ export interface ChannelAmino {
   /** whether the channel is ordered or unordered */
   ordering: Order;
   /** counterparty channel end */
-  counterparty?: CounterpartyAmino;
+  counterparty?: CounterpartyAmino | undefined;
   /**
    * list of connection identifiers, in order, along which packets sent on
    * this channel will travel
@@ -167,7 +167,7 @@ export interface ChannelAminoMsg {
 export interface ChannelSDKType {
   state: State;
   ordering: Order;
-  counterparty: CounterpartySDKType;
+  counterparty: CounterpartySDKType | undefined;
   connection_hops: string[];
   version: string;
 }
@@ -181,7 +181,7 @@ export interface IdentifiedChannel {
   /** whether the channel is ordered or unordered */
   ordering: Order;
   /** counterparty channel end */
-  counterparty: Counterparty;
+  counterparty: Counterparty | undefined;
   /**
    * list of connection identifiers, in order, along which packets sent on
    * this channel will travel
@@ -208,7 +208,7 @@ export interface IdentifiedChannelAmino {
   /** whether the channel is ordered or unordered */
   ordering: Order;
   /** counterparty channel end */
-  counterparty?: CounterpartyAmino;
+  counterparty?: CounterpartyAmino | undefined;
   /**
    * list of connection identifiers, in order, along which packets sent on
    * this channel will travel
@@ -232,7 +232,7 @@ export interface IdentifiedChannelAminoMsg {
 export interface IdentifiedChannelSDKType {
   state: State;
   ordering: Order;
-  counterparty: CounterpartySDKType;
+  counterparty: CounterpartySDKType | undefined;
   connection_hops: string[];
   version: string;
   port_id: string;
@@ -284,7 +284,7 @@ export interface Packet {
   /** actual opaque bytes transferred directly to the application module */
   data: Uint8Array;
   /** block height after which the packet times out */
-  timeoutHeight: Height;
+  timeoutHeight: Height | undefined;
   /** block timestamp (in nanoseconds) after which the packet times out */
   timeoutTimestamp: bigint;
 }
@@ -311,7 +311,7 @@ export interface PacketAmino {
   /** actual opaque bytes transferred directly to the application module */
   data: Uint8Array;
   /** block height after which the packet times out */
-  timeout_height?: HeightAmino;
+  timeout_height?: HeightAmino | undefined;
   /** block timestamp (in nanoseconds) after which the packet times out */
   timeout_timestamp: string;
 }
@@ -327,7 +327,7 @@ export interface PacketSDKType {
   destination_port: string;
   destination_channel: string;
   data: Uint8Array;
-  timeout_height: HeightSDKType;
+  timeout_height: HeightSDKType | undefined;
   timeout_timestamp: bigint;
 }
 /**
@@ -480,7 +480,7 @@ export interface AcknowledgementSDKType {
  */
 export interface Timeout {
   /** block height after which the packet or upgrade times out */
-  height: Height;
+  height: Height | undefined;
   /** block timestamp (in nanoseconds) after which the packet or upgrade times out */
   timestamp: bigint;
 }
@@ -495,7 +495,7 @@ export interface TimeoutProtoMsg {
  */
 export interface TimeoutAmino {
   /** block height after which the packet or upgrade times out */
-  height?: HeightAmino;
+  height?: HeightAmino | undefined;
   /** block timestamp (in nanoseconds) after which the packet or upgrade times out */
   timestamp: string;
 }
@@ -509,7 +509,7 @@ export interface TimeoutAminoMsg {
  * A valid Timeout contains either one or both of a timestamp and block height (sequence).
  */
 export interface TimeoutSDKType {
-  height: HeightSDKType;
+  height: HeightSDKType | undefined;
   timestamp: bigint;
 }
 function createBaseChannel(): Channel {

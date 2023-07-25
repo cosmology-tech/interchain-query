@@ -27,7 +27,7 @@ export interface QueryEvidenceRequestSDKType {
 /** QueryEvidenceResponse is the response type for the Query/Evidence RPC method. */
 export interface QueryEvidenceResponse {
   /** evidence returns the requested evidence. */
-  evidence: Any;
+  evidence: Any | undefined;
 }
 export interface QueryEvidenceResponseProtoMsg {
   typeUrl: "/cosmos.evidence.v1beta1.QueryEvidenceResponse";
@@ -36,7 +36,7 @@ export interface QueryEvidenceResponseProtoMsg {
 /** QueryEvidenceResponse is the response type for the Query/Evidence RPC method. */
 export interface QueryEvidenceResponseAmino {
   /** evidence returns the requested evidence. */
-  evidence?: AnyAmino;
+  evidence?: AnyAmino | undefined;
 }
 export interface QueryEvidenceResponseAminoMsg {
   type: "cosmos-sdk/QueryEvidenceResponse";
@@ -44,7 +44,7 @@ export interface QueryEvidenceResponseAminoMsg {
 }
 /** QueryEvidenceResponse is the response type for the Query/Evidence RPC method. */
 export interface QueryEvidenceResponseSDKType {
-  evidence: AnySDKType;
+  evidence: AnySDKType | undefined;
 }
 /**
  * QueryEvidenceRequest is the request type for the Query/AllEvidence RPC
@@ -52,7 +52,7 @@ export interface QueryEvidenceResponseSDKType {
  */
 export interface QueryAllEvidenceRequest {
   /** pagination defines an optional pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryAllEvidenceRequestProtoMsg {
   typeUrl: "/cosmos.evidence.v1beta1.QueryAllEvidenceRequest";
@@ -64,7 +64,7 @@ export interface QueryAllEvidenceRequestProtoMsg {
  */
 export interface QueryAllEvidenceRequestAmino {
   /** pagination defines an optional pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryAllEvidenceRequestAminoMsg {
   type: "cosmos-sdk/QueryAllEvidenceRequest";
@@ -75,7 +75,7 @@ export interface QueryAllEvidenceRequestAminoMsg {
  * method.
  */
 export interface QueryAllEvidenceRequestSDKType {
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /**
  * QueryAllEvidenceResponse is the response type for the Query/AllEvidence RPC
@@ -85,7 +85,7 @@ export interface QueryAllEvidenceResponse {
   /** evidence returns all evidences. */
   evidence: Any[];
   /** pagination defines the pagination in the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryAllEvidenceResponseProtoMsg {
   typeUrl: "/cosmos.evidence.v1beta1.QueryAllEvidenceResponse";
@@ -99,7 +99,7 @@ export interface QueryAllEvidenceResponseAmino {
   /** evidence returns all evidences. */
   evidence: AnyAmino[];
   /** pagination defines the pagination in the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryAllEvidenceResponseAminoMsg {
   type: "cosmos-sdk/QueryAllEvidenceResponse";
@@ -111,7 +111,7 @@ export interface QueryAllEvidenceResponseAminoMsg {
  */
 export interface QueryAllEvidenceResponseSDKType {
   evidence: AnySDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 function createBaseQueryEvidenceRequest(): QueryEvidenceRequest {
   return {

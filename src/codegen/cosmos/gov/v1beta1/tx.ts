@@ -8,7 +8,7 @@ import { isSet, DeepPartial } from "../../../helpers";
  * proposal Content.
  */
 export interface MsgSubmitProposal {
-  content: Any;
+  content: Any | undefined;
   initialDeposit: Coin[];
   proposer: string;
   isExpedited: boolean;
@@ -22,7 +22,7 @@ export interface MsgSubmitProposalProtoMsg {
  * proposal Content.
  */
 export interface MsgSubmitProposalAmino {
-  content?: AnyAmino;
+  content?: AnyAmino | undefined;
   initial_deposit: CoinAmino[];
   proposer: string;
   is_expedited: boolean;
@@ -36,7 +36,7 @@ export interface MsgSubmitProposalAminoMsg {
  * proposal Content.
  */
 export interface MsgSubmitProposalSDKType {
-  content: AnySDKType;
+  content: AnySDKType | undefined;
   initial_deposit: CoinSDKType[];
   proposer: string;
   is_expedited: boolean;

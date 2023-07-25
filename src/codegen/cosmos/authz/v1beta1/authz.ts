@@ -38,8 +38,8 @@ export interface GenericAuthorizationSDKType {
  * the provide method with expiration time.
  */
 export interface Grant {
-  authorization: Any;
-  expiration: Date;
+  authorization: Any | undefined;
+  expiration: Date | undefined;
 }
 export interface GrantProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.Grant";
@@ -50,8 +50,8 @@ export interface GrantProtoMsg {
  * the provide method with expiration time.
  */
 export interface GrantAmino {
-  authorization?: AnyAmino;
-  expiration?: Date;
+  authorization?: AnyAmino | undefined;
+  expiration?: Date | undefined;
 }
 export interface GrantAminoMsg {
   type: "cosmos-sdk/Grant";
@@ -62,8 +62,8 @@ export interface GrantAminoMsg {
  * the provide method with expiration time.
  */
 export interface GrantSDKType {
-  authorization: AnySDKType;
-  expiration: Date;
+  authorization: AnySDKType | undefined;
+  expiration: Date | undefined;
 }
 /**
  * GrantAuthorization extends a grant with both the addresses of the grantee and granter.
@@ -72,8 +72,8 @@ export interface GrantSDKType {
 export interface GrantAuthorization {
   granter: string;
   grantee: string;
-  authorization: Any;
-  expiration: Date;
+  authorization: Any | undefined;
+  expiration: Date | undefined;
 }
 export interface GrantAuthorizationProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.GrantAuthorization";
@@ -86,8 +86,8 @@ export interface GrantAuthorizationProtoMsg {
 export interface GrantAuthorizationAmino {
   granter: string;
   grantee: string;
-  authorization?: AnyAmino;
-  expiration?: Date;
+  authorization?: AnyAmino | undefined;
+  expiration?: Date | undefined;
 }
 export interface GrantAuthorizationAminoMsg {
   type: "cosmos-sdk/GrantAuthorization";
@@ -100,8 +100,8 @@ export interface GrantAuthorizationAminoMsg {
 export interface GrantAuthorizationSDKType {
   granter: string;
   grantee: string;
-  authorization: AnySDKType;
-  expiration: Date;
+  authorization: AnySDKType | undefined;
+  expiration: Date | undefined;
 }
 function createBaseGenericAuthorization(): GenericAuthorization {
   return {

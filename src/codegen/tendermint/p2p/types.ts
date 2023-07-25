@@ -47,42 +47,42 @@ export interface ProtocolVersionSDKType {
   app: bigint;
 }
 export interface DefaultNodeInfo {
-  protocolVersion: ProtocolVersion;
+  protocolVersion: ProtocolVersion | undefined;
   defaultNodeId: string;
   listenAddr: string;
   network: string;
   version: string;
   channels: Uint8Array;
   moniker: string;
-  other: DefaultNodeInfoOther;
+  other: DefaultNodeInfoOther | undefined;
 }
 export interface DefaultNodeInfoProtoMsg {
   typeUrl: "/tendermint.p2p.DefaultNodeInfo";
   value: Uint8Array;
 }
 export interface DefaultNodeInfoAmino {
-  protocol_version?: ProtocolVersionAmino;
+  protocol_version?: ProtocolVersionAmino | undefined;
   default_node_id: string;
   listen_addr: string;
   network: string;
   version: string;
   channels: Uint8Array;
   moniker: string;
-  other?: DefaultNodeInfoOtherAmino;
+  other?: DefaultNodeInfoOtherAmino | undefined;
 }
 export interface DefaultNodeInfoAminoMsg {
   type: "/tendermint.p2p.DefaultNodeInfo";
   value: DefaultNodeInfoAmino;
 }
 export interface DefaultNodeInfoSDKType {
-  protocol_version: ProtocolVersionSDKType;
+  protocol_version: ProtocolVersionSDKType | undefined;
   default_node_id: string;
   listen_addr: string;
   network: string;
   version: string;
   channels: Uint8Array;
   moniker: string;
-  other: DefaultNodeInfoOtherSDKType;
+  other: DefaultNodeInfoOtherSDKType | undefined;
 }
 export interface DefaultNodeInfoOther {
   txIndex: string;

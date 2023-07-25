@@ -7,7 +7,7 @@ export interface GenesisState {
   clientConnectionPaths: ConnectionPaths[];
   /** the sequence for the next generated connection identifier */
   nextConnectionSequence: bigint;
-  params: Params;
+  params: Params | undefined;
 }
 export interface GenesisStateProtoMsg {
   typeUrl: "/ibc.core.connection.v1.GenesisState";
@@ -19,7 +19,7 @@ export interface GenesisStateAmino {
   client_connection_paths: ConnectionPathsAmino[];
   /** the sequence for the next generated connection identifier */
   next_connection_sequence: string;
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface GenesisStateAminoMsg {
   type: "cosmos-sdk/GenesisState";
@@ -30,7 +30,7 @@ export interface GenesisStateSDKType {
   connections: IdentifiedConnectionSDKType[];
   client_connection_paths: ConnectionPathsSDKType[];
   next_connection_sequence: bigint;
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 function createBaseGenesisState(): GenesisState {
   return {

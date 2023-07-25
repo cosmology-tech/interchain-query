@@ -75,13 +75,13 @@ export interface ContractGrant {
    * Limit defines execution limits that are enforced and updated when the grant
    * is applied. When the limit lapsed the grant is removed.
    */
-  limit: Any;
+  limit: Any | undefined;
   /**
    * Filter define more fine-grained control on the message payload passed
    * to the contract in the operation. When no filter applies on execution, the
    * operation is prohibited.
    */
-  filter: Any;
+  filter: Any | undefined;
 }
 export interface ContractGrantProtoMsg {
   typeUrl: "/cosmwasm.wasm.v1.ContractGrant";
@@ -98,13 +98,13 @@ export interface ContractGrantAmino {
    * Limit defines execution limits that are enforced and updated when the grant
    * is applied. When the limit lapsed the grant is removed.
    */
-  limit?: AnyAmino;
+  limit?: AnyAmino | undefined;
   /**
    * Filter define more fine-grained control on the message payload passed
    * to the contract in the operation. When no filter applies on execution, the
    * operation is prohibited.
    */
-  filter?: AnyAmino;
+  filter?: AnyAmino | undefined;
 }
 export interface ContractGrantAminoMsg {
   type: "wasm/ContractGrant";
@@ -116,8 +116,8 @@ export interface ContractGrantAminoMsg {
  */
 export interface ContractGrantSDKType {
   contract: string;
-  limit: AnySDKType;
-  filter: AnySDKType;
+  limit: AnySDKType | undefined;
+  filter: AnySDKType | undefined;
 }
 /**
  * MaxCallsLimit limited number of calls to the contract. No funds transferable.

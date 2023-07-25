@@ -5,12 +5,12 @@ import { isSet, DeepPartial, bytesFromBase64, base64FromBytes } from "../../../.
 /** MsgCreateClient defines a message to create an IBC client */
 export interface MsgCreateClient {
   /** light client state */
-  clientState: Any;
+  clientState: Any | undefined;
   /**
    * consensus state associated with the client that corresponds to a given
    * height.
    */
-  consensusState: Any;
+  consensusState: Any | undefined;
   /** signer address */
   signer: string;
 }
@@ -21,12 +21,12 @@ export interface MsgCreateClientProtoMsg {
 /** MsgCreateClient defines a message to create an IBC client */
 export interface MsgCreateClientAmino {
   /** light client state */
-  client_state?: AnyAmino;
+  client_state?: AnyAmino | undefined;
   /**
    * consensus state associated with the client that corresponds to a given
    * height.
    */
-  consensus_state?: AnyAmino;
+  consensus_state?: AnyAmino | undefined;
   /** signer address */
   signer: string;
 }
@@ -36,8 +36,8 @@ export interface MsgCreateClientAminoMsg {
 }
 /** MsgCreateClient defines a message to create an IBC client */
 export interface MsgCreateClientSDKType {
-  client_state: AnySDKType;
-  consensus_state: AnySDKType;
+  client_state: AnySDKType | undefined;
+  consensus_state: AnySDKType | undefined;
   signer: string;
 }
 /** MsgCreateClientResponse defines the Msg/CreateClient response type. */
@@ -62,7 +62,7 @@ export interface MsgUpdateClient {
   /** client unique identifier */
   clientId: string;
   /** client message to update the light client */
-  clientMessage: Any;
+  clientMessage: Any | undefined;
   /** signer address */
   signer: string;
 }
@@ -78,7 +78,7 @@ export interface MsgUpdateClientAmino {
   /** client unique identifier */
   client_id: string;
   /** client message to update the light client */
-  client_message?: AnyAmino;
+  client_message?: AnyAmino | undefined;
   /** signer address */
   signer: string;
 }
@@ -92,7 +92,7 @@ export interface MsgUpdateClientAminoMsg {
  */
 export interface MsgUpdateClientSDKType {
   client_id: string;
-  client_message: AnySDKType;
+  client_message: AnySDKType | undefined;
   signer: string;
 }
 /** MsgUpdateClientResponse defines the Msg/UpdateClient response type. */
@@ -117,12 +117,12 @@ export interface MsgUpgradeClient {
   /** client unique identifier */
   clientId: string;
   /** upgraded client state */
-  clientState: Any;
+  clientState: Any | undefined;
   /**
    * upgraded consensus state, only contains enough information to serve as a
    * basis of trust in update logic
    */
-  consensusState: Any;
+  consensusState: Any | undefined;
   /** proof that old chain committed to new client */
   proofUpgradeClient: Uint8Array;
   /** proof that old chain committed to new consensus state */
@@ -142,12 +142,12 @@ export interface MsgUpgradeClientAmino {
   /** client unique identifier */
   client_id: string;
   /** upgraded client state */
-  client_state?: AnyAmino;
+  client_state?: AnyAmino | undefined;
   /**
    * upgraded consensus state, only contains enough information to serve as a
    * basis of trust in update logic
    */
-  consensus_state?: AnyAmino;
+  consensus_state?: AnyAmino | undefined;
   /** proof that old chain committed to new client */
   proof_upgrade_client: Uint8Array;
   /** proof that old chain committed to new consensus state */
@@ -165,8 +165,8 @@ export interface MsgUpgradeClientAminoMsg {
  */
 export interface MsgUpgradeClientSDKType {
   client_id: string;
-  client_state: AnySDKType;
-  consensus_state: AnySDKType;
+  client_state: AnySDKType | undefined;
+  consensus_state: AnySDKType | undefined;
   proof_upgrade_client: Uint8Array;
   proof_upgrade_consensus_state: Uint8Array;
   signer: string;
@@ -195,7 +195,7 @@ export interface MsgSubmitMisbehaviour {
   /** client unique identifier */
   clientId: string;
   /** misbehaviour used for freezing the light client */
-  misbehaviour: Any;
+  misbehaviour: Any | undefined;
   /** signer address */
   signer: string;
 }
@@ -213,7 +213,7 @@ export interface MsgSubmitMisbehaviourAmino {
   /** client unique identifier */
   client_id: string;
   /** misbehaviour used for freezing the light client */
-  misbehaviour?: AnyAmino;
+  misbehaviour?: AnyAmino | undefined;
   /** signer address */
   signer: string;
 }
@@ -229,7 +229,7 @@ export interface MsgSubmitMisbehaviourAminoMsg {
 /** @deprecated */
 export interface MsgSubmitMisbehaviourSDKType {
   client_id: string;
-  misbehaviour: AnySDKType;
+  misbehaviour: AnySDKType | undefined;
   signer: string;
 }
 /**
@@ -264,7 +264,7 @@ export interface MsgUpdateParams {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params: Params;
+  params: Params | undefined;
 }
 export interface MsgUpdateParamsProtoMsg {
   typeUrl: "/ibc.core.client.v1.MsgUpdateParams";
@@ -279,7 +279,7 @@ export interface MsgUpdateParamsAmino {
    * 
    * NOTE: All parameters must be supplied.
    */
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
 }
 export interface MsgUpdateParamsAminoMsg {
   type: "cosmos-sdk/MsgUpdateParams";
@@ -288,7 +288,7 @@ export interface MsgUpdateParamsAminoMsg {
 /** MsgUpdateParams defines the sdk.Msg type to update the client parameters. */
 export interface MsgUpdateParamsSDKType {
   authority: string;
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
 }
 /** MsgUpdateParamsResponse defines the MsgUpdateParams response type. */
 export interface MsgUpdateParamsResponse {}

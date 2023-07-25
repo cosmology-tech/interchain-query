@@ -8,7 +8,7 @@ import { toTimestamp, fromTimestamp, isSet, DeepPartial, bytesFromBase64, base64
 export interface CommitInfo {
   version: bigint;
   storeInfos: StoreInfo[];
-  timestamp: Date;
+  timestamp: Date | undefined;
 }
 export interface CommitInfoProtoMsg {
   typeUrl: "/cosmos.base.store.v1beta1.CommitInfo";
@@ -21,7 +21,7 @@ export interface CommitInfoProtoMsg {
 export interface CommitInfoAmino {
   version: string;
   store_infos: StoreInfoAmino[];
-  timestamp?: Date;
+  timestamp?: Date | undefined;
 }
 export interface CommitInfoAminoMsg {
   type: "cosmos-sdk/CommitInfo";
@@ -34,7 +34,7 @@ export interface CommitInfoAminoMsg {
 export interface CommitInfoSDKType {
   version: bigint;
   store_infos: StoreInfoSDKType[];
-  timestamp: Date;
+  timestamp: Date | undefined;
 }
 /**
  * StoreInfo defines store-specific commit information. It contains a reference
@@ -42,7 +42,7 @@ export interface CommitInfoSDKType {
  */
 export interface StoreInfo {
   name: string;
-  commitId: CommitID;
+  commitId: CommitID | undefined;
 }
 export interface StoreInfoProtoMsg {
   typeUrl: "/cosmos.base.store.v1beta1.StoreInfo";
@@ -54,7 +54,7 @@ export interface StoreInfoProtoMsg {
  */
 export interface StoreInfoAmino {
   name: string;
-  commit_id?: CommitIDAmino;
+  commit_id?: CommitIDAmino | undefined;
 }
 export interface StoreInfoAminoMsg {
   type: "cosmos-sdk/StoreInfo";
@@ -66,7 +66,7 @@ export interface StoreInfoAminoMsg {
  */
 export interface StoreInfoSDKType {
   name: string;
-  commit_id: CommitIDSDKType;
+  commit_id: CommitIDSDKType | undefined;
 }
 /**
  * CommitID defines the committment information when a specific store is

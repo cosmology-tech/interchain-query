@@ -9,7 +9,7 @@ export interface QueryGrantsRequest {
   /** Optional, msg_type_url, when set, will query only grants matching given msg type. */
   msgTypeUrl: string;
   /** pagination defines an pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryGrantsRequestProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.QueryGrantsRequest";
@@ -22,7 +22,7 @@ export interface QueryGrantsRequestAmino {
   /** Optional, msg_type_url, when set, will query only grants matching given msg type. */
   msg_type_url: string;
   /** pagination defines an pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryGrantsRequestAminoMsg {
   type: "cosmos-sdk/QueryGrantsRequest";
@@ -33,14 +33,14 @@ export interface QueryGrantsRequestSDKType {
   granter: string;
   grantee: string;
   msg_type_url: string;
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /** QueryGrantsResponse is the response type for the Query/Authorizations RPC method. */
 export interface QueryGrantsResponse {
   /** authorizations is a list of grants granted for grantee by granter. */
   grants: Grant[];
   /** pagination defines an pagination for the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryGrantsResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.QueryGrantsResponse";
@@ -51,7 +51,7 @@ export interface QueryGrantsResponseAmino {
   /** authorizations is a list of grants granted for grantee by granter. */
   grants: GrantAmino[];
   /** pagination defines an pagination for the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryGrantsResponseAminoMsg {
   type: "cosmos-sdk/QueryGrantsResponse";
@@ -60,13 +60,13 @@ export interface QueryGrantsResponseAminoMsg {
 /** QueryGrantsResponse is the response type for the Query/Authorizations RPC method. */
 export interface QueryGrantsResponseSDKType {
   grants: GrantSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 /** QueryGranterGrantsRequest is the request type for the Query/GranterGrants RPC method. */
 export interface QueryGranterGrantsRequest {
   granter: string;
   /** pagination defines an pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryGranterGrantsRequestProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.QueryGranterGrantsRequest";
@@ -76,7 +76,7 @@ export interface QueryGranterGrantsRequestProtoMsg {
 export interface QueryGranterGrantsRequestAmino {
   granter: string;
   /** pagination defines an pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryGranterGrantsRequestAminoMsg {
   type: "cosmos-sdk/QueryGranterGrantsRequest";
@@ -85,14 +85,14 @@ export interface QueryGranterGrantsRequestAminoMsg {
 /** QueryGranterGrantsRequest is the request type for the Query/GranterGrants RPC method. */
 export interface QueryGranterGrantsRequestSDKType {
   granter: string;
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /** QueryGranterGrantsResponse is the response type for the Query/GranterGrants RPC method. */
 export interface QueryGranterGrantsResponse {
   /** grants is a list of grants granted by the granter. */
   grants: GrantAuthorization[];
   /** pagination defines an pagination for the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryGranterGrantsResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.QueryGranterGrantsResponse";
@@ -103,7 +103,7 @@ export interface QueryGranterGrantsResponseAmino {
   /** grants is a list of grants granted by the granter. */
   grants: GrantAuthorizationAmino[];
   /** pagination defines an pagination for the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryGranterGrantsResponseAminoMsg {
   type: "cosmos-sdk/QueryGranterGrantsResponse";
@@ -112,13 +112,13 @@ export interface QueryGranterGrantsResponseAminoMsg {
 /** QueryGranterGrantsResponse is the response type for the Query/GranterGrants RPC method. */
 export interface QueryGranterGrantsResponseSDKType {
   grants: GrantAuthorizationSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 /** QueryGranteeGrantsRequest is the request type for the Query/IssuedGrants RPC method. */
 export interface QueryGranteeGrantsRequest {
   grantee: string;
   /** pagination defines an pagination for the request. */
-  pagination: PageRequest;
+  pagination: PageRequest | undefined;
 }
 export interface QueryGranteeGrantsRequestProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.QueryGranteeGrantsRequest";
@@ -128,7 +128,7 @@ export interface QueryGranteeGrantsRequestProtoMsg {
 export interface QueryGranteeGrantsRequestAmino {
   grantee: string;
   /** pagination defines an pagination for the request. */
-  pagination?: PageRequestAmino;
+  pagination?: PageRequestAmino | undefined;
 }
 export interface QueryGranteeGrantsRequestAminoMsg {
   type: "cosmos-sdk/QueryGranteeGrantsRequest";
@@ -137,14 +137,14 @@ export interface QueryGranteeGrantsRequestAminoMsg {
 /** QueryGranteeGrantsRequest is the request type for the Query/IssuedGrants RPC method. */
 export interface QueryGranteeGrantsRequestSDKType {
   grantee: string;
-  pagination: PageRequestSDKType;
+  pagination: PageRequestSDKType | undefined;
 }
 /** QueryGranteeGrantsResponse is the response type for the Query/GranteeGrants RPC method. */
 export interface QueryGranteeGrantsResponse {
   /** grants is a list of grants granted to the grantee. */
   grants: GrantAuthorization[];
   /** pagination defines an pagination for the response. */
-  pagination: PageResponse;
+  pagination: PageResponse | undefined;
 }
 export interface QueryGranteeGrantsResponseProtoMsg {
   typeUrl: "/cosmos.authz.v1beta1.QueryGranteeGrantsResponse";
@@ -155,7 +155,7 @@ export interface QueryGranteeGrantsResponseAmino {
   /** grants is a list of grants granted to the grantee. */
   grants: GrantAuthorizationAmino[];
   /** pagination defines an pagination for the response. */
-  pagination?: PageResponseAmino;
+  pagination?: PageResponseAmino | undefined;
 }
 export interface QueryGranteeGrantsResponseAminoMsg {
   type: "cosmos-sdk/QueryGranteeGrantsResponse";
@@ -164,7 +164,7 @@ export interface QueryGranteeGrantsResponseAminoMsg {
 /** QueryGranteeGrantsResponse is the response type for the Query/GranteeGrants RPC method. */
 export interface QueryGranteeGrantsResponseSDKType {
   grants: GrantAuthorizationSDKType[];
-  pagination: PageResponseSDKType;
+  pagination: PageResponseSDKType | undefined;
 }
 function createBaseQueryGrantsRequest(): QueryGrantsRequest {
   return {

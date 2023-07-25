@@ -6,7 +6,7 @@ import { isSet, DeepPartial } from "../../../../helpers";
 export interface GenesisState {
   portId: string;
   denomTraces: DenomTrace[];
-  params: Params;
+  params: Params | undefined;
   /**
    * total_escrowed contains the total amount of tokens escrowed
    * by the transfer module
@@ -21,7 +21,7 @@ export interface GenesisStateProtoMsg {
 export interface GenesisStateAmino {
   port_id: string;
   denom_traces: DenomTraceAmino[];
-  params?: ParamsAmino;
+  params?: ParamsAmino | undefined;
   /**
    * total_escrowed contains the total amount of tokens escrowed
    * by the transfer module
@@ -36,7 +36,7 @@ export interface GenesisStateAminoMsg {
 export interface GenesisStateSDKType {
   port_id: string;
   denom_traces: DenomTraceSDKType[];
-  params: ParamsSDKType;
+  params: ParamsSDKType | undefined;
   total_escrowed: CoinSDKType[];
 }
 function createBaseGenesisState(): GenesisState {
