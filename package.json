@@ -5,34 +5,41 @@
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/interchain-query#readme",
   "license": "SEE LICENSE IN LICENSE",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
-  "exports": {
-    "./*": {
-      "types": "./dist/codegen/*.d.ts",
-      "import": "./dist/codegen/*.mjs",
-      "require": "./dist/codegen/*.js",
-      "default": "./dist/codegen/*.js"
-    },
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
+  "main": "index.js",
+  "module": "index.mjs",
+  "typings": "index.d.ts",
   "directories": {
     "lib": "src",
     "test": "__tests__"
   },
   "files": [
-    "dist"
+    "amino/",
+    "capability/",
+    "confio/",
+    "cosmos/",
+    "cosmos_proto/",
+    "cosmwasm/",
+    "gogoproto/",
+    "google/",
+    "ibc/",
+    "ics23/",
+    "tendermint/",
+    "/binary.*",
+    "/extern.*",
+    "/helpers.*",
+    "/hooks.*",
+    "/index.*",
+    "/react-query.*",
+    "/utf8.*",
+    "/varint.*",
+    "*.md"
   ],
   "scripts": {
     "build:cjs": "yarn tsc -p tsconfig.json --outDir dist --module commonjs",
     "build:mjs": "yarn tsc -p tsconfig.json --outDir mjs --module es2022 --declaration false",
-    "build": "rm -rf dist && yarn build:cjs && yarn build:mjs && find mjs -type f -name *.js -exec rename -S '.js' '.mjs' {} +  && find mjs -type f -name *.mjs -exec rename -S 'mjs/' 'dist/' {} + && rm -rf mjs",
+    "prepare-publishing": "./scripts/prepare-publishing.sh",
+    "build": "rm -rf dist && yarn build:cjs && yarn build:mjs && find mjs -type f -name *.js -exec rename -S '.js' '.mjs' {} +  && find mjs -type f -name *.mjs -exec rename -S 'mjs/' 'dist/' {} + && rm -rf mjs && yarn prepare-publishing",
+    "clear": "./scripts/clear.sh",
     "codegen": "cross-env NODE_ENV=development babel-node scripts/codegen.js",
     "prepare": "npm run build",
     "lint": "eslint src --fix",

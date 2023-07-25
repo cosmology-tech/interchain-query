@@ -51,3 +51,23 @@ yarn.lock
 
 # others
 .DS_Store
+
+amino
+capability
+confio
+cosmos
+cosmos_proto
+cosmwasm
+gogoproto
+google
+ibc
+ics23
+tendermint
+/binary.*
+/extern.*
+/helpers.*
+/hooks.*
+/index.*
+/react-query.*
+/utf8.*
+/varint.*
