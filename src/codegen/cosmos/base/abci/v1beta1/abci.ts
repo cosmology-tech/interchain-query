@@ -251,10 +251,7 @@ export interface Result {
   /**
    * Data is any data returned from message or handler execution. It MUST be
    * length prefixed in order to separate data from multiple message executions.
-   * Deprecated. This field is still populated, but prefer msg_response instead
-   * because it also contains the Msg response typeURL.
    */
-  /** @deprecated */
   data: Uint8Array;
   /** Log contains the log information from message or handler execution. */
   log: string;
@@ -263,12 +260,6 @@ export interface Result {
    * or handler execution.
    */
   events: Event[];
-  /**
-   * msg_responses contains the Msg handler responses type packed in Anys.
-   * 
-   * Since: cosmos-sdk 0.46
-   */
-  msgResponses: Any[];
 }
 export interface ResultProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.Result";
@@ -279,10 +270,7 @@ export interface ResultAmino {
   /**
    * Data is any data returned from message or handler execution. It MUST be
    * length prefixed in order to separate data from multiple message executions.
-   * Deprecated. This field is still populated, but prefer msg_response instead
-   * because it also contains the Msg response typeURL.
    */
-  /** @deprecated */
   data: Uint8Array;
   /** Log contains the log information from message or handler execution. */
   log: string;
@@ -291,12 +279,6 @@ export interface ResultAmino {
    * or handler execution.
    */
   events: EventAmino[];
-  /**
-   * msg_responses contains the Msg handler responses type packed in Anys.
-   * 
-   * Since: cosmos-sdk 0.46
-   */
-  msg_responses: AnyAmino[];
 }
 export interface ResultAminoMsg {
   type: "cosmos-sdk/Result";
@@ -304,11 +286,9 @@ export interface ResultAminoMsg {
 }
 /** Result is the union of ResponseFormat and ResponseCheckTx. */
 export interface ResultSDKType {
-  /** @deprecated */
   data: Uint8Array;
   log: string;
   events: EventSDKType[];
-  msg_responses: AnySDKType[];
 }
 /**
  * SimulationResponse defines the response generated when a transaction is
@@ -346,7 +326,6 @@ export interface SimulationResponseSDKType {
  * MsgData defines the data returned in a Result object during message
  * execution.
  */
-/** @deprecated */
 export interface MsgData {
   msgType: string;
   data: Uint8Array;
@@ -359,7 +338,6 @@ export interface MsgDataProtoMsg {
  * MsgData defines the data returned in a Result object during message
  * execution.
  */
-/** @deprecated */
 export interface MsgDataAmino {
   msg_type: string;
   data: Uint8Array;
@@ -372,7 +350,6 @@ export interface MsgDataAminoMsg {
  * MsgData defines the data returned in a Result object during message
  * execution.
  */
-/** @deprecated */
 export interface MsgDataSDKType {
   msg_type: string;
   data: Uint8Array;
@@ -382,15 +359,7 @@ export interface MsgDataSDKType {
  * for each message.
  */
 export interface TxMsgData {
-  /** data field is deprecated and not populated. */
-  /** @deprecated */
   data: MsgData[];
-  /**
-   * msg_responses contains the Msg handler responses packed into Anys.
-   * 
-   * Since: cosmos-sdk 0.46
-   */
-  msgResponses: Any[];
 }
 export interface TxMsgDataProtoMsg {
   typeUrl: "/cosmos.base.abci.v1beta1.TxMsgData";
@@ -401,15 +370,7 @@ export interface TxMsgDataProtoMsg {
  * for each message.
  */
 export interface TxMsgDataAmino {
-  /** data field is deprecated and not populated. */
-  /** @deprecated */
   data: MsgDataAmino[];
-  /**
-   * msg_responses contains the Msg handler responses packed into Anys.
-   * 
-   * Since: cosmos-sdk 0.46
-   */
-  msg_responses: AnyAmino[];
 }
 export interface TxMsgDataAminoMsg {
   type: "cosmos-sdk/TxMsgData";
@@ -420,9 +381,7 @@ export interface TxMsgDataAminoMsg {
  * for each message.
  */
 export interface TxMsgDataSDKType {
-  /** @deprecated */
   data: MsgDataSDKType[];
-  msg_responses: AnySDKType[];
 }
 /** SearchTxsResult defines a structure for querying txs pageable */
 export interface SearchTxsResult {
@@ -1201,8 +1160,7 @@ function createBaseResult(): Result {
   return {
     data: new Uint8Array(),
     log: "",
-    events: [],
-    msgResponses: []
+    events: []
   };
 }
 export const Result = {
@@ -1217,9 +1175,6 @@ export const Result = {
     }
     for (const v of message.events) {
       Event.encode(v!, writer.uint32(26).fork()).ldelim();
-    }
-    for (const v of message.msgResponses) {
-      Any.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -1239,9 +1194,6 @@ export const Result = {
         case 3:
           message.events.push(Event.decode(reader, reader.uint32()));
           break;
-        case 4:
-          message.msgResponses.push(Any.decode(reader, reader.uint32()));
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1253,8 +1205,7 @@ export const Result = {
     return {
       data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
       log: isSet(object.log) ? String(object.log) : "",
-      events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromJSON(e)) : [],
-      msgResponses: Array.isArray(object?.msgResponses) ? object.msgResponses.map((e: any) => Any.fromJSON(e)) : []
+      events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromJSON(e)) : []
     };
   },
   toJSON(message: Result): unknown {
@@ -1266,11 +1217,6 @@ export const Result = {
     } else {
       obj.events = [];
     }
-    if (message.msgResponses) {
-      obj.msgResponses = message.msgResponses.map(e => e ? Any.toJSON(e) : undefined);
-    } else {
-      obj.msgResponses = [];
-    }
     return obj;
   },
   fromPartial(object: DeepPartial<Result>): Result {
@@ -1278,15 +1224,13 @@ export const Result = {
     message.data = object.data ?? new Uint8Array();
     message.log = object.log ?? "";
     message.events = object.events?.map(e => Event.fromPartial(e)) || [];
-    message.msgResponses = object.msgResponses?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromSDK(object: ResultSDKType): Result {
     return {
       data: object?.data,
       log: object?.log,
-      events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromSDK(e)) : [],
-      msgResponses: Array.isArray(object?.msg_responses) ? object.msg_responses.map((e: any) => Any.fromSDK(e)) : []
+      events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromSDK(e)) : []
     };
   },
   toSDK(message: Result): ResultSDKType {
@@ -1298,19 +1242,13 @@ export const Result = {
     } else {
       obj.events = [];
     }
-    if (message.msgResponses) {
-      obj.msg_responses = message.msgResponses.map(e => e ? Any.toSDK(e) : undefined);
-    } else {
-      obj.msg_responses = [];
-    }
     return obj;
   },
   fromAmino(object: ResultAmino): Result {
     return {
       data: object.data,
       log: object.log,
-      events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromAmino(e)) : [],
-      msgResponses: Array.isArray(object?.msg_responses) ? object.msg_responses.map((e: any) => Any.fromAmino(e)) : []
+      events: Array.isArray(object?.events) ? object.events.map((e: any) => Event.fromAmino(e)) : []
     };
   },
   toAmino(message: Result): ResultAmino {
@@ -1321,11 +1259,6 @@ export const Result = {
       obj.events = message.events.map(e => e ? Event.toAmino(e) : undefined);
     } else {
       obj.events = [];
-    }
-    if (message.msgResponses) {
-      obj.msg_responses = message.msgResponses.map(e => e ? Any.toAmino(e) : undefined);
-    } else {
-      obj.msg_responses = [];
     }
     return obj;
   },
@@ -1557,8 +1490,7 @@ export const MsgData = {
 };
 function createBaseTxMsgData(): TxMsgData {
   return {
-    data: [],
-    msgResponses: []
+    data: []
   };
 }
 export const TxMsgData = {
@@ -1567,9 +1499,6 @@ export const TxMsgData = {
   encode(message: TxMsgData, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     for (const v of message.data) {
       MsgData.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    for (const v of message.msgResponses) {
-      Any.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -1583,9 +1512,6 @@ export const TxMsgData = {
         case 1:
           message.data.push(MsgData.decode(reader, reader.uint32()));
           break;
-        case 2:
-          message.msgResponses.push(Any.decode(reader, reader.uint32()));
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1595,8 +1521,7 @@ export const TxMsgData = {
   },
   fromJSON(object: any): TxMsgData {
     return {
-      data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromJSON(e)) : [],
-      msgResponses: Array.isArray(object?.msgResponses) ? object.msgResponses.map((e: any) => Any.fromJSON(e)) : []
+      data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromJSON(e)) : []
     };
   },
   toJSON(message: TxMsgData): unknown {
@@ -1606,23 +1531,16 @@ export const TxMsgData = {
     } else {
       obj.data = [];
     }
-    if (message.msgResponses) {
-      obj.msgResponses = message.msgResponses.map(e => e ? Any.toJSON(e) : undefined);
-    } else {
-      obj.msgResponses = [];
-    }
     return obj;
   },
   fromPartial(object: DeepPartial<TxMsgData>): TxMsgData {
     const message = createBaseTxMsgData();
     message.data = object.data?.map(e => MsgData.fromPartial(e)) || [];
-    message.msgResponses = object.msgResponses?.map(e => Any.fromPartial(e)) || [];
     return message;
   },
   fromSDK(object: TxMsgDataSDKType): TxMsgData {
     return {
-      data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromSDK(e)) : [],
-      msgResponses: Array.isArray(object?.msg_responses) ? object.msg_responses.map((e: any) => Any.fromSDK(e)) : []
+      data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromSDK(e)) : []
     };
   },
   toSDK(message: TxMsgData): TxMsgDataSDKType {
@@ -1632,17 +1550,11 @@ export const TxMsgData = {
     } else {
       obj.data = [];
     }
-    if (message.msgResponses) {
-      obj.msg_responses = message.msgResponses.map(e => e ? Any.toSDK(e) : undefined);
-    } else {
-      obj.msg_responses = [];
-    }
     return obj;
   },
   fromAmino(object: TxMsgDataAmino): TxMsgData {
     return {
-      data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromAmino(e)) : [],
-      msgResponses: Array.isArray(object?.msg_responses) ? object.msg_responses.map((e: any) => Any.fromAmino(e)) : []
+      data: Array.isArray(object?.data) ? object.data.map((e: any) => MsgData.fromAmino(e)) : []
     };
   },
   toAmino(message: TxMsgData): TxMsgDataAmino {
@@ -1651,11 +1563,6 @@ export const TxMsgData = {
       obj.data = message.data.map(e => e ? MsgData.toAmino(e) : undefined);
     } else {
       obj.data = [];
-    }
-    if (message.msgResponses) {
-      obj.msg_responses = message.msgResponses.map(e => e ? Any.toAmino(e) : undefined);
-    } else {
-      obj.msg_responses = [];
     }
     return obj;
   },

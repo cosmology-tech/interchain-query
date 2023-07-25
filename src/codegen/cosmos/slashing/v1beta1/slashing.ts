@@ -97,7 +97,7 @@ export interface ParamsAmino {
   slash_fraction_downtime: Uint8Array;
 }
 export interface ParamsAminoMsg {
-  type: "cosmos-sdk/Params";
+  type: "cosmos-sdk/x/slashing/Params";
   value: ParamsAmino;
 }
 /** Params represents the parameters used for by the slashing module. */
@@ -277,7 +277,7 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.slashing.v1beta1.Params",
-  aminoType: "cosmos-sdk/Params",
+  aminoType: "cosmos-sdk/x/slashing/Params",
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.signedBlocksWindow !== BigInt(0)) {
       writer.uint32(8).int64(message.signedBlocksWindow);
@@ -393,7 +393,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "cosmos-sdk/Params",
+      type: "cosmos-sdk/x/slashing/Params",
       value: Params.toAmino(message)
     };
   },

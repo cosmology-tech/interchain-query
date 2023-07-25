@@ -89,7 +89,7 @@ export interface ParamsAmino {
   sig_verify_cost_secp256k1: string;
 }
 export interface ParamsAminoMsg {
-  type: "cosmos-sdk/Params";
+  type: "cosmos-sdk/x/auth/Params";
   value: ParamsAmino;
 }
 /** Params defines the parameters for the auth module. */
@@ -369,7 +369,7 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.auth.v1beta1.Params",
-  aminoType: "cosmos-sdk/Params",
+  aminoType: "cosmos-sdk/x/auth/Params",
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.maxMemoCharacters !== BigInt(0)) {
       writer.uint32(8).uint64(message.maxMemoCharacters);
@@ -485,7 +485,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "cosmos-sdk/Params",
+      type: "cosmos-sdk/x/auth/Params",
       value: Params.toAmino(message)
     };
   },

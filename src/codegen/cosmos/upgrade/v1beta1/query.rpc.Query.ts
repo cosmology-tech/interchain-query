@@ -3,7 +3,7 @@ import { BinaryReader } from "../../../binary";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query";
 import { useQuery } from "@tanstack/react-query";
-import { QueryCurrentPlanRequest, QueryCurrentPlanResponse, QueryAppliedPlanRequest, QueryAppliedPlanResponse, QueryUpgradedConsensusStateRequest, QueryUpgradedConsensusStateResponse, QueryModuleVersionsRequest, QueryModuleVersionsResponse, QueryAuthorityRequest, QueryAuthorityResponse } from "./query";
+import { QueryCurrentPlanRequest, QueryCurrentPlanResponse, QueryAppliedPlanRequest, QueryAppliedPlanResponse, QueryUpgradedConsensusStateRequest, QueryUpgradedConsensusStateResponse, QueryModuleVersionsRequest, QueryModuleVersionsResponse } from "./query";
 /** Query defines the gRPC upgrade querier service. */
 export interface Query {
   /** CurrentPlan queries the current upgrade plan. */
@@ -25,8 +25,6 @@ export interface Query {
    * Since: cosmos-sdk 0.43
    */
   moduleVersions(request: QueryModuleVersionsRequest): Promise<QueryModuleVersionsResponse>;
-  /** Returns the account with authority to conduct upgrades */
-  authority(request?: QueryAuthorityRequest): Promise<QueryAuthorityResponse>;
 }
 export class QueryClientImpl implements Query {
   private readonly rpc: Rpc;
@@ -36,7 +34,6 @@ export class QueryClientImpl implements Query {
     this.appliedPlan = this.appliedPlan.bind(this);
     this.upgradedConsensusState = this.upgradedConsensusState.bind(this);
     this.moduleVersions = this.moduleVersions.bind(this);
-    this.authority = this.authority.bind(this);
   }
   currentPlan(request: QueryCurrentPlanRequest = {}): Promise<QueryCurrentPlanResponse> {
     const data = QueryCurrentPlanRequest.encode(request).finish();
@@ -58,11 +55,6 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("cosmos.upgrade.v1beta1.Query", "ModuleVersions", data);
     return promise.then(data => QueryModuleVersionsResponse.decode(new BinaryReader(data)));
   }
-  authority(request: QueryAuthorityRequest = {}): Promise<QueryAuthorityResponse> {
-    const data = QueryAuthorityRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.upgrade.v1beta1.Query", "Authority", data);
-    return promise.then(data => QueryAuthorityResponse.decode(new BinaryReader(data)));
-  }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
   const rpc = createProtobufRpcClient(base);
@@ -79,9 +71,6 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     },
     moduleVersions(request: QueryModuleVersionsRequest): Promise<QueryModuleVersionsResponse> {
       return queryService.moduleVersions(request);
-    },
-    authority(request?: QueryAuthorityRequest): Promise<QueryAuthorityResponse> {
-      return queryService.authority(request);
     }
   };
 };
@@ -96,9 +85,6 @@ export interface UseUpgradedConsensusStateQuery<TData> extends ReactQueryParams<
 }
 export interface UseModuleVersionsQuery<TData> extends ReactQueryParams<QueryModuleVersionsResponse, TData> {
   request: QueryModuleVersionsRequest;
-}
-export interface UseAuthorityQuery<TData> extends ReactQueryParams<QueryAuthorityResponse, TData> {
-  request?: QueryAuthorityRequest;
 }
 const _queryClients: WeakMap<ProtobufRpcClient, QueryClientImpl> = new WeakMap();
 const getQueryService = (rpc: ProtobufRpcClient | undefined): QueryClientImpl | undefined => {
@@ -148,15 +134,6 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
       return queryService.moduleVersions(request);
     }, options);
   };
-  const useAuthority = <TData = QueryAuthorityResponse,>({
-    request,
-    options
-  }: UseAuthorityQuery<TData>) => {
-    return useQuery<QueryAuthorityResponse, Error, TData>(["authorityQuery", request], () => {
-      if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.authority(request);
-    }, options);
-  };
   return {
     /** CurrentPlan queries the current upgrade plan. */useCurrentPlan,
     /** AppliedPlan queries a previously applied upgrade plan by its name. */useAppliedPlan,
@@ -174,7 +151,6 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
      * 
      * Since: cosmos-sdk 0.43
      */
-    useModuleVersions,
-    /** Returns the account with authority to conduct upgrades */useAuthority
+    useModuleVersions
   };
 };

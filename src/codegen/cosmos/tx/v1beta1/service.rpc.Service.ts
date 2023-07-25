@@ -3,7 +3,7 @@ import { BinaryReader } from "../../../binary";
 import { QueryClient, createProtobufRpcClient, ProtobufRpcClient } from "@cosmjs/stargate";
 import { ReactQueryParams } from "../../../react-query";
 import { useQuery } from "@tanstack/react-query";
-import { SimulateRequest, SimulateResponse, GetTxRequest, GetTxResponse, BroadcastTxRequest, BroadcastTxResponse, GetTxsEventRequest, GetTxsEventResponse, GetBlockWithTxsRequest, GetBlockWithTxsResponse } from "./service";
+import { SimulateRequest, SimulateResponse, GetTxRequest, GetTxResponse, BroadcastTxRequest, BroadcastTxResponse, GetTxsEventRequest, GetTxsEventResponse } from "./service";
 /** Service defines a gRPC service for interacting with transactions. */
 export interface Service {
   /** Simulate simulates executing a transaction for estimating gas usage. */
@@ -14,12 +14,6 @@ export interface Service {
   broadcastTx(request: BroadcastTxRequest): Promise<BroadcastTxResponse>;
   /** GetTxsEvent fetches txs by event. */
   getTxsEvent(request: GetTxsEventRequest): Promise<GetTxsEventResponse>;
-  /**
-   * GetBlockWithTxs fetches a block with decoded txs.
-   * 
-   * Since: cosmos-sdk 0.45.2
-   */
-  getBlockWithTxs(request: GetBlockWithTxsRequest): Promise<GetBlockWithTxsResponse>;
 }
 export class ServiceClientImpl implements Service {
   private readonly rpc: Rpc;
@@ -29,7 +23,6 @@ export class ServiceClientImpl implements Service {
     this.getTx = this.getTx.bind(this);
     this.broadcastTx = this.broadcastTx.bind(this);
     this.getTxsEvent = this.getTxsEvent.bind(this);
-    this.getBlockWithTxs = this.getBlockWithTxs.bind(this);
   }
   simulate(request: SimulateRequest): Promise<SimulateResponse> {
     const data = SimulateRequest.encode(request).finish();
@@ -51,11 +44,6 @@ export class ServiceClientImpl implements Service {
     const promise = this.rpc.request("cosmos.tx.v1beta1.Service", "GetTxsEvent", data);
     return promise.then(data => GetTxsEventResponse.decode(new BinaryReader(data)));
   }
-  getBlockWithTxs(request: GetBlockWithTxsRequest): Promise<GetBlockWithTxsResponse> {
-    const data = GetBlockWithTxsRequest.encode(request).finish();
-    const promise = this.rpc.request("cosmos.tx.v1beta1.Service", "GetBlockWithTxs", data);
-    return promise.then(data => GetBlockWithTxsResponse.decode(new BinaryReader(data)));
-  }
 }
 export const createRpcQueryExtension = (base: QueryClient) => {
   const rpc = createProtobufRpcClient(base);
@@ -72,9 +60,6 @@ export const createRpcQueryExtension = (base: QueryClient) => {
     },
     getTxsEvent(request: GetTxsEventRequest): Promise<GetTxsEventResponse> {
       return queryService.getTxsEvent(request);
-    },
-    getBlockWithTxs(request: GetBlockWithTxsRequest): Promise<GetBlockWithTxsResponse> {
-      return queryService.getBlockWithTxs(request);
     }
   };
 };
@@ -89,9 +74,6 @@ export interface UseBroadcastTxQuery<TData> extends ReactQueryParams<BroadcastTx
 }
 export interface UseGetTxsEventQuery<TData> extends ReactQueryParams<GetTxsEventResponse, TData> {
   request: GetTxsEventRequest;
-}
-export interface UseGetBlockWithTxsQuery<TData> extends ReactQueryParams<GetBlockWithTxsResponse, TData> {
-  request: GetBlockWithTxsRequest;
 }
 const _queryClients: WeakMap<ProtobufRpcClient, ServiceClientImpl> = new WeakMap();
 const getQueryService = (rpc: ProtobufRpcClient | undefined): ServiceClientImpl | undefined => {
@@ -141,25 +123,10 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
       return queryService.getTxsEvent(request);
     }, options);
   };
-  const useGetBlockWithTxs = <TData = GetBlockWithTxsResponse,>({
-    request,
-    options
-  }: UseGetBlockWithTxsQuery<TData>) => {
-    return useQuery<GetBlockWithTxsResponse, Error, TData>(["getBlockWithTxsQuery", request], () => {
-      if (!queryService) throw new Error("Query Service not initialized");
-      return queryService.getBlockWithTxs(request);
-    }, options);
-  };
   return {
     /** Simulate simulates executing a transaction for estimating gas usage. */useSimulate,
     /** GetTx fetches a tx by hash. */useGetTx,
     /** BroadcastTx broadcast transaction. */useBroadcastTx,
-    /** GetTxsEvent fetches txs by event. */useGetTxsEvent,
-    /**
-     * GetBlockWithTxs fetches a block with decoded txs.
-     * 
-     * Since: cosmos-sdk 0.45.2
-     */
-    useGetBlockWithTxs
+    /** GetTxsEvent fetches txs by event. */useGetTxsEvent
   };
 };

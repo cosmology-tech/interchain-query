@@ -63,7 +63,7 @@ export interface ParamsAmino {
   blocks_per_year: string;
 }
 export interface ParamsAminoMsg {
-  type: "cosmos-sdk/Params";
+  type: "cosmos-sdk/x/mint/Params";
   value: ParamsAmino;
 }
 /** Params holds parameters for the mint module. */
@@ -189,7 +189,7 @@ function createBaseParams(): Params {
 }
 export const Params = {
   typeUrl: "/cosmos.mint.v1beta1.Params",
-  aminoType: "cosmos-sdk/Params",
+  aminoType: "cosmos-sdk/x/mint/Params",
   encode(message: Params, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.mintDenom !== "") {
       writer.uint32(10).string(message.mintDenom);
@@ -318,7 +318,7 @@ export const Params = {
   },
   toAminoMsg(message: Params): ParamsAminoMsg {
     return {
-      type: "cosmos-sdk/Params",
+      type: "cosmos-sdk/x/mint/Params",
       value: Params.toAmino(message)
     };
   },

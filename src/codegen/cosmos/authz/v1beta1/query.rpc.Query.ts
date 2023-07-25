@@ -8,17 +8,9 @@ import { QueryGrantsRequest, QueryGrantsResponse, QueryGranterGrantsRequest, Que
 export interface Query {
   /** Returns list of `Authorization`, granted to the grantee by the granter. */
   grants(request: QueryGrantsRequest): Promise<QueryGrantsResponse>;
-  /**
-   * GranterGrants returns list of `GrantAuthorization`, granted by granter.
-   * 
-   * Since: cosmos-sdk 0.46
-   */
+  /** GranterGrants returns list of `Authorization`, granted by granter. */
   granterGrants(request: QueryGranterGrantsRequest): Promise<QueryGranterGrantsResponse>;
-  /**
-   * GranteeGrants returns a list of `GrantAuthorization` by grantee.
-   * 
-   * Since: cosmos-sdk 0.46
-   */
+  /** GranteeGrants returns a list of `GrantAuthorization` by grantee. */
   granteeGrants(request: QueryGranteeGrantsRequest): Promise<QueryGranteeGrantsResponse>;
 }
 export class QueryClientImpl implements Query {
@@ -110,17 +102,7 @@ export const createRpcQueryHooks = (rpc: ProtobufRpcClient | undefined) => {
   };
   return {
     /** Returns list of `Authorization`, granted to the grantee by the granter. */useGrants,
-    /**
-     * GranterGrants returns list of `GrantAuthorization`, granted by granter.
-     * 
-     * Since: cosmos-sdk 0.46
-     */
-    useGranterGrants,
-    /**
-     * GranteeGrants returns a list of `GrantAuthorization` by grantee.
-     * 
-     * Since: cosmos-sdk 0.46
-     */
-    useGranteeGrants
+    /** GranterGrants returns list of `Authorization`, granted by granter. */useGranterGrants,
+    /** GranteeGrants returns a list of `GrantAuthorization` by grantee. */useGranteeGrants
   };
 };
