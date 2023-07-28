@@ -88,7 +88,7 @@
     "jest-in-case": "^1.0.2",
     "long": "^5.2.1",
     "prettier": "^2.8.7",
-    "publish-scripts": "^1.6.0",
+    "publish-scripts": "^1.9.0",
     "regenerator-runtime": "^0.13.11",
     "rimraf": "^5.0.0",
     "ts-jest": "^29.1.0",
