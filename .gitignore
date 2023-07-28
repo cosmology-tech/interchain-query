@@ -64,13 +64,12 @@ mjs
 package-lock.json
 yarn.lock
 
-
 # publish-scripts
 # AUTOMATED DONT EDIT
-/index.js
 /varint.js
 /utf8.js
 /react-query.js
+/index.js
 /hooks.js
 /helpers.js
 /extern.js
@@ -86,26 +85,26 @@ yarn.lock
 /confio
 /capability
 /amino
-/index.js.map
 /varint.js.map
 /utf8.js.map
 /react-query.js.map
+/index.js.map
 /hooks.js.map
 /helpers.js.map
 /extern.js.map
 /binary.js.map
-/index.mjs
 /varint.mjs
 /utf8.mjs
 /react-query.mjs
+/index.mjs
 /hooks.mjs
 /helpers.mjs
 /extern.mjs
 /binary.mjs
-/index.d.ts
 /varint.d.ts
 /utf8.d.ts
 /react-query.d.ts
+/index.d.ts
 /hooks.d.ts
 /helpers.d.ts
 /extern.d.ts
