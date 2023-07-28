@@ -1,6 +1,6 @@
 {
   "name": "interchain-query",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Cosmos RPC with React Query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/interchain-query#readme",
@@ -12,28 +12,6 @@
     "lib": "src",
     "test": "__tests__"
   },
-  "files": [
-    "amino/",
-    "capability/",
-    "confio/",
-    "cosmos/",
-    "cosmos_proto/",
-    "cosmwasm/",
-    "gogoproto/",
-    "google/",
-    "ibc/",
-    "ics23/",
-    "tendermint/",
-    "/binary.*",
-    "/extern.*",
-    "/helpers.*",
-    "/hooks.*",
-    "/index.*",
-    "/react-query.*",
-    "/utf8.*",
-    "/varint.*",
-    "*.md"
-  ],
   "scripts": {
     "build:cjs": "yarn tsc -p tsconfig.json --outDir dist --module commonjs",
     "build:mjs": "yarn tsc -p tsconfig.json --outDir mjs --module es2022 --declaration false",
