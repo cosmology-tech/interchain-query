@@ -31,6 +31,7 @@ package.json
 src
 test
 scripts
+dist
 
 cosmos-sdk
 ibc-go
