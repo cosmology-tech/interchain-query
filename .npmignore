@@ -32,6 +32,8 @@ src
 test
 scripts
 dist
+main
+module
 
 cosmos-sdk
 ibc-go
