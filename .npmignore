@@ -30,3 +30,10 @@ jest.config.js
 package.json
 src
 test
+scripts
+
+cosmos-sdk
+ibc-go
+ics23
+wasmd
+proto
