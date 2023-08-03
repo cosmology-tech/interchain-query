@@ -23,13 +23,21 @@ export interface UseRpcClientQuery<TData> extends ReactQueryParams<ProtobufRpcCl
 
 export interface UseRpcEndpointQuery<TData> extends ReactQueryParams<string | HttpEndpoint, TData> {
     getter: () => Promise<string | HttpEndpoint>;
+    extraKey?: string
 }
 
 export const useRpcEndpoint = <TData = string | HttpEndpoint>({
     getter,
     options,
+    extraKey
 }: UseRpcEndpointQuery<TData>) => {
-    return useQuery<string | HttpEndpoint, Error, TData>(['rpcEndpoint', getter], async () => {
+    const keys = ['rpcEndpoint', getter];
+
+    if(extraKey){
+      keys.push(extraKey);
+    }
+
+    return useQuery<string | HttpEndpoint, Error, TData>(keys, async () => {
         return await getter();
     }, options);
 };
