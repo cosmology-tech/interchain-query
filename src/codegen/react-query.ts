@@ -31,13 +31,7 @@ export const useRpcEndpoint = <TData = string | HttpEndpoint>({
     options,
     extraKey
 }: UseRpcEndpointQuery<TData>) => {
-    const keys = ['rpcEndpoint', getter];
-
-    if(extraKey){
-      keys.push(extraKey);
-    }
-
-    return useQuery<string | HttpEndpoint, Error, TData>(keys, async () => {
+    return useQuery<string | HttpEndpoint, Error, TData>(['rpcEndpoint', getter, extraKey], async () => {
         return await getter();
     }, options);
 };
