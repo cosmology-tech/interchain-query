@@ -28,15 +28,15 @@ CHANGELOG.md
 examples
 jest.config.js
 package.json
-src
+/src
 test
-scripts
-dist
-main
-module
+/scripts
+/dist
+/main
+/module
 
-cosmos-sdk
-ibc-go
-ics23
-wasmd
-proto
+/cosmos-sdk
+/ibc-go
+/ics23
+/wasmd
+/proto
