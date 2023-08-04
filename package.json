@@ -1,6 +1,6 @@
 {
   "name": "interchain-query",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "Cosmos RPC with React Query",
   "author": "Dan Lynch <pyramation@gmail.com>",
   "homepage": "https://github.com/pyramation/interchain-query#readme",
@@ -37,6 +37,9 @@
   "keywords": [],
   "bugs": {
     "url": "https://github.com/pyramation/interchain-query/issues"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^4.29.12"
   },
   "devDependencies": {
     "@babel/cli": "7.21.0",
@@ -78,7 +81,6 @@
     "@cosmjs/proto-signing": "0.29.4",
     "@cosmjs/stargate": "0.29.4",
     "@cosmjs/tendermint-rpc": "^0.29.4",
-    "@tanstack/react-query": "^4.29.12",
     "protobufjs": "^6.11.2"
   }
 }
