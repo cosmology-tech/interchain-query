@@ -1,6 +1,3 @@
-[submodule "ics23"]
-	path = ics23
-	url = git@github.com:cosmos/ics23.git
 [submodule "ibc-go"]
 	path = ibc-go
 	url = git@github.com:cosmos/ibc-go.git
@@ -10,3 +7,6 @@
 [submodule "cosmos-sdk"]
 	path = cosmos-sdk
 	url = git@github.com:osmosis-labs/cosmos-sdk.git
+[submodule "ics23-repo"]
+	path = ics23-repo
+	url = git@github.com:cosmos/ics23.git

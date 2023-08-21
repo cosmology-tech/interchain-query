@@ -2074,7 +2074,7 @@ export const RequestInfo = {
 };
 function createBaseRequestInitChain(): RequestInitChain {
   return {
-    time: undefined,
+    time: new Date(),
     chainId: "",
     consensusParams: ConsensusParams.fromPartial({}),
     validators: [],
@@ -3196,7 +3196,7 @@ function createBaseRequestPrepareProposal(): RequestPrepareProposal {
     localLastCommit: ExtendedCommitInfo.fromPartial({}),
     misbehavior: [],
     height: BigInt(0),
-    time: undefined,
+    time: new Date(),
     nextValidatorsHash: new Uint8Array(),
     proposerAddress: new Uint8Array()
   };
@@ -3399,7 +3399,7 @@ function createBaseRequestProcessProposal(): RequestProcessProposal {
     misbehavior: [],
     hash: new Uint8Array(),
     height: BigInt(0),
-    time: undefined,
+    time: new Date(),
     nextValidatorsHash: new Uint8Array(),
     proposerAddress: new Uint8Array()
   };
@@ -6844,7 +6844,7 @@ function createBaseMisbehavior(): Misbehavior {
     type: 0,
     validator: Validator.fromPartial({}),
     height: BigInt(0),
-    time: undefined,
+    time: new Date(),
     totalVotingPower: BigInt(0)
   };
 }

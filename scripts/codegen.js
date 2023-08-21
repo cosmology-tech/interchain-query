@@ -4,7 +4,7 @@ import { sync as rimraf } from 'rimraf';
 import { AMINO_MAP } from './aminos';
 
 const protoDirs = [
-  join(__dirname, '/../ics23/proto'),
+  join(__dirname, '/../ics23-repo/proto'),
   join(__dirname, '/../cosmos-sdk/proto'),
   join(__dirname, '/../ibc-go/proto'),
   join(__dirname, '/../wasmd/proto'),
@@ -20,17 +20,7 @@ telescope({
   options: {
     env: 'v-next',
     tsDisable: {
-      patterns: ['**/tx.registry.ts'],
-      files: [
-        'ibc/core/types/v1/genesis.ts',
-        'ibc/applications/interchain_accounts/genesis/v1/genesis.ts',
-        'cosmos/tx/signing/v1beta1/signing.ts',
-        'cosmos/staking/v1beta1/tx.ts',
-        'cosmos/staking/v1beta1/staking.ts',
-
-        'cosmos/authz/v1beta1/tx.amino.ts',
-        'cosmos/staking/v1beta1/tx.amino.ts'
-      ]
+      patterns: ['**/tx.registry.ts']
     },
     interfaces: {
       enabled: false,

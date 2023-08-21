@@ -104,7 +104,7 @@ function createBaseCommitInfo(): CommitInfo {
   return {
     version: BigInt(0),
     storeInfos: [],
-    timestamp: undefined
+    timestamp: new Date()
   };
 }
 export const CommitInfo = {

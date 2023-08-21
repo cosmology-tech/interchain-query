@@ -658,7 +658,7 @@ export const QueryBalanceRequest = {
 };
 function createBaseQueryBalanceResponse(): QueryBalanceResponse {
   return {
-    balance: undefined
+    balance: Coin.fromPartial({})
   };
 }
 export const QueryBalanceResponse = {
@@ -1252,7 +1252,7 @@ export const QuerySupplyOfRequest = {
 };
 function createBaseQuerySupplyOfResponse(): QuerySupplyOfResponse {
   return {
-    amount: undefined
+    amount: Coin.fromPartial({})
   };
 }
 export const QuerySupplyOfResponse = {
@@ -1630,7 +1630,7 @@ export const QuerySupplyOfWithoutOffsetRequest = {
 };
 function createBaseQuerySupplyOfWithoutOffsetResponse(): QuerySupplyOfWithoutOffsetResponse {
   return {
-    amount: undefined
+    amount: Coin.fromPartial({})
   };
 }
 export const QuerySupplyOfWithoutOffsetResponse = {

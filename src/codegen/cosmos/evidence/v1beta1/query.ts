@@ -203,7 +203,7 @@ export const QueryEvidenceRequest = {
 };
 function createBaseQueryEvidenceResponse(): QueryEvidenceResponse {
   return {
-    evidence: undefined
+    evidence: Any.fromPartial({})
   };
 }
 export const QueryEvidenceResponse = {

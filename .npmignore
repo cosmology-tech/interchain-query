@@ -38,4 +38,5 @@ test
 /cosmos-sdk
 /ibc-go
 /wasmd
+/ics23-repo
 /proto

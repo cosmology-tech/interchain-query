@@ -445,7 +445,7 @@ export const BlockParams = {
 function createBaseEvidenceParams(): EvidenceParams {
   return {
     maxAgeNumBlocks: BigInt(0),
-    maxAgeDuration: undefined,
+    maxAgeDuration: Duration.fromPartial({}),
     maxBytes: BigInt(0)
   };
 }

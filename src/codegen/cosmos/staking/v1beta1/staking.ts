@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Header, HeaderAmino, HeaderSDKType } from "../../../tendermint/types/types";
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Any, AnyAmino, AnySDKType } from "../../../google/protobuf/any";
@@ -7,8 +6,7 @@ import { Coin, CoinAmino, CoinSDKType } from "../../base/v1beta1/coin";
 import { BinaryReader, BinaryWriter } from "../../../binary";
 import { isSet, DeepPartial, toTimestamp, fromTimestamp } from "../../../helpers";
 import { Decimal } from "@cosmjs/math";
-import { toBase64, fromBase64 } from "@cosmjs/encoding";
-import { encodeBech32Pubkey, decodeBech32Pubkey } from "@cosmjs/amino";
+import { encodePubkey, decodePubkey } from "@cosmjs/proto-signing";
 /** BondStatus is the status of a validator. */
 export enum BondStatus {
   /** BOND_STATUS_UNSPECIFIED - UNSPECIFIED defines an invalid validator status. */
@@ -1065,7 +1063,7 @@ export const CommissionRates = {
 function createBaseCommission(): Commission {
   return {
     commissionRates: CommissionRates.fromPartial({}),
-    updateTime: undefined
+    updateTime: new Date()
   };
 }
 export const Commission = {
@@ -1311,14 +1309,14 @@ export const Description = {
 function createBaseValidator(): Validator {
   return {
     operatorAddress: "",
-    consensusPubkey: undefined,
+    consensusPubkey: Any.fromPartial({}),
     jailed: false,
     status: 0,
     tokens: "",
     delegatorShares: "",
     description: Description.fromPartial({}),
     unbondingHeight: BigInt(0),
-    unbondingTime: undefined,
+    unbondingTime: new Date(),
     commission: Commission.fromPartial({}),
     minSelfDelegation: ""
   };
@@ -1487,10 +1485,7 @@ export const Validator = {
   fromAmino(object: ValidatorAmino): Validator {
     return {
       operatorAddress: object.operator_address,
-      consensusPubkey: encodeBech32Pubkey({
-        type: "tendermint/PubKeySecp256k1",
-        value: toBase64(object.consensus_pubkey.value)
-      }, "cosmos"),
+      consensusPubkey: object?.consensus_pubkey ? encodePubkey(object.consensus_pubkey) : undefined,
       jailed: object.jailed,
       status: isSet(object.status) ? bondStatusFromJSON(object.status) : -1,
       tokens: object.tokens,
@@ -1505,10 +1500,7 @@ export const Validator = {
   toAmino(message: Validator): ValidatorAmino {
     const obj: any = {};
     obj.operator_address = message.operatorAddress;
-    obj.consensus_pubkey = message.consensusPubkey ? {
-      typeUrl: "/cosmos.crypto.secp256k1.PubKey",
-      value: fromBase64(decodeBech32Pubkey(message.consensusPubkey).value)
-    } : undefined;
+    obj.consensus_pubkey = message.consensusPubkey ? decodePubkey(message.consensusPubkey) : undefined;
     obj.jailed = message.jailed;
     obj.status = message.status;
     obj.tokens = message.tokens;
@@ -2307,7 +2299,7 @@ export const UnbondingDelegation = {
 function createBaseUnbondingDelegationEntry(): UnbondingDelegationEntry {
   return {
     creationHeight: BigInt(0),
-    completionTime: undefined,
+    completionTime: new Date(),
     initialBalance: "",
     balance: ""
   };
@@ -2437,7 +2429,7 @@ export const UnbondingDelegationEntry = {
 function createBaseRedelegationEntry(): RedelegationEntry {
   return {
     creationHeight: BigInt(0),
-    completionTime: undefined,
+    completionTime: new Date(),
     initialBalance: "",
     sharesDst: ""
   };
@@ -2708,7 +2700,7 @@ export const Redelegation = {
 };
 function createBaseParams(): Params {
   return {
-    unbondingTime: undefined,
+    unbondingTime: Duration.fromPartial({}),
     maxValidators: 0,
     maxEntries: 0,
     historicalEntries: 0,
@@ -2881,7 +2873,7 @@ export const Params = {
 function createBaseDelegationResponse(): DelegationResponse {
   return {
     delegation: Delegation.fromPartial({}),
-    balance: undefined
+    balance: Coin.fromPartial({})
   };
 }
 export const DelegationResponse = {

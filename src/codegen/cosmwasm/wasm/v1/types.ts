@@ -784,7 +784,7 @@ function createBaseContractInfo(): ContractInfo {
     label: "",
     created: AbsoluteTxPosition.fromPartial({}),
     ibcPortId: "",
-    extension: undefined
+    extension: Any.fromPartial({})
   };
 }
 export const ContractInfo = {

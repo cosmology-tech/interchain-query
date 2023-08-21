@@ -112,7 +112,7 @@ export interface MsgWithdrawValidatorCommissionAmino {
   validator_address: string;
 }
 export interface MsgWithdrawValidatorCommissionAminoMsg {
-  type: "cosmos-sdk/MsgWithdrawValCommission";
+  type: "cosmos-sdk/MsgWithdrawValidatorCommission";
   value: MsgWithdrawValidatorCommissionAmino;
 }
 /**
@@ -533,7 +533,7 @@ function createBaseMsgWithdrawValidatorCommission(): MsgWithdrawValidatorCommiss
 }
 export const MsgWithdrawValidatorCommission = {
   typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawValidatorCommission",
-  aminoType: "cosmos-sdk/MsgWithdrawValCommission",
+  aminoType: "cosmos-sdk/MsgWithdrawValidatorCommission",
   encode(message: MsgWithdrawValidatorCommission, writer: BinaryWriter = BinaryWriter.create()): BinaryWriter {
     if (message.validatorAddress !== "") {
       writer.uint32(10).string(message.validatorAddress);
@@ -597,7 +597,7 @@ export const MsgWithdrawValidatorCommission = {
   },
   toAminoMsg(message: MsgWithdrawValidatorCommission): MsgWithdrawValidatorCommissionAminoMsg {
     return {
-      type: "cosmos-sdk/MsgWithdrawValCommission",
+      type: "cosmos-sdk/MsgWithdrawValidatorCommission",
       value: MsgWithdrawValidatorCommission.toAmino(message)
     };
   },

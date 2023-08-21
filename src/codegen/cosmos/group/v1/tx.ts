@@ -1568,7 +1568,7 @@ function createBaseMsgCreateGroupPolicy(): MsgCreateGroupPolicy {
     admin: "",
     groupId: BigInt(0),
     metadata: "",
-    decisionPolicy: undefined
+    decisionPolicy: Any.fromPartial({})
   };
 }
 export const MsgCreateGroupPolicy = {
@@ -1904,7 +1904,7 @@ function createBaseMsgCreateGroupWithPolicy(): MsgCreateGroupWithPolicy {
     groupMetadata: "",
     groupPolicyMetadata: "",
     groupPolicyAsAdmin: false,
-    decisionPolicy: undefined
+    decisionPolicy: Any.fromPartial({})
   };
 }
 export const MsgCreateGroupWithPolicy = {
@@ -2243,7 +2243,7 @@ function createBaseMsgUpdateGroupPolicyDecisionPolicy(): MsgUpdateGroupPolicyDec
   return {
     admin: "",
     address: "",
-    decisionPolicy: undefined
+    decisionPolicy: Any.fromPartial({})
   };
 }
 export const MsgUpdateGroupPolicyDecisionPolicy = {

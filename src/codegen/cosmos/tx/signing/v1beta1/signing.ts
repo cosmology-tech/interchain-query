@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { CompactBitArray, CompactBitArrayAmino, CompactBitArraySDKType } from "../../../crypto/multisig/v1beta1/multisig";
 import { Any, AnyAmino, AnySDKType } from "../../../../google/protobuf/any";
 import { BinaryReader, BinaryWriter } from "../../../../binary";
@@ -341,8 +340,8 @@ export const SignatureDescriptors = {
 };
 function createBaseSignatureDescriptor(): SignatureDescriptor {
   return {
-    publicKey: undefined,
-    data: Data.fromPartial({}),
+    publicKey: Any.fromPartial({}),
+    data: SignatureDescriptor_Data.fromPartial({}),
     sequence: BigInt(0)
   };
 }
