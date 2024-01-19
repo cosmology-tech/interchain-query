@@ -5,12 +5,10 @@
     Cosmos RPC with React Query
 </p>
 
+## !!Deprecated!!
 
-## install
+This repo's been deprecated and moved [here](https://github.com/cosmology-tech/interchain)
 
-```sh
-npm install interchain-query
-```
 ## Table of contents
 
 - [interchain-query](#interchain-query)
@@ -37,7 +35,7 @@ npm install interchain-query
 ```js
 import { cosmos } from 'interchain-query';
 
-const { createRPCQueryClient } = cosmos.ClientFactory; 
+const { createRPCQueryClient } = cosmos.ClientFactory;
 const client = await createRPCQueryClient({ rpcEndpoint: RPC_ENDPOINT });
 
 // now you can query the cosmos modules
@@ -51,7 +49,7 @@ const balances = await client.cosmos.exchange.v1beta1
 
 ### Composing Messages
 
-Import the `cosmos` object from `interchain-query`. 
+Import the `cosmos` object from `interchain-query`.
 
 ```js
 import { cosmos } from 'interchain-query';
@@ -211,7 +209,7 @@ If you want to manually construct a stargate client
 import { OfflineSigner, GeneratedType, Registry } from "@cosmjs/proto-signing";
 import { AminoTypes, SigningStargateClient } from "@cosmjs/stargate";
 
-import { 
+import {
     cosmosAminoConverters,
     cosmosProtoRegistry,
     cosmwasmAminoConverters,
@@ -275,7 +273,7 @@ yarn publish
 ```
 ## Credits
 
-🛠 Built by Cosmology — if you like our tools, please consider delegating to [our validator ⚛️](https://cosmology.tech/validator)
+🛠 Built by Cosmology — if you like our tools, please consider delegating to [our validator ⚛️](https://cosmology.zone/validator)
 
 Code built with the help of these related projects:
 
